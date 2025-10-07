@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style.css">
+
+	<title>PSMO - SuperAdmin</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">SuperAdmin</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="index.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="records.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Records</span>
+				</a>
+			</li>
+			<li>
+				<a href="archive.html">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Archives</span>
+				</a>
+			</li>
+			<li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
+            <li>
+				<a href="team.html">
+					<i class='bx bxs-calendar' ></i>
+					<span class="text">Role Management</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="sign.html" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="notif.html" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num"></span>
+			</a>
+			<a href="profile.html" class="profile">
+				<img src="IMAGES/" id="navbar-profile-img">
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Dashboard</h1>
+				</div>
+			</div>
+
+			<ul class="box-info">
+				<li>
+					<i class='bx bxs-calendar-check' ></i>
+					<span class="text">
+						<h3>1020</h3>
+						<p>Successful Transactions</p>
+						<small>as of <span id="current-date"></span> </small>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-group' ></i>
+					<span class="text">
+						<h3>2834</h3>
+						<p>Total Dealers</p>
+						<small>as of <span id="current-visitor"></span></small>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-message-alt-dots' ></i>
+					<span class="text">
+						<h3>2543</h3>
+						<p>Total Anomalies</p>
+						<small>as of <span id="current-inquire"></span></small>
+					</span>
+				</li>
+			</ul>
+
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Recent Records</h3>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>Live Food</th>
+								<th>Date</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<p>Pig</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Slaughterhouse</span></td>
+							</tr>
+							<tr>
+								<td>
+									<p>Cattle</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Holding Pen</span></td>
+							</tr>
+							<tr>
+								<td>
+									<p>Carabao</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Slaughterhoue</span></td>
+							</tr>
+							<tr>
+								<td>
+									<p>Pig</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Holding Pen</span></td>
+							</tr>
+							<tr>
+								<td>
+									<p>Pig</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+							<tr>
+								<td>
+									<p>Cattle</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+							<tr>
+								<td>
+									<p>Pig</p>
+								</td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="todo">
+					<div class="head">
+						<h3>No. of Live Food Dealers</h3>
+						<i class='bx bx-calendar-event'><span id="current-chart"></span></i>
+					</div>
+					<div class="charts-card">
+						<div id="bar-chart"></div>
+					</div>					
+					<button class="view-report-btn"><a href="analytics.html">View Full Report</a></button>
+				</div>				
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+	<script src="script.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			// Check if the chart container exists
+			const chartContainer = document.querySelector('#bar-chart');
+			if (chartContainer) {
+				console.log('Chart container found');
+			} else {
+				console.log('Chart container not found');
+				return;
+			}
+
+			// Check if ApexCharts is loaded
+			if (typeof ApexCharts !== 'undefined') {
+				console.log('ApexCharts loaded');
+			} else {
+				console.log('ApexCharts not loaded');
+				return;
+			}
+
+			// BAR CHART
+			const barChartOptions = {
+				series: [
+					{
+						data: [10, 8, 6, 4, 2],
+						name: 'No. of Dealers',
+					},
+				],
+				chart: {
+					type: 'bar',
+					background: 'transparent',
+gi					height: 350,
+					toolbar: {
+						show: false,
+					},
+				},
+				colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3'],
+				plotOptions: {
+					bar: {
+						distributed: true,
+						borderRadius: 4,
+						horizontal: false,
+						columnWidth: '40%',
+					},
+				},
+				dataLabels: {
+					enabled: false,
+				},
+				fill: {
+					opacity: 1,
+				},
+				grid: {
+					borderColor: '#55596e',
+					yaxis: {
+						lines: {
+							show: true,
+						},
+					},
+					xaxis: {
+						lines: {
+							show: true,
+						},
+					},
+				},
+				legend: {
+					labels: {
+						colors: '#f5f7ff',
+					},
+					show: true,
+					position: 'top',
+				},
+				stroke: {
+					colors: ['transparent'],
+					show: true,
+					width: 2,
+				},
+				tooltip: {
+					shared: true,
+					intersect: false,
+					theme: 'dark',
+				},
+				xaxis: {
+					categories: ['Cavite', 'Batangas', 'Manila', 'Laguna', 'Rizal'],
+					title: {
+						style: {
+							color: '#f5f7ff',
+						},
+					},
+					axisBorder: {
+						show: true,
+						color: '#55596e',
+					},
+					axisTicks: {
+						show: true,
+						color: '#55596e',
+					},
+					labels: {
+						style: {
+							colors: '#f5f7ff',
+						},
+					},
+				},
+				yaxis: {
+					title: {
+						text: 'Count',
+						style: {
+							color: '#f5f7ff',
+						},
+					},
+					axisBorder: {
+						color: '#55596e',
+						show: true,
+					},
+					axisTicks: {
+						color: '#55596e',
+						show: true,
+					},
+					labels: {
+						style: {
+							colors: '#f5f7ff',
+						},
+					},
+				},
+			};
+
+			const barChart = new ApexCharts(chartContainer, barChartOptions);
+			barChart.render().then(() => {
+				console.log('Chart rendered successfully');
+			}).catch((error) => {
+				console.error('Error rendering chart:', error);
+			});
+		});
+	</script>
+</body>
+</html>
