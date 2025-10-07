@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="profile.css">
+
+    <title>PSMO - SuperAdmin</title>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">SuperAdmin</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="index.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="records.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Records</span>
+				</a>
+			</li>
+			<li>
+				<a href="archives.html">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Archives</span>
+				</a>
+			</li>
+			<li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
+            <li>
+				<a href="team.html">
+					<i class='bx bxs-calendar' ></i>
+					<span class="text">Role Management</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+			
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu' ></i>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="notif.html" class="notification">
+                <i class='bx bxs-bell' ></i>
+                <span class="num">8</span>
+            </a>
+            <a href="profile.html" class="profile">
+                <img src="images/1.webp" id="navbar-profile-img">
+            </a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- PROFILE -->
+        <section class="profile-section">
+            <!-- Header Image -->
+            <div class="header-image">
+                <img src="images/background.png" alt="Header Image">
+            </div>
+
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <img src="images/1.webp" alt="Profile Picture" id="profile-img">
+                <div class="profile-info">
+                    <h2><span id="fullName1">SuperAdmin Name</span></h2>
+                    <p>Role: Super Admin</p>
+                </div>
+                <div class="upload-img">
+                    <label for="insert-file"><i class='bx bx-plus'></i></label>
+                    <input type="file" accept="image/jpeg, image/png, image/jpg" id="insert-file">
+                </div>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="profile-details">
+                <h3>Profile Details</h3>
+                <ul>
+                    <li><strong>Full Name:</strong> <span id="fullName">SuperAdmin Name</span></li>
+                    <li><strong>Location:</strong> <span id="location">Santa Rosa, Laguna</span></li>
+                    <li><strong>Phone:</strong> <span id="phone">+1234567890</span></li>
+                    <li><strong>Password:</strong> <span id="password">********</span></li>
+                </ul>
+                <div id="editForm" style="display: none;">
+                    <label for="editFullName">Full Name:</label>
+                    <input type="text" id="editFullName" value="SuperAdmin Name">
+                    <label for="editLocation">Location:</label>
+                    <input type="text" id="editLocation" value="Santa Rosa, Laguna">
+                    <label for="editPhone">Phone:</label>
+                    <input type="text" id="editPhone" value="+1234567890">
+                    <label for="editPassword">New Password:</label>
+                    <input type="password" id="editPassword" placeholder="Enter new password">
+                </div>
+                <div class="buttons">
+                    <button id="editButton" onclick="toggleEditForm()">Edit</button>
+                    <button id="saveChangesButton" style="display: none;" onclick="saveChanges()">Save Changes</button>
+                </div>
+            </div>
+        </section>
+        <!-- PROFILE -->
+    </section>
+    <!-- CONTENT -->
+    
+    <script src="profile.js"></script>
+</body>
+</html>
