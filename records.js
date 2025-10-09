@@ -630,6 +630,7 @@ document.addEventListener("DOMContentLoaded", () => {
         doc.save('livestock_records_' + new Date().toISOString().split('T')[0] + '.pdf');
     }
 
+    
     // Export to Excel function
     function exportToExcel() {
         // Prepare data for Excel
@@ -666,4 +667,6 @@ document.addEventListener("DOMContentLoaded", () => {
     preLoadCalculations();
     highlightIndexBtn();
     displayIndexBtn();
+    
+    
 });

@@ -170,7 +170,12 @@ function toggleEditPasswordForm() {
             img.src = imageSrc;
         });
     }
-
+    document.getElementById("profile-btn").addEventListener("click", function(e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById("profile-dropdown");
+        dropdown.classList.toggle("active");
+      });
+      
     // Load saved image from localStorage on page load
     window.onload = function () {
         if (localStorage.getItem('profileImage')) {

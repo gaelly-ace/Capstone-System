@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="style.css">
+
+	<title>PSMO - SuperAdmin</title>
+	<style>
+		/* Dropdown styles */
+		.dropdown {
+			position: relative;
+			display: inline-block;
+		}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			right: 0;
+			top: calc(100% + 8px);
+			background-color: var(--light-bg, #fff);
+			min-width: 140px;
+			box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+			border-radius: 8px;
+			z-index: 999;
+		}
+
+		.dropdown-content a {
+			color: #333;
+			padding: 10px 16px;
+			text-decoration: none;
+			display: block;
+			font-size: 14px;
+		}
+
+		.dropdown-content a:hover {
+			background-color: #f1f1f1;
+		}
+
+		.dropdown.show .dropdown-content {
+			display: block;
+		}
+
+		/* Profile visible styles */
+		.profile {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			cursor: pointer;
+			color: inherit;
+		}
+
+		.profile i, .profile img {
+			font-size: 28px;
+			width: 36px;
+			height: 36px;
+			border-radius: 50%;
+		}
+	</style>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">SuperAdmin</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="index.html">
+					<i class='bx bxs-dashboard'></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="records.html">
+					<i class='bx bxs-shopping-bag-alt'></i>
+					<span class="text">Records</span>
+				</a>
+			</li>
+			<li>
+				<a href="archive.html">
+					<i class='bx bxs-doughnut-chart'></i>
+					<span class="text">Archives</span>
+				</a>
+			</li>
+			<li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots'></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
+            <li>
+				<a href="team.html">
+					<i class='bx bxs-calendar'></i>
+					<span class="text">Role Management</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu'></i>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="notif.html" class="notification">
+				<i class='bx bxs-bell'></i>
+				<span class="num"></span>
+			</a>
+
+			<!-- Dropdown Profile -->
+			<div class="dropdown">
+				<a href="javascript:void(0);" class="profile" id="profile-btn" aria-haspopup="true" aria-expanded="false" title="Account">
+					<!-- use icon as fallback so the toggle is always visible -->
+					<i class='bx bxs-user-circle' id="navbar-profile-icon" aria-hidden="true"></i>
+				</a>
+				<div class="dropdown-content" role="menu" aria-label="Profile menu">
+					<a href="profile.html" id="profile-link" role="menuitem">Profile</a>
+					<a href="sign.html" id="logout-btn" role="menuitem">Logout</a>
+				</div>
+			</div>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Dashboard</h1>
+				</div>
+			</div>
+
+			<ul class="box-info">
+				<li>
+					<i class='bx bxs-calendar-check'></i>
+					<span class="text">
+						<h3>1020</h3>
+						<p>Successful Transactions</p>
+						<small>as of <span id="current-date"></span></small>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-group'></i>
+					<span class="text">
+						<h3>2834</h3>
+						<p>Total Dealers</p>
+						<small>as of <span id="current-visitor"></span></small>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-message-alt-dots'></i>
+					<span class="text">
+						<h3>2543</h3>
+						<p>Total Anomalies</p>
+						<small>as of <span id="current-inquire"></span></small>
+					</span>
+				</li>
+			</ul>
+
+			<div class="table-data">
+				<div class="order">
+					<div class="head">
+						<h3>Recent Records</h3>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>Live Food</th>
+								<th>Date</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><p>Pig</p></td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Slaughterhouse</span></td>
+							</tr>
+							<tr>
+								<td><p>Cattle</p></td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Holding Pen</span></td>
+							</tr>
+							<tr>
+								<td><p>Carabao</p></td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Slaughterhouse</span></td>
+							</tr>
+							<tr>
+								<td><p>Pig</p></td>
+								<td>01-10-2021</td>
+								<td><span class="status pending">In Holding Pen</span></td>
+							</tr>
+							<tr>
+								<td><p>Pig</p></td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+							<tr>
+								<td><p>Cattle</p></td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+							<tr>
+								<td><p>Pig</p></td>
+								<td>01-10-2021</td>
+								<td><span class="status completed">Completed</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="todo">
+					<div class="head">
+						<h3>No. of Live Food Dealers</h3>
+						<i class='bx bx-calendar-event'><span id="current-chart"></span></i>
+					</div>
+					<div class="charts-card">
+						<div id="bar-chart"></div>
+					</div>					
+					<button class="view-report-btn"><a href="analytics.html">View Full Report</a></button>
+				</div>				
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+	<script src="script.js"></script>
+	<script>
+	const searchInput = document.querySelector('.form-input input[type="search"]');
+	const searchButton = document.querySelector('.search-btn');
+
+	function highlightText(element, query) {
+		if (!query) {
+			element.innerHTML = element.textContent;
+			return;
+		}
+		const regex = new RegExp(`(${query})`, 'gi');
+		element.innerHTML = element.textContent.replace(regex, '<mark style="background-color: yellow; font-weight: bold;">$1</mark>');
+	}
+
+	function searchTable() {
+		const query = searchInput.value.toLowerCase().trim();
+		const rows = document.querySelectorAll('table tbody tr');
+
+		rows.forEach(row => {
+			const text = row.innerText.toLowerCase();
+			const visible = text.includes(query);
+			row.style.display = visible ? '' : 'none';
+
+			if (visible) {
+				row.querySelectorAll('td, p, span').forEach(cell => {
+					highlightText(cell, query);
+				});
+			} else {
+				row.querySelectorAll('td, p, span').forEach(cell => {
+					cell.innerHTML = cell.textContent;
+				});
+			}
+		});
+	}
+
+	searchButton.addEventListener('click', function(e) {
+		e.preventDefault();
+		searchTable();
+	});
+
+	searchInput.addEventListener('input', searchTable);
+
+	// Dropdown toggle
+	document.getElementById("profile-btn").addEventListener("click", function(e) {
+		e.stopPropagation();
+		const dropdown = this.parentElement;
+		dropdown.classList.toggle("show");
+		this.setAttribute('aria-expanded', dropdown.classList.contains('show'));
+	});
+
+	// Close dropdown if click outside
+	window.addEventListener("click", function(e) {
+		if (!e.target.closest(".dropdown")) {
+			document.querySelectorAll(".dropdown").forEach(d => d.classList.remove("show"));
+		}
+	});
+
+	// Close dropdown when any dropdown link is clicked (links have hrefs for navigation)
+	document.querySelectorAll('.dropdown-content a').forEach(link => {
+		link.addEventListener('click', function() {
+			const dropdown = this.closest('.dropdown');
+			if (dropdown) dropdown.classList.remove('show');
+		});
+	});
+	</script>
+</body>
+</html>

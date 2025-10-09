@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="reports.css">
+
+	<title>PSMO - SuperAdmin</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">SuperAdmin</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="index.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="records.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Records</span>
+				</a>
+			</li>
+			<li>
+				<a href="archive.html">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Archives</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
+            <li>
+				<a href="team.html">
+					<i class='bx bxs-calendar' ></i>
+					<span class="text">Role Management</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="notif.html" class="notification">
+				<i class='bx bxs-bell'></i>
+				<span id="notificationCount" class="num"></span>
+			</a>
+			<a href="profile.html" class="profile">
+				<img src="images/1.webp" id="navbar-profile-img">
+			</a>
+		</nav>
+		<!-- Profile Dropdown and Logout -->
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const profile = document.querySelector(".profile");
+	
+		// Create dropdown
+		const dropdown = document.createElement("div");
+		dropdown.id = "profileDropdown";
+		dropdown.style.display = "none";
+		dropdown.style.position = "absolute";
+		dropdown.style.background = "#fff";
+		dropdown.style.border = "1px solid #ddd";
+		dropdown.style.borderRadius = "8px";
+		dropdown.style.boxShadow = "0 2px 10px rgba(0,0,0,0.15)";
+		dropdown.style.padding = "8px 0";
+		dropdown.style.width = "130px";
+		dropdown.style.zIndex = "9999";
+		dropdown.innerHTML = `
+			<a href="profile.html" style="display:block;padding:8px 15px;text-decoration:none;color:#111;font-family:sans-serif;">Profile</a>
+			<a href="#" id="logoutBtn" style="display:block;padding:8px 15px;text-decoration:none;color:#111;font-family:sans-serif;">Logout</a>
+		`;
+		document.body.appendChild(dropdown);
+	
+		// Toggle dropdown
+		profile.addEventListener("click", (e) => {
+			e.preventDefault();
+			const rect = profile.getBoundingClientRect();
+			dropdown.style.top = rect.bottom + window.scrollY + "px";
+			dropdown.style.left = rect.right - 120 + "px";
+			dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+		});
+	
+		// Hide dropdown when clicking outside
+		document.addEventListener("click", (e) => {
+			if (!e.target.closest(".profile") && !e.target.closest("#profileDropdown")) {
+				dropdown.style.display = "none";
+			}
+		});
+	
+		// Logout function
+		document.addEventListener("click", (e) => {
+			if (e.target.id === "logoutBtn") {
+				localStorage.clear();
+				sessionStorage.clear();
+				window.location.href = "sign.html";
+			}
+		});
+	});
+	</script>
+	
+		<!-- NAVBAR -->
+
+		<!-- ANOMALIES SECTION -->
+		<div class="reports-section">
+            <h2>Anomalies</h2>
+            <table id="anomalies-table">
+                <thead>
+                    <tr>
+                        <th>Live Food ID</th>
+                        <th>Kind of Live Food</th>
+                        <th>Gender</th>
+                        <th>Weight</th>
+                        <th>Status</th>
+                        <th>Anomaly/ies</th>
+                        <th>Severity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- REQUESTS SECTION -->
+        <div class="reports-section">
+            <h2>Requests</h2>
+            <table id="requests-table">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Type</th>
+                        <th>Requested By</th>
+                        <th>Role</th>
+                        <th>Details</th>
+                        <th>Date Requested</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+	<!-- CONTENT -->
+
+	<!-- Floating QR Button -->
+<div class="floating-btn" onclick="startQrScanner()">
+  <i class='bx bx-qr-scan'></i>
+</div>
+
+<!-- Scanner Container -->
+<div id="qr-scanner" style="display: none;">
+  <div id="reader" style="width: 100%; height: 100vh;"></div>
+  <button id="close-scanner" onclick="stopQrScanner()">Close Scanner</button>
+</div>
+
+<!-- Boxicons + QR Scanner Library -->
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+	
+	<script src="notification.js"></script>
+    <script src="reports.js"></script>
+	<!-- Simple Profile Dropdown Function -->
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const profile = document.querySelector(".profile");
+		
+		// Create dropdown
+		const dropdown = document.createElement("div");
+		dropdown.id = "profileDropdown";
+		dropdown.style.display = "none";
+		dropdown.style.position = "absolute";
+		dropdown.style.background = "#fff";
+		dropdown.style.border = "1px solid #ccc";
+		dropdown.style.borderRadius = "5px";
+		dropdown.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+		dropdown.style.padding = "5px 0";
+		dropdown.innerHTML = `
+			<a href="profile.html" style="display:block;padding:8px 15px;text-decoration:none;color:#333;">Profile</a>
+			<a href="#" id="logoutBtn" style="display:block;padding:8px 15px;text-decoration:none;color:#333;">Logout</a>
+		`;
+		document.body.appendChild(dropdown);
+	
+		// Toggle dropdown
+		profile.addEventListener("click", (e) => {
+			e.preventDefault();
+			const rect = profile.getBoundingClientRect();
+			dropdown.style.top = rect.bottom + window.scrollY + "px";
+			dropdown.style.left = rect.right - 120 + "px";
+			dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+		});
+	
+		// Hide when clicking outside
+		document.addEventListener("click", (e) => {
+			if (!e.target.closest(".profile") && !e.target.closest("#profileDropdown")) {
+				dropdown.style.display = "none";
+			}
+		});
+	
+		// Logout
+		document.getElementById("logoutBtn").addEventListener("click", () => {
+			// Optional: clear session or local storage
+			localStorage.clear();
+			sessionStorage.clear();
+			window.location.href = "sign.html";
+		});
+	});
+	</script>
+	
+</body>
+</html>

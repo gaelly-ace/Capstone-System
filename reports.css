@@ -4,6 +4,8 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent; /* Remove flash on click */
+	outline: none; /* Prevent focus outline flash */
 }
 
 a {
@@ -33,6 +35,10 @@ li {
 
 html {
 	overflow-x: hidden;
+	background-attachment: fixed;
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	transform: translateZ(0);
 }
 
 body.dark {
@@ -134,6 +140,7 @@ body {
 	color: var(--dark);
 	white-space: nowrap;
 	overflow-x: hidden;
+	transition: background-color 0.2s ease, color 0.2s ease;
 }
 #sidebar .side-menu.top li.active a {
 	color: var(--blue);
@@ -187,7 +194,6 @@ body {
 	top: 0;
 	left: 0;
 	z-index: 1000;
-
 }
 #content nav::before {
 	content: '';
@@ -362,7 +368,7 @@ body.dark{
 }
 
 .view-btn {
-    background-color: #17a2b8; /* Info blue background */
+    background-color: #17a2b8;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -373,14 +379,13 @@ body.dark{
     margin-right: 5px;
     transition: all 0.3s ease;
 }
-
 .view-btn:hover {
     background-color: #138496;
     transform: translateY(-1px);
 }
 
 .resolve-btn {
-    background-color: #28a745; /* Green background for resolve */
+    background-color: #28a745;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -391,14 +396,13 @@ body.dark{
     margin-right: 5px;
     transition: all 0.3s ease;
 }
-
 .resolve-btn:hover {
     background-color: #218838;
     transform: translateY(-1px);
 }
 
 .approve-btn {
-    background-color: #28a745; /* Green background for approve */
+    background-color: #28a745;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -409,14 +413,13 @@ body.dark{
     margin-right: 5px;
     transition: all 0.3s ease;
 }
-
 .approve-btn:hover {
     background-color: #218838;
     transform: translateY(-1px);
 }
 
 .reject-btn {
-    background-color: #dc3545; /* Red background for reject */
+    background-color: #dc3545;
     color: #fff;
     border: none;
     padding: 5px 10px;
@@ -427,13 +430,11 @@ body.dark{
     margin-right: 5px;
     transition: all 0.3s ease;
 }
-
 .reject-btn:hover {
     background-color: #c82333;
     transform: translateY(-1px);
 }
 
-/* Action cell styling */
 td:last-child {
     white-space: nowrap;
 }
@@ -442,18 +443,15 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
-
 th, td {
     border: 1px solid var(--border-color);
     padding: 8px;
 }
-
 th {
     background-color: var(--main);
     text-align: left;
     color: #fff;
 }
-
 tr:hover {
     background-color: var(--bg);
     transition: background-color 0.3s ease;

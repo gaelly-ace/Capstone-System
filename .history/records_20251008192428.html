@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!--Font Awesome CDN-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <!-- QR Code Scanner -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="records.css">
+
+<title>PSMO - SuperAdmin</title>
+
+<style>
+/* Dropdown */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+.profile-dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background-color: var(--color-white, #fff);
+    color: var(--color-dark, #333);
+    min-width: 160px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 999;
+}
+.profile-dropdown-menu a {
+    display: block;
+    padding: 10px;
+    color: inherit;
+    text-decoration: none;
+}
+.profile-dropdown-menu a:hover {
+    background: var(--color-light, #f1f1f1);
+}
+/* Dark mode */
+body.dark .profile-dropdown-menu {
+    background-color: #2c2c2c;
+    color: #fff;
+}
+body.dark .profile-dropdown-menu a:hover {
+    background: #444;
+}
+</style>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">SuperAdmin</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="index.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="records.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Records</span>
+				</a>
+			</li>
+			<li>
+				<a href="archive.html">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Archives</span>
+				</a>
+			</li>
+			<li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
+            <li>
+				<a href="team.html">
+					<i class='bx bxs-calendar' ></i>
+					<span class="text">Role Management</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+		
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="notif.html" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num"></span>
+			</a>
+
+			<!-- 🔽 ADDED DROPDOWN HERE -->
+			<div class="profile-dropdown">
+				<a href="javascript:void(0)" class="profile" id="profileDropdownBtn">
+					<img src="IMAGES/" id="navbar-profile-img">
+				</a>
+				<div class="profile-dropdown-menu" id="profileDropdownMenu">
+					<a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+					<a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+				</div>
+			</div>
+			<!-- 🔼 END DROPDOWN -->
+		</nav>
+		<!-- NAVBAR -->
+
+		 <!-- LIVESTOCK RECORDS -->
+        <!-- (your existing content remains unchanged) -->
+
+    </section>
+    <!-- CONTENT -->
+
+    <script src="records.js"></script>
+    <script>
+    // Toggle dropdown
+    const profileBtn = document.getElementById("profileDropdownBtn");
+    const profileMenu = document.getElementById("profileDropdownMenu");
+
+    profileBtn.addEventListener("click", () => {
+        profileMenu.style.display = (profileMenu.style.display === "block") ? "none" : "block";
+    });
+
+    // Close dropdown if clicked outside
+    window.addEventListener("click", (e) => {
+        if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+            profileMenu.style.display = "none";
+        }
+    });
+
+    // Logout function
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = "sign.html"; // redirect to login page
+    });
+    </script>
+</body>
+</html>

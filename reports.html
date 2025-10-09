@@ -13,6 +13,7 @@
 </head>
 <body>
 
+
 	<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="index.html" class="brand">
@@ -53,11 +54,7 @@
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="sign.html" class="logout">
-					<i class='bx bxs-log-out-circle' ></i>
-					<span class="text">Logout</span>
-				</a>
-			</li>
+				
 		</ul>
 	</section>
 	<!-- SIDEBAR -->
@@ -83,6 +80,8 @@
 				<img src="images/1.webp" id="navbar-profile-img">
 			</a>
 		</nav>
+
+	
 		<!-- NAVBAR -->
 
 		<!-- ANOMALIES SECTION -->
@@ -145,5 +144,52 @@
 	
 	<script src="notification.js"></script>
     <script src="reports.js"></script>
+	<!-- Simple Profile Dropdown Function -->
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const profile = document.querySelector(".profile");
+		
+		// Create dropdown
+		const dropdown = document.createElement("div");
+		dropdown.id = "profileDropdown";
+		dropdown.style.display = "none";
+		dropdown.style.position = "absolute";
+		dropdown.style.background = "#fff";
+		dropdown.style.border = "1px solid #ccc";
+		dropdown.style.borderRadius = "5px";
+		dropdown.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+		dropdown.style.padding = "5px 0";
+		dropdown.innerHTML = `
+			<a href="profile.html" style="display:block;padding:8px 15px;text-decoration:none;color:#333;">Profile</a>
+			<a href="#" id="logoutBtn" style="display:block;padding:8px 15px;text-decoration:none;color:#333;">Logout</a>
+		`;
+		document.body.appendChild(dropdown);
+	
+		// Toggle dropdown
+		profile.addEventListener("click", (e) => {
+			e.preventDefault();
+			const rect = profile.getBoundingClientRect();
+			dropdown.style.top = rect.bottom + window.scrollY + "px";
+			dropdown.style.left = rect.right - 120 + "px";
+			dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+		});
+	
+		// Hide when clicking outside
+		document.addEventListener("click", (e) => {
+			if (!e.target.closest(".profile") && !e.target.closest("#profileDropdown")) {
+				dropdown.style.display = "none";
+			}
+		});
+	
+		// Logout
+		document.getElementById("logoutBtn").addEventListener("click", () => {
+			// Optional: clear session or local storage
+			localStorage.clear();
+			sessionStorage.clear();
+			window.location.href = "sign.html";
+		});
+	});
+	</script>
+	
 </body>
 </html>
