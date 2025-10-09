@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSMO - SuperAdmin</title>
+
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- SheetJS for Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- QR Code Scanner -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="records.css" />
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="index.html" class="brand">
+      <img src="IMAGES/PSMO.png" class="logo" alt="PSMO Logo" />
+      <span class="text">SuperAdmin</span>
+    </a>
+
+    <ul class="side-menu top">
+      <li>
+        <a href="index.html">...</a>
+
+          <i class="bx bxs-dashboard"></i>
+          <span class="text">Dashboard</span>
+        </a>
+      </li>
+      <li class="active">
+        <a href="records.html">
+          <i class="bx bxs-shopping-bag-alt"></i>
+          <span class="text">Records</span>
+        </a>
+      </li>
+      <li>
+        <a href="archive.html">
+          <i class="bx bxs-doughnut-chart"></i>
+          <span class="text">Archives</span>
+        </a>
+      </li>
+      <li>
+        <a href="reports.html">
+          <i class="bx bxs-message-dots"></i>
+          <span class="text">Reports</span>
+        </a>
+      </li>
+      <li>
+        <a href="team.html">
+          <i class="bx bxs-calendar"></i>
+          <span class="text">Role Management</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR END -->
+
+  <!-- CONTENT -->
+  <section id="content">
+    <!-- NAVBAR -->
+    <nav>
+      <i class="bx bx-menu"></i>
+      <form action="#">
+        <div class="form-input">
+          <input type="search" placeholder="Search..." />
+          <button type="submit" class="search-btn"><i class="bx bx-search"></i></button>
+        </div>
+      </form>
+
+      <input type="checkbox" id="switch-mode" hidden />
+      <label for="switch-mode" class="switch-mode"></label>
+
+      <a href="notif.html" class="notification">
+        <i class="bx bxs-bell"></i>
+        <span class="num"></span>
+      </a>
+
+      <a href="profile.html" class="profile">
+        <img src="IMAGES/" id="navbar-profile-img" alt="Profile" />
+      </a>
+    </nav>
+    <!-- NAVBAR END -->
+
+    <!-- LIVESTOCK RECORDS -->
+    <div class="container">
+      <header>
+        <div class="filterEntries">
+          <div class="entries">
+            Show
+            <select id="table_size">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            entries
+          </div>
+
+          <div class="filter">
+            <label for="search">Search:</label>
+            <input type="search" id="search" placeholder="Enter livestock ID or type" />
+          </div>
+        </div>
+
+        <div class="actionButtons">
+          <button id="registerLivestockBtn">Register Livestock</button>
+          <div class="exportMenu">
+            <button class="exportBtn">
+              Export Data <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="exportOptions">
+              <button id="exportPDF">Export as PDF</button>
+              <button id="exportExcel">Export as Excel</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr class="heading">
+              <th>Livestock ID</th>
+              <th>Kind of Livestock</th>
+              <th>Gender</th>
+              <th>Weight</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="userInfo">
+            <!-- Data dynamically loaded here -->
+          </tbody>
+        </table>
+      </div>
+
+      <footer>
+        <span class="showEntries">Showing 1 to 10 of 0 entries</span>
+        <div class="pagination"></div>
+      </footer>
+    </div>
+
+    <!-- PROFILE DROPDOWN + THEME TOGGLE -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Profile dropdown
+        const profile = document.querySelector(".profile");
+        const dropdown = document.createElement("div");
+        dropdown.id = "profileDropdown";
+        dropdown.style.display = "none";
+        dropdown.style.position = "absolute";
+        dropdown.style.background = "#fff";
+        dropdown.style.border = "1px solid #ddd";
+        dropdown.style.borderRadius = "10px";
+        dropdown.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+        dropdown.style.padding = "5px 0";
+        dropdown.style.width = "140px";
+        dropdown.style.fontFamily = "Poppins, sans-serif";
+        dropdown.style.fontSize = "14px";
+        dropdown.style.zIndex = "1000";
+        dropdown.style.transition = "opacity 0.2s ease";
+
+        dropdown.innerHTML = `
+          <a href="profile.html" style="display:block;padding:10px 15px;text-decoration:none;color:#111;">Profile</a>
+          <a href="#" id="logoutBtn" style="display:block;padding:10px 15px;text-decoration:none;color:#111;">Logout</a>
+        `;
+        document.body.appendChild(dropdown);
+
+        profile.addEventListener("click", (e) => {
+          e.preventDefault();
+          const rect = profile.getBoundingClientRect();
+          dropdown.style.top = `${rect.bottom + window.scrollY + 10}px`;
+          dropdown.style.left = `${rect.left - 30}px`;
+          dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest(".profile") && !e.target.closest("#profileDropdown")) {
+            dropdown.style.display = "none";
+          }
+        });
+
+        document.addEventListener("click", (e) => {
+          if (e.target.id === "logoutBtn") {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = "sign.html";
+          }
+        });
+      });
+    </script>
+
+    <!-- LIVESTOCK REGISTER POPUP -->
+    <div class="dark_bg">
+      <div class="popup">
+        <header>
+          <h2 class="modalTitle">Register New Livestock</h2>
+          <button class="closeBtn">&times;</button>
+        </header>
+
+        <div class="body">
+          <form id="myForm">
+            <div class="inputFieldContainer">
+              <div class="form_control">
+                <label for="livestockId">Livestock ID:</label>
+                <div class="id-input-container">
+                  <input type="text" id="livestockId" required />
+                  <button type="button" id="qrScanBtn" class="qr-scan-btn">
+                    <i class="fas fa-qrcode"></i> Scan QR
+                  </button>
+                </div>
+              </div>
+
+              <div class="form_control">
+                <label for="kindOfLivestock">Kind of Livestock:</label>
+                <select id="kindOfLivestock" required>
+                  <option value="">Select type</option>
+                  <option value="Pig">Pig</option>
+                  <option value="Cattle">Cattle</option>
+                  <option value="Carabao">Carabao</option>
+                </select>
+              </div>
+
+              <div class="form_control">
+                <label for="gender">Gender:</label>
+                <select id="gender" required>
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+
+              <div class="form_control">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" step="0.1" min="0" required />
+              </div>
+
+              <div class="form_control">
+                <label for="status">Status:</label>
+                <select id="status" required>
+                  <option value="">Select status</option>
+                  <option value="In Entry Point">In Entry Point</option>
+                  <option value="In Holding Pen">In Holding Pen</option>
+                  <option value="In Slaughter House">In Slaughter House</option>
+                  <option value="In Exit Point">In Exit Point</option>
+                  <option value="Anomaly Detected">Anomaly Detected</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <footer class="popupFooter">
+          <button type="button" class="cancelBtn" style="display: none;">Cancel</button>
+          <button form="myForm" class="submitBtn">Submit</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- QR Scanner Modal -->
+    <div class="qr_scanner_bg">
+      <div class="qr_scanner_popup">
+        <header>
+          <h2>QR Code Scanner</h2>
+          <button class="closeQRBtn">&times;</button>
+        </header>
+        <div class="scanner-container">
+          <div id="qr-reader"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTERNAL SCRIPT -->
+  <script src="records.js"></script>
+</body>
+</html>
