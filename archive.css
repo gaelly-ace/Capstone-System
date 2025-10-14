@@ -1,5 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
-
+/* Search box: match screenshot size & grey */
+nav form .form-input{
+    width: 360px;          /* adjust if you want wider/narrower */
+    height: 44px;          /* pill height like in pic */
+    background: #EEF2F6;   /* light grey from the pic */
+    border-radius: 999px;  /* full pill */
+    padding: 0 6px 0 14px; /* inner spacing */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Keep the input filling the pill */
+  nav form .form-input input{
+    height: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+  }
+  
+  /* Keep your search button the same (36x36 circle) */
+  nav form .form-input .search-btn{
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+  }
+  nav form .form-input .search-btn i{ font-size: 18px; }
+  
+  /* Optional: if you use dark mode, give it a dark grey */
+  html.dark nav form .form-input,
+  body.dark nav form .form-input{
+    background: #1F2937;
+  }
+  
 * {
     margin: 0;
     padding: 0;
@@ -223,7 +262,7 @@ body {
     height: 100%;
     border: none;
     background: var(--grey);
-    border-radius: 36px 0 0 36px;
+    border-radius: 40px 0 0 40px;
     outline: none;
     width: 100%;
     color: var(--dark);
@@ -824,4 +863,244 @@ table tr .empty{
         width: 100%;
         margin: 5px 0;
     }
+}
+/* ============================================
+   SIDEBAR TRANSITIONS & ANIMATIONS
+   ============================================ */
+   #sidebar {
+    transition: width 0.3s ease;
+}
+
+#sidebar.hide {
+    width: 60px;
+}
+
+#sidebar.hide .brand .text,
+#sidebar.hide .side-menu .text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#sidebar .brand .text,
+#sidebar .side-menu .text {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Sidebar menu active state animation */
+#sidebar .side-menu li.active {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-10px);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   CONTENT AREA ADJUSTMENT WITH SIDEBAR
+   ============================================ */
+#content {
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+/* ============================================
+   PAGINATION CONTROLS (First, Prev, Next, Last)
+   ============================================ */
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    min-width: 40px;
+    height: 40px;
+    padding: 8px 14px;
+    border: 2px solid #007bff;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.pagination button:hover:not(.disabled) {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+.pagination button.active {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    border-color: #1e7e34;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+    font-weight: 700;
+}
+
+.pagination button.disabled {
+    background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+    border-color: #545b62;
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.pagination button.first,
+.pagination button.last {
+    padding: 8px 18px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6f42c1 0%, #5a2d91 100%);
+    border-color: #5a2d91;
+}
+
+.pagination button.first:hover:not(.disabled),
+.pagination button.last:hover:not(.disabled) {
+    background: linear-gradient(135deg, #5a2d91 0%, #4c1f78 100%);
+    border-color: #4c1f78;
+}
+
+.pagination button.prev,
+.pagination button.next {
+    padding: 8px 16px;
+    font-weight: 700;
+}
+
+.pagination .ellipsis {
+    padding: 0 8px;
+    color: var(--dark);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+/* Dark mode pagination */
+body.dark .pagination .ellipsis {
+    color: var(--light);
+}
+
+/* ============================================
+   ENTRIES DISPLAY
+   ============================================ */
+.showEntries {
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+body.dark .showEntries {
+    color: var(--light);
+}
+
+/* ============================================
+   RESPONSIVE PAGINATION
+   ============================================ */
+@media (max-width: 768px) {
+    .pagination {
+        gap: 4px;
+    }
+    
+    .pagination button {
+        min-width: 36px;
+        height: 36px;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .pagination button.first,
+    .pagination button.last {
+        padding: 6px 14px;
+    }
+    
+    .pagination button.prev,
+    .pagination button.next {
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination button {
+        min-width: 32px;
+        height: 32px;
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    
+    /* Hide First/Last on very small screens */
+    .pagination button.first,
+    .pagination button.last {
+        display: none;
+    }
+}
+
+/* ============================================
+   FOOTER LAYOUT WITH PAGINATION
+   ============================================ */
+.container footer {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .container footer {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .showEntries {
+        order: 2;
+    }
+    
+    .pagination {
+        order: 1;
+    }
+}
+
+/* ============================================
+   MENU ICON ANIMATION
+   ============================================ */
+#content nav .bx.bx-menu {
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#content nav .bx.bx-menu:hover {
+    transform: scale(1.1) rotate(90deg);
+}
+
+#content nav .bx.bx-menu:active {
+    transform: scale(0.95) rotate(90deg);
+}
+
+/* ============================================
+   TABLE CONTAINER PADDING
+   ============================================ */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+/* Add bottom spacing for footer */
+.container {
+    padding-bottom: 30px;
 }

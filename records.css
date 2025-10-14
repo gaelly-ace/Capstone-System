@@ -70,7 +70,7 @@ body.dark {
     height: 100%;
     background: var(--light);
     z-index: 2000;
-    font-family: var(--lato);
+    font-family: var(--poppins);
     transition: .3s ease;
     overflow-x: hidden;
     scrollbar-width: none;
@@ -194,7 +194,7 @@ body.dark {
     display: flex;
     align-items: center;
     gap: 24px;
-    font-family: var(--lato);
+    font-family: var(--poppins);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -1691,4 +1691,11 @@ body.dark .showEntries {
 /* Add bottom spacing for footer */
 .container {
     padding-bottom: 30px;
+}
+/* Make the "SuperAdmin" brand text blue (matches the screenshot) */
+#sidebar .brand .text {
+  color: var(--blue) !important;
+}
+body.dark #sidebar .brand .text {
+  color: var(--blue) !important; /* stays blue in dark mode */
 }

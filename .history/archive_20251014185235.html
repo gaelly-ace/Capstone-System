@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!--Font Awesome CDN-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="archive.css">
+
+<title>PSMO - Archives</title>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">SuperAdmin</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="index.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="records.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Records</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="archive.html">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Archives</span>
+				</a>
+			</li>
+			<li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
+            <li>
+				<a href="team.html">
+					<i class='bx bxs-calendar' ></i>
+					<span class="text">Role Management</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+		
+				
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+            <i class="bx bx-menu"></i>
+            <form action="#">
+              <div class="form-input">
+                <input type="search" placeholder="Search..." />
+                <button type="submit" class="search-btn"><i class="bx bx-search"></i></button>
+              </div>
+            </form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="notif.html" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num"></span>
+			</a>
+			<a href="profile.html" class="profile">
+				<img src="IMAGES/" id="navbar-profile-img">
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		 <!-- ARCHIVED RECORDS -->
+        <div class="container">
+            <header>
+                <div class="filterEntries">
+                    <div class="entries">
+                        Show <select name="" id="table_size">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select> entries
+                    </div>
+
+                    <div class="filter">
+                        <label for="search">Search:</label>
+                        <input type="search" name="" id="search" placeholder="Enter livestock ID or type">
+                    </div>
+                </div>
+
+                <div class="actionButtons">
+                    <button id="clearAllBtn" class="clearAllBtn">Clear All Archives</button>
+                    <div class="exportMenu">
+                        <button class="exportBtn">Export Data <i class="fas fa-chevron-down"></i></button>
+                        <div class="exportOptions">
+                            <button id="exportPDF">Export as PDF</button>
+                            <button id="exportExcel">Export as Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr class="heading">
+                            <th>Live food ID</th>
+                            <th>Kind of Livefood</th>
+                            <th>Gender</th>
+                            <th>Weight</th>
+                            <th>Status</th>
+                            <th>Archived Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="userInfo">
+                        <!-- Data will be displayed here automatically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <footer>
+                <span class="showEntries">Showing 1 to 10 of 0 entries</span>
+                <div class="pagination">
+                    <!-- Pagination buttons will be generated here -->
+                </div>
+            </footer>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="confirmation_bg">
+            <div class="confirmation_popup">
+                <header>
+                    <h2 class="confirmationTitle">Confirm Action</h2>
+                    <button class="closeConfirmBtn">&times;</button>
+                </header>
+                <div class="confirmation-body">
+                    <p id="confirmationMessage">Are you sure you want to perform this action?</p>
+                </div>
+                <footer class="confirmationFooter">
+                    <button class="cancelConfirmBtn">Cancel</button>
+                    <button class="confirmBtn">Confirm</button>
+                </footer>
+            </div>
+        </div>
+
+        <!-- ARCHIVED RECORDS ENDS HERE -->
+    </section>
+    <!-- CONTENT -->
+
+    <script src="archive.js"></script>
+</body>
+</html>     
