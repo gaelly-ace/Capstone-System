@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* === FLASH FIX (no UI changes) === */
+html {
+  background-color: #F9F9F9;
+  transition: none !important;
+}
+html.dark {
+  background-color: #0C0C1E;
+}
+body {
+  background-color: var(--grey);
+  overflow-x: hidden;
+  transition: none !important;
+}
+#sidebar,
+#content,
+#content nav,
+#sidebar .side-menu li a,
+.switch-mode,
+.qr_scanner_popup,
+.popup,
+.container,
+table,
+thead,
+tbody,
+th,
+td {
+  transition: none !important;
+  animation: none !important;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+/* === END FLASH FIX === */
+
+/* ... (rest of the CSS exactly as provided in the previous message) ... */
+
+html,
+body,
+#content,
+#content main {
+  background-color: var(--grey) !important;
+}
+body.dark,
+body.dark html,
+body.dark #content,
+body.dark #content main {
+  background-color: #0C0C1E !important;
+}
+body.dark .container,
+body.dark footer {
+  background-color: #181c20 !important;
+}
+#sidebar,
+#content,
+.container,
+footer {
+  transition: none !important;
+}

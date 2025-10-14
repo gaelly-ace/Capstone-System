@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+/* ... rest of your existing code ... */
+
+#sidebar .side-menu li a {
+    width: 100%;
+    height: 100%;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    border-radius: 48px;
+    font-size: 16px;
+    color: var(--dark);
+    white-space: nowrap;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#sidebar .side-menu li a:focus,
+#sidebar .side-menu li a:active,
+#sidebar .side-menu li a:visited {
+    outline: none;
+    background: var(--light);
+    -webkit-tap-highlight-color: transparent;
+}
+
+#sidebar .side-menu.top li.active a:focus,
+#sidebar .side-menu.top li.active a:active {
+    color: var(--blue);
+    outline: none;
+    background: var(--light);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ... rest of your existing code ... */

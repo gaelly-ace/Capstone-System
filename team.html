@@ -105,7 +105,7 @@
 							<th>Username</th>
 							<th>Password</th>
 							<th>Role</th>
-							<th>Action</th>
+							<th>Archive</th>
 						</tr>
 					</thead>
 					<tbody id="adminTableBody">
@@ -120,7 +120,18 @@
     </section>
 	<!-- CONTENT -->
 	
-
+	<script>
+		(() => {
+		  const theme = localStorage.getItem("theme");
+		  if (theme === "dark") {
+			document.documentElement.classList.add("dark");
+			document.write("<style>html{background:#0C0C1E;}</style>");
+		  } else {
+			document.write("<style>html{background:#F9F9F9;}</style>");
+		  }
+		})();
+		</script>
+		
 	<script src="team.js"></script>
 </body>
 </html>

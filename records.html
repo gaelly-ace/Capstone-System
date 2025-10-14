@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (() => {
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+        document.write("<style>html{background:#0C0C1E;}</style>");
+      } else {
+        document.write("<style>html{background:#F9F9F9;}</style>");
+      }
+    })();
+  
+    (() => {
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+        document.write('<style>html,body{background:#0C0C1E;color:#FBFBFB;}</style>');
+      } else {
+        document.write('<style>html,body{background:#F9F9F9;color:#342E37;}</style>');
+      }
+    })();
+  </script>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PSMO - SuperAdmin</title>
@@ -17,6 +39,9 @@
     referrerpolicy="no-referrer"
   />
 
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
   <!-- SheetJS for Excel export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
@@ -29,6 +54,70 @@
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="records.css" />
+
+  <!-- Font Readability Fix -->
+  <style>
+    /* === Global Font & Readability === */
+    * {
+      font-family: "Poppins", Arial, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      color: #222;
+      background-color: var(--grey);
+    }
+
+    body.dark {
+      color: #f1f1f1;
+      background-color: #0C0C1E;
+    }
+
+    /* Tables and Labels */
+    table th, table td {
+      color: inherit !important;
+    }
+
+    label, input, select, button {
+      color: inherit !important;
+      font-size: 15px;
+    }
+
+    /* Sidebar text contrast */
+    #sidebar .text {
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    body.dark #sidebar .text {
+      color: #ffffffd9;
+    }
+
+    /* Buttons */
+    button, .exportBtn {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* Header Titles */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      color: inherit;
+    }
+
+    /* Fix DataTables text visibility */
+    .dataTables_info, .dataTables_paginate, .dataTables_filter label {
+      color: inherit !important;
+    }
+
+    /* Popup Modal Text */
+    .popup h2, .popup label, .popup button {
+      color: inherit;
+    }
+  </style>
 </head>
 <body>
   <!-- SIDEBAR -->
@@ -75,13 +164,12 @@
 
   <!-- CONTENT -->
   <section id="content">
-    <!-- NAVBAR -->
     <nav>
       <i class="bx bx-menu"></i>
       <form action="#">
         <div class="form-input">
-          <input type="search" placeholder="Search..." />
-          <button type="submit" class="search-btn"><i class="bx bx-search"></i></button>
+      
+      
         </div>
       </form>
 
@@ -97,9 +185,7 @@
         <img src="IMAGES/" id="navbar-profile-img" alt="Profile" />
       </a>
     </nav>
-    <!-- NAVBAR END -->
 
-    <!-- LIVESTOCK RECORDS -->
     <div class="container">
       <header>
         <div class="filterEntries">
@@ -121,21 +207,32 @@
         </div>
 
         <div class="actionButtons">
-          <button id="registerLivestockBtn">Register Livestock</button>
+          <button id="registerLivestockBtn">
+            <i class="fas fa-plus"></i>
+            Register Livestock
+          </button>
           <div class="exportMenu">
             <button class="exportBtn">
-              Export Data <i class="fas fa-chevron-down"></i>
+              <i class="fas fa-download"></i>
+              Export Data 
+              <i class="fas fa-chevron-down"></i>
             </button>
             <div class="exportOptions">
-              <button id="exportPDF">Export as PDF</button>
-              <button id="exportExcel">Export as Excel</button>
+              <button id="exportPDF">
+                <i class="fas fa-file-pdf"></i>
+                Export as PDF
+              </button>
+              <button id="exportExcel">
+                <i class="fas fa-file-excel"></i>
+                Export as Excel
+              </button>
             </div>
           </div>
         </div>
       </header>
 
       <div class="table-container">
-        <table>
+        <table id="livestockTable" class="display">
           <thead>
             <tr class="heading">
               <th>Livestock ID</th>
@@ -147,75 +244,64 @@
             </tr>
           </thead>
           <tbody class="userInfo">
-            <!-- Data dynamically loaded here -->
+            <tr>
+              <td>LS-001</td>
+              <td>Pig</td>
+              <td>Male</td>
+              <td>85 kg</td>
+              <td>In Entry Point</td>
+              <td><button class="editBtn"><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-002</td>
+              <td>Cattle</td>
+              <td>Female</td>
+              <td>120 kg</td>
+              <td>In Holding Pen</td>
+              <td><button class="editBtn"><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-003</td>
+              <td>Carabao</td>
+              <td>Male</td>
+              <td>200 kg</td>
+              <td>In Slaughter House</td>
+              <td><button class="editBtn"><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-004</td>
+              <td>Pig</td>
+              <td>Female</td>
+              <td>95 kg</td>
+              <td>In Exit Point</td>
+              <td><button class="editBtn"><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-005</td>
+              <td>Cattle</td>
+              <td>Male</td>
+              <td>150 kg</td>
+              <td>Anomaly Detected</td>
+              <td><button class="editBtn"><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
           </tbody>
         </table>
       </div>
+    </div>
+      </div>
+      
 
-      <footer>
-        <span class="showEntries">Showing 1 to 10 of 0 entries</span>
-        <div class="pagination"></div>
-      </footer>
+      
+      
     </div>
 
-    <!-- PROFILE DROPDOWN + THEME TOGGLE -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Profile dropdown
-        const profile = document.querySelector(".profile");
-        const dropdown = document.createElement("div");
-        dropdown.id = "profileDropdown";
-        dropdown.style.display = "none";
-        dropdown.style.position = "absolute";
-        dropdown.style.background = "#fff";
-        dropdown.style.border = "1px solid #ddd";
-        dropdown.style.borderRadius = "10px";
-        dropdown.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
-        dropdown.style.padding = "5px 0";
-        dropdown.style.width = "140px";
-        dropdown.style.fontFamily = "Poppins, sans-serif";
-        dropdown.style.fontSize = "14px";
-        dropdown.style.zIndex = "1000";
-        dropdown.style.transition = "opacity 0.2s ease";
-
-        dropdown.innerHTML = `
-          <a href="profile.html" style="display:block;padding:10px 15px;text-decoration:none;color:#111;">Profile</a>
-          <a href="#" id="logoutBtn" style="display:block;padding:10px 15px;text-decoration:none;color:#111;">Logout</a>
-        `;
-        document.body.appendChild(dropdown);
-
-        profile.addEventListener("click", (e) => {
-          e.preventDefault();
-          const rect = profile.getBoundingClientRect();
-          dropdown.style.top = `${rect.bottom + window.scrollY + 10}px`;
-          dropdown.style.left = `${rect.left - 30}px`;
-          dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        });
-
-        document.addEventListener("click", (e) => {
-          if (!e.target.closest(".profile") && !e.target.closest("#profileDropdown")) {
-            dropdown.style.display = "none";
-          }
-        });
-
-        document.addEventListener("click", (e) => {
-          if (e.target.id === "logoutBtn") {
-            localStorage.clear();
-            sessionStorage.clear();
-            window.location.href = "sign.html";
-          }
-        });
-      });
-    </script>
-
-    <!-- LIVESTOCK REGISTER POPUP -->
+    <!-- POPUPS -->
     <div class="dark_bg">
       <div class="popup">
         <header>
           <h2 class="modalTitle">Register New Livestock</h2>
           <button class="closeBtn">&times;</button>
         </header>
-
         <div class="body">
           <form id="myForm">
             <div class="inputFieldContainer">
@@ -289,7 +375,68 @@
     </div>
   </section>
 
-  <!-- EXTERNAL SCRIPT -->
+  <!-- JS -->
   <script src="records.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#livestockTable').DataTable({
+        pageLength: 10,
+        lengthChange: false,
+        language: { 
+          emptyTable: "No data available in table",
+          info: "Showing _START_ to _END_ of _TOTAL_ entries",
+          infoEmpty: "Showing 0 to 0 of 0 entries",
+            paginate: { first: "First", last: "Last", next: "Next", previous: "Prev" }
+          },
+          dom: 't<"d-flex justify-content-between align-items-center mt-3"<"dataTables_info"i><"dataTables_paginate"p>>',
+          pagingType: "full_numbers"
+      });
+
+      $('.exportBtn').on('click', function(e) {
+        e.stopPropagation();
+        $('.exportOptions').toggle();
+      });
+      $(document).on('click', function() {
+        $('.exportOptions').hide();
+      });
+
+      const savedTheme = localStorage.getItem('theme');
+      const root = document.documentElement;
+      const body = document.body;
+      const switchMode = document.getElementById('switch-mode');
+
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          root.classList.add('dark');
+          body.classList.add('dark');
+          if (switchMode) switchMode.checked = true;
+        } else {
+          root.classList.remove('dark');
+          body.classList.remove('dark');
+          if (switchMode) switchMode.checked = false;
+        }
+      }
+
+      applyTheme(savedTheme === 'dark' ? 'dark' : 'light');
+
+      if (switchMode) {
+        switchMode.addEventListener('change', function () {
+          const next = this.checked ? 'dark' : 'light';
+          applyTheme(next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      $('#search').on('keyup', function() {
+        $('#livestockTable').DataTable().search(this.value).draw();
+      });
+      $('#table_size').on('change', function() {
+        $('#livestockTable').DataTable().page.len(parseInt(this.value, 10)).draw();
+      });
+    });
+  </script>
 </body>
 </html>

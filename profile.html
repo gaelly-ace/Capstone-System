@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        (() => {
+          const theme = localStorage.getItem("theme");
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+            document.write("<style>html{background:#0C0C1E;}</style>");
+          } else {
+            document.write("<style>html{background:#F9F9F9;}</style>");
+          }
+        })();
+        </script>
+        
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

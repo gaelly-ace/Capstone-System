@@ -24,29 +24,39 @@ const searchButton = document.querySelector('#content nav form .form-input butto
 const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
 const searchForm = document.querySelector('#content nav form');
 
-searchButton.addEventListener('click', function (e) {
-	if(window.innerWidth < 576) {
-		e.preventDefault();
-		searchForm.classList.toggle('show');
-		if(searchForm.classList.contains('show')) {
-			searchButtonIcon.classList.replace('bx-search', 'bx-x');
-		} else {
-			searchButtonIcon.classList.replace('bx-x', 'bx-search');
+if(searchButton) {
+	searchButton.addEventListener('click', function (e) {
+		if(window.innerWidth < 576) {
+			e.preventDefault();
+			searchForm.classList.toggle('show');
+			if(searchForm.classList.contains('show')) {
+				searchButtonIcon.classList.replace('bx-search', 'bx-x');
+			} else {
+				searchButtonIcon.classList.replace('bx-x', 'bx-search');
+			}
 		}
-	}
-})
+	})
+}
 
 if(window.innerWidth < 768) {
 	sidebar.classList.add('hide');
 } else if(window.innerWidth > 576) {
-	searchButtonIcon.classList.replace('bx-x', 'bx-search');
-	searchForm.classList.remove('show');
+	if(searchButtonIcon) {
+		searchButtonIcon.classList.replace('bx-x', 'bx-search');
+	}
+	if(searchForm) {
+		searchForm.classList.remove('show');
+	}
 }
 
 window.addEventListener('resize', function () {
 	if(this.innerWidth > 576) {
-		searchButtonIcon.classList.replace('bx-x', 'bx-search');
-		searchForm.classList.remove('show');
+		if(searchButtonIcon) {
+			searchButtonIcon.classList.replace('bx-x', 'bx-search');
+		}
+		if(searchForm) {
+			searchForm.classList.remove('show');
+		}
 	}
 })
 
@@ -54,20 +64,29 @@ window.addEventListener('resize', function () {
 const switchMode = document.getElementById('switch-mode');
 
 // Check stored preference on page load
-if (localStorage.getItem('dark-mode') === 'true') {
+if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark');
     document.body.classList.add('dark');
-    switchMode.checked = true;
+    if(switchMode) switchMode.checked = true;
+} else {
+    document.documentElement.classList.remove('dark');
+    document.body.classList.remove('dark');
+    if(switchMode) switchMode.checked = false;
 }
 
-switchMode.addEventListener('change', function () {
-    if (this.checked) {
-        document.body.classList.add('dark');
-        localStorage.setItem('dark-mode', 'true');
-    } else {
-        document.body.classList.remove('dark');
-        localStorage.setItem('dark-mode', 'false');
-    }
-});
+if(switchMode) {
+	switchMode.addEventListener('change', function () {
+		if (this.checked) {
+			document.documentElement.classList.add('dark');
+			document.body.classList.add('dark');
+			localStorage.setItem('theme', 'dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+			document.body.classList.remove('dark');
+			localStorage.setItem('theme', 'light');
+		}
+	});
+}
 
 //Profile Image DO NOT REMOVE
 document.addEventListener("DOMContentLoaded", function() {
@@ -133,15 +152,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // QR Scanner functionality
     let html5QrcodeScanner = null;
 
-    qrScanBtn.addEventListener('click', function() {
-        qrScannerBg.classList.add('active');
-        startQRScanner();
-    });
+    if(qrScanBtn) {
+        qrScanBtn.addEventListener('click', function() {
+            qrScannerBg.classList.add('active');
+            startQRScanner();
+        });
+    }
 
-    closeQRBtn.addEventListener('click', function() {
-        stopQRScanner();
-        qrScannerBg.classList.remove('active');
-    });
+    if(closeQRBtn) {
+        closeQRBtn.addEventListener('click', function() {
+            stopQRScanner();
+            qrScannerBg.classList.remove('active');
+        });
+    }
 
     function startQRScanner() {
         html5QrcodeScanner = new Html5QrcodeScanner(
@@ -163,24 +186,70 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function onScanSuccess(decodedText, decodedResult) {
-        // Put the scanned text into the livestock ID input
         livestockIdInput.value = decodedText;
-        
-        // Close the QR scanner
         stopQRScanner();
         qrScannerBg.classList.remove('active');
-        
-        // Show success message
         alert('QR Code scanned successfully! Livestock ID: ' + decodedText);
     }
 
     function onScanFailure(error) {
-        // Handle scan failure silently
         console.warn(`QR scan error: ${error}`);
     }
 
-    // Get original data from localStorage or initialize empty array
-    let originalData = JSON.parse(localStorage.getItem('livestockRecords')) || [];
+    // Get original data from localStorage or initialize with sample data
+    let originalData = JSON.parse(localStorage.getItem('livestockRecords')) || [
+        {
+            livestockId: "LS-001",
+            kindOfLivestock: "Pig",
+            gender: "Male",
+            weight: 85,
+            status: "In Entry Point",
+            createdDate: new Date().toISOString(),
+            lastModified: new Date().toISOString()
+        },
+        {
+            livestockId: "LS-002",
+            kindOfLivestock: "Cattle",
+            gender: "Female",
+            weight: 120,
+            status: "In Holding Pen",
+            createdDate: new Date().toISOString(),
+            lastModified: new Date().toISOString()
+        },
+        {
+            livestockId: "LS-003",
+            kindOfLivestock: "Carabao",
+            gender: "Male",
+            weight: 200,
+            status: "In Slaughter House",
+            createdDate: new Date().toISOString(),
+            lastModified: new Date().toISOString()
+        },
+        {
+            livestockId: "LS-004",
+            kindOfLivestock: "Pig",
+            gender: "Female",
+            weight: 95,
+            status: "In Exit Point",
+            createdDate: new Date().toISOString(),
+            lastModified: new Date().toISOString()
+        },
+        {
+            livestockId: "LS-005",
+            kindOfLivestock: "Cattle",
+            gender: "Male",
+            weight: 150,
+            status: "Anomaly Detected",
+            createdDate: new Date().toISOString(),
+            lastModified: new Date().toISOString()
+        }
+    ];
+
+    // Save initial data if not exists
+    if (!localStorage.getItem('livestockRecords')) {
+        localStorage.setItem('livestockRecords', JSON.stringify(originalData));
+    }
+
     let getData = [...originalData];
 
     let isEdit = false, editId;
@@ -195,21 +264,63 @@ document.addEventListener("DOMContentLoaded", () => {
     function preLoadCalculations() {
         arrayLength = getData.length;
         maxIndex = Math.ceil(arrayLength / tableSize);
+        if (maxIndex < 1) maxIndex = 1;
     }
 
     // Display pagination buttons
     function displayIndexBtn() {
         preLoadCalculations();
         const pagination = document.querySelector('.pagination');
+        if (!pagination) return;
+        
         pagination.innerHTML = '';
 
-        pagination.innerHTML += `<button onclick="prev()" class="prev">Prev</button>`;
+        // First button
+        pagination.innerHTML += `<button onclick="window.paginationControls.first()" class="first ${currentIndex === 1 ? 'disabled' : ''}">First</button>`;
+        
+        // Prev button
+        pagination.innerHTML += `<button onclick="window.paginationControls.prev()" class="prev ${currentIndex === 1 ? 'disabled' : ''}">Prev</button>`;
 
-        for (let i = 1; i <= maxIndex; i++) {
-            pagination.innerHTML += `<button onclick="paginationBtn(${i})" index="${i}">${i}</button>`;
+        // Page numbers
+        let startPage = Math.max(1, currentIndex - 2);
+        let endPage = Math.min(maxIndex, currentIndex + 2);
+
+        // Adjust if we're near the start
+        if (currentIndex <= 3) {
+            endPage = Math.min(5, maxIndex);
         }
 
-        pagination.innerHTML += `<button onclick="next()" class="next">Next</button>`;
+        // Adjust if we're near the end
+        if (currentIndex >= maxIndex - 2) {
+            startPage = Math.max(1, maxIndex - 4);
+        }
+
+        // Add first page and ellipsis if needed
+        if (startPage > 1) {
+            pagination.innerHTML += `<button onclick="window.paginationControls.goToPage(1)" index="1">1</button>`;
+            if (startPage > 2) {
+                pagination.innerHTML += `<span class="ellipsis">...</span>`;
+            }
+        }
+
+        // Add page numbers
+        for (let i = startPage; i <= endPage; i++) {
+            pagination.innerHTML += `<button onclick="window.paginationControls.goToPage(${i})" index="${i}" class="${i === currentIndex ? 'active' : ''}">${i}</button>`;
+        }
+
+        // Add ellipsis and last page if needed
+        if (endPage < maxIndex) {
+            if (endPage < maxIndex - 1) {
+                pagination.innerHTML += `<span class="ellipsis">...</span>`;
+            }
+            pagination.innerHTML += `<button onclick="window.paginationControls.goToPage(${maxIndex})" index="${maxIndex}">${maxIndex}</button>`;
+        }
+
+        // Next button
+        pagination.innerHTML += `<button onclick="window.paginationControls.next()" class="next ${currentIndex === maxIndex ? 'disabled' : ''}">Next</button>`;
+        
+        // Last button
+        pagination.innerHTML += `<button onclick="window.paginationControls.last()" class="last ${currentIndex === maxIndex ? 'disabled' : ''}">Last</button>`;
 
         highlightIndexBtn();
     }
@@ -224,35 +335,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (arrayLength === 0) {
-            entries.textContent = `Showing 0 to 0 of 0 entries`;
+            if(entries) entries.textContent = `Showing 0 to 0 of 0 entries`;
         } else {
-            entries.textContent = `Showing ${startIndex} to ${endIndex} of ${arrayLength} entries`;
-        }
-
-        const paginationBtns = document.querySelectorAll('.pagination button');
-        paginationBtns.forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.getAttribute('index') == currentIndex) {
-                btn.classList.add('active');
-            }
-        });
-
-        // Enable/disable prev and next buttons
-        const prevBtn = document.querySelector('.pagination .prev');
-        const nextBtn = document.querySelector('.pagination .next');
-        
-        if (prevBtn && nextBtn) {
-            if (currentIndex <= 1) {
-                prevBtn.classList.remove('act');
-            } else {
-                prevBtn.classList.add('act');
-            }
-
-            if (currentIndex >= maxIndex) {
-                nextBtn.classList.remove('act');
-            } else {
-                nextBtn.classList.add('act');
-            }
+            if(entries) entries.textContent = `Showing ${startIndex} to ${endIndex} of ${arrayLength} entries`;
         }
 
         showInfo();
@@ -260,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Display livestock records in table
     function showInfo() {
+        if (!userInfo) return;
         userInfo.innerHTML = '';
 
         let tab_start = startIndex - 1;
@@ -277,9 +363,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${record.weight} kg</td>
                             <td>${record.status}</td>
                             <td>
-                                <button onclick="window.recordsApp.readInfo('${record.livestockId}')" class="editBtn">Edit</button>
-                                <button onclick="window.recordsApp.archiveInfo('${record.livestockId}')" class="archiveBtn">Archive</button>
-                                <button onclick="window.recordsApp.generateReport('${record.livestockId}')" class="reportBtn">Report</button>
+                                <button onclick="window.recordsApp.readInfo('${record.livestockId}')" class="editBtn"><i class="fas fa-edit"></i> Edit</button>
+                                <button onclick="window.recordsApp.archiveInfo('${record.livestockId}')" class="archiveBtn"><i class="fas fa-archive"></i> Archive</button>
+                                <button onclick="window.recordsApp.generateReport('${record.livestockId}')" class="reportBtn"><i class="fas fa-file-alt"></i> Report</button>
                             </td>
                         </tr>`;
                     userInfo.innerHTML += createElement;
@@ -317,11 +403,10 @@ document.addEventListener("DOMContentLoaded", () => {
             input.disabled = false;
         });
 
-        // Disable livestock ID editing
         document.getElementById("livestockId").disabled = true;
     }
 
-    // Archive (move to archives) record
+    // Archive record
     function archiveInfo(livestockId) {
         if (confirm("Are you sure you want to archive this record? It will be moved to the Archives section.")) {
             const recordIndex = originalData.findIndex(r => r.livestockId === livestockId);
@@ -329,19 +414,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (recordIndex > -1) {
                 const recordToArchive = originalData[recordIndex];
                 
-                // Get existing archived records or create empty array
                 let archivedRecords = JSON.parse(localStorage.getItem('archivedLivestockRecords')) || [];
-                
-                // Add timestamp to the record when archiving
                 recordToArchive.archivedDate = new Date().toISOString();
-                
-                // Add to archived records
                 archivedRecords.push(recordToArchive);
                 
-                // Remove from active records
                 originalData.splice(recordIndex, 1);
                 
-                // Update localStorage
                 localStorage.setItem("livestockRecords", JSON.stringify(originalData));
                 localStorage.setItem("archivedLivestockRecords", JSON.stringify(archivedRecords));
 
@@ -365,11 +443,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Generate report for specific livestock
+    // Generate report
     function generateReport(livestockId) {
         const record = originalData.find(r => r.livestockId === livestockId);
         if (record) {
-            // Create report data
             const reportData = {
                 livestockId: record.livestockId,
                 kindOfLivestock: record.kindOfLivestock,
@@ -380,14 +457,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 reportType: 'Individual Livestock Report'
             };
             
-            // Get existing reports or create empty array
             let reports = JSON.parse(localStorage.getItem('livestockReports')) || [];
             reports.push(reportData);
-            
-            // Save to localStorage
             localStorage.setItem('livestockReports', JSON.stringify(reports));
             
-            // Redirect to reports page
             alert(`Report generated for Livestock ID: ${livestockId}. Redirecting to reports section...`);
             setTimeout(() => {
                 window.location.href = 'reports.html';
@@ -402,201 +475,229 @@ document.addEventListener("DOMContentLoaded", () => {
         generateReport
     };
 
-    // Pagination functions
-    window.prev = function() {
-        if (currentIndex > 1) {
-            currentIndex--;
-            showInfo();
-            highlightIndexBtn();
+    // Pagination controls
+    window.paginationControls = {
+        first: function() {
+            if (currentIndex !== 1) {
+                currentIndex = 1;
+                displayIndexBtn();
+                highlightIndexBtn();
+            }
+        },
+        
+        prev: function() {
+            if (currentIndex > 1) {
+                currentIndex--;
+                displayIndexBtn();
+                highlightIndexBtn();
+            }
+        },
+        
+        next: function() {
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                displayIndexBtn();
+                highlightIndexBtn();
+            }
+        },
+        
+        last: function() {
+            if (currentIndex !== maxIndex) {
+                currentIndex = maxIndex;
+                displayIndexBtn();
+                highlightIndexBtn();
+            }
+        },
+        
+        goToPage: function(page) {
+            if (page >= 1 && page <= maxIndex) {
+                currentIndex = page;
+                displayIndexBtn();
+                highlightIndexBtn();
+            }
         }
-    };
-
-    window.next = function() {
-        if (currentIndex < maxIndex) {
-            currentIndex++;
-            showInfo();
-            highlightIndexBtn();
-        }
-    };
-
-    window.paginationBtn = function(index) {
-        currentIndex = index;
-        displayIndexBtn();
-        highlightIndexBtn();
     };
 
     // Event Listeners
-    registerLivestockBtn.addEventListener('click', () => {
-        isEdit = false;
-        submitBtn.innerHTML = "Submit";
-        modalTitle.innerHTML = "Register New Livestock";
-        popupFooter.style.display = "block";
-        darkBg.classList.add('active');
-        popupForm.classList.add('active');
-        form.reset();
-        cancelBtn.style.display = "none";
-        
-        // Enable all form fields
-        formInputFields.forEach(input => {
-            input.disabled = false;
+    if(registerLivestockBtn) {
+        registerLivestockBtn.addEventListener('click', () => {
+            isEdit = false;
+            submitBtn.innerHTML = "Submit";
+            modalTitle.innerHTML = "Register New Livestock";
+            popupFooter.style.display = "block";
+            darkBg.classList.add('active');
+            popupForm.classList.add('active');
+            form.reset();
+            cancelBtn.style.display = "none";
+            
+            formInputFields.forEach(input => {
+                input.disabled = false;
+            });
         });
-    });
+    }
 
-    crossBtn.addEventListener('click', () => {
-        darkBg.classList.remove('active');
-        popupForm.classList.remove('active');
-        form.reset();
-        cancelBtn.style.display = "none";
-    });
-
-    cancelBtn.addEventListener('click', () => {
-        darkBg.classList.remove('active');
-        popupForm.classList.remove('active');
-        form.reset();
-        cancelBtn.style.display = "none";
-    });
-
-    // Click outside popup to close
-    darkBg.addEventListener('click', (e) => {
-        if (e.target === darkBg) {
+    if(crossBtn) {
+        crossBtn.addEventListener('click', () => {
             darkBg.classList.remove('active');
             popupForm.classList.remove('active');
             form.reset();
             cancelBtn.style.display = "none";
-        }
-    });
+        });
+    }
 
-    // Click outside QR scanner to close
-    qrScannerBg.addEventListener('click', (e) => {
-        if (e.target === qrScannerBg) {
-            stopQRScanner();
-            qrScannerBg.classList.remove('active');
-        }
-    });
+    if(cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            darkBg.classList.remove('active');
+            popupForm.classList.remove('active');
+            form.reset();
+            cancelBtn.style.display = "none";
+        });
+    }
 
-    submitBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+    if(darkBg) {
+        darkBg.addEventListener('click', (e) => {
+            if (e.target === darkBg) {
+                darkBg.classList.remove('active');
+                popupForm.classList.remove('active');
+                form.reset();
+                cancelBtn.style.display = "none";
+            }
+        });
+    }
 
-        // Validate form data
-        const livestockId = document.getElementById("livestockId").value.trim();
-        const kindOfLivestock = document.getElementById("kindOfLivestock").value;
-        const gender = document.getElementById("gender").value;
-        const weight = document.getElementById("weight").value;
-        const status = document.getElementById("status").value;
+    if(qrScannerBg) {
+        qrScannerBg.addEventListener('click', (e) => {
+            if (e.target === qrScannerBg) {
+                stopQRScanner();
+                qrScannerBg.classList.remove('active');
+            }
+        });
+    }
 
-        if (!livestockId || !kindOfLivestock || !gender || !weight || !status) {
-            alert("Please fill in all fields");
-            return;
-        }
+    if(submitBtn) {
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
 
-        // Check for duplicate ID when adding new record
-        if (!isEdit) {
-            const existingRecord = originalData.find(record => record.livestockId === livestockId);
-            if (existingRecord) {
-                alert("A record with this Livestock ID already exists!");
+            const livestockId = document.getElementById("livestockId").value.trim();
+            const kindOfLivestock = document.getElementById("kindOfLivestock").value;
+            const gender = document.getElementById("gender").value;
+            const weight = document.getElementById("weight").value;
+            const status = document.getElementById("status").value;
+
+            if (!livestockId || !kindOfLivestock || !gender || !weight || !status) {
+                alert("Please fill in all fields");
                 return;
             }
-        }
 
-        // Create new record object
-        const newRecord = {
-            livestockId: livestockId,
-            kindOfLivestock: kindOfLivestock,
-            gender: gender,
-            weight: parseFloat(weight),
-            status: status,
-            createdDate: isEdit ? originalData[editId].createdDate : new Date().toISOString(),
-            lastModified: new Date().toISOString()
-        };
+            if (!isEdit) {
+                const existingRecord = originalData.find(record => record.livestockId === livestockId);
+                if (existingRecord) {
+                    alert("A record with this Livestock ID already exists!");
+                    return;
+                }
+            }
 
-        // Update or add record
-        if (isEdit) {
-            originalData[editId] = newRecord;
-        } else {
-            originalData.push(newRecord);
-        }
+            const newRecord = {
+                livestockId: livestockId,
+                kindOfLivestock: kindOfLivestock,
+                gender: gender,
+                weight: parseFloat(weight),
+                status: status,
+                createdDate: isEdit ? originalData[editId].createdDate : new Date().toISOString(),
+                lastModified: new Date().toISOString()
+            };
 
-        // Save to localStorage
-        localStorage.setItem("livestockRecords", JSON.stringify(originalData));
+            if (isEdit) {
+                originalData[editId] = newRecord;
+            } else {
+                originalData.push(newRecord);
+            }
 
-        // Update getData with originalData
-        getData = [...originalData];
+            localStorage.setItem("livestockRecords", JSON.stringify(originalData));
+            getData = [...originalData];
 
-        // Close popup and reset form
-        darkBg.classList.remove('active');
-        popupForm.classList.remove('active');
-        form.reset();
-        cancelBtn.style.display = "none";
+            darkBg.classList.remove('active');
+            popupForm.classList.remove('active');
+            form.reset();
+            cancelBtn.style.display = "none";
 
-        // Update display
-        preLoadCalculations();
-        showInfo();
-        highlightIndexBtn();
-        displayIndexBtn();
+            preLoadCalculations();
+            showInfo();
+            highlightIndexBtn();
+            displayIndexBtn();
 
-        // Show success message
-        if (isEdit) {
-            alert("Livestock record updated successfully!");
-        } else {
-            alert("New livestock record added successfully!");
-        }
-    });
+            if (isEdit) {
+                alert("Livestock record updated successfully!");
+            } else {
+                alert("New livestock record added successfully!");
+            }
+        });
+    }
 
     // Table size change
-    tabSize.addEventListener('change', (e) => {
-        tableSize = parseInt(e.target.value);
-        currentIndex = 1;
-        showInfo();
-        highlightIndexBtn();
-        displayIndexBtn();
-    });
+    if(tabSize) {
+        tabSize.addEventListener('change', (e) => {
+            tableSize = parseInt(e.target.value);
+            currentIndex = 1;
+            preLoadCalculations();
+            showInfo();
+            highlightIndexBtn();
+            displayIndexBtn();
+        });
+    }
 
     // Search functionality
-    filterData.addEventListener("keyup", function (e) {
-        const searchString = e.target.value.trim().toLowerCase();
-        
-        if (searchString === '') {
-            getData = [...originalData];
-        } else {
-            getData = originalData.filter(item => {
-                return item.livestockId.toLowerCase().includes(searchString) ||
-                    item.kindOfLivestock.toLowerCase().includes(searchString) ||
-                    item.gender.toLowerCase().includes(searchString) ||
-                    item.weight.toString().toLowerCase().includes(searchString) ||
-                    item.status.toLowerCase().includes(searchString);
-            });
-        }
+    if(filterData) {
+        filterData.addEventListener("keyup", function (e) {
+            const searchString = e.target.value.trim().toLowerCase();
+            
+            if (searchString === '') {
+                getData = [...originalData];
+            } else {
+                getData = originalData.filter(item => {
+                    return item.livestockId.toLowerCase().includes(searchString) ||
+                        item.kindOfLivestock.toLowerCase().includes(searchString) ||
+                        item.gender.toLowerCase().includes(searchString) ||
+                        item.weight.toString().toLowerCase().includes(searchString) ||
+                        item.status.toLowerCase().includes(searchString);
+                });
+            }
 
-        currentIndex = 1;
-        preLoadCalculations();
-        showInfo();
-        highlightIndexBtn();
-        displayIndexBtn();
-    });
+            currentIndex = 1;
+            preLoadCalculations();
+            showInfo();
+            highlightIndexBtn();
+            displayIndexBtn();
+        });
+    }
 
     // Export functionality
-    document.getElementById('exportPDF').addEventListener('click', function() {
-        exportToPDF();
-    });
+    const exportPDFBtn = document.getElementById('exportPDF');
+    const exportExcelBtn = document.getElementById('exportExcel');
 
-    document.getElementById('exportExcel').addEventListener('click', function() {
-        exportToExcel();
-    });
+    if(exportPDFBtn) {
+        exportPDFBtn.addEventListener('click', function() {
+            exportToPDF();
+        });
+    }
+
+    if(exportExcelBtn) {
+        exportExcelBtn.addEventListener('click', function() {
+            exportToExcel();
+        });
+    }
 
     // Export to PDF function
     function exportToPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        // Add title
         doc.setFontSize(20);
         doc.text('Livestock Records Report', 14, 22);
         
-        // Add date
         doc.setFontSize(11);
         doc.text('Generated on: ' + new Date().toLocaleDateString(), 14, 32);
         
-        // Prepare data for table
         const tableData = originalData.map(record => [
             record.livestockId,
             record.kindOfLivestock,
@@ -605,7 +706,6 @@ document.addEventListener("DOMContentLoaded", () => {
             record.status
         ]);
         
-        // Add table
         doc.autoTable({
             head: [['Livestock ID', 'Kind of Livestock', 'Gender', 'Weight', 'Status']],
             body: tableData,
@@ -626,14 +726,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         
-        // Save the PDF
         doc.save('livestock_records_' + new Date().toISOString().split('T')[0] + '.pdf');
     }
 
-    
     // Export to Excel function
     function exportToExcel() {
-        // Prepare data for Excel
         const excelData = originalData.map(record => ({
             'Livestock ID': record.livestockId,
             'Kind of Livestock': record.kindOfLivestock,
@@ -642,24 +739,19 @@ document.addEventListener("DOMContentLoaded", () => {
             'Status': record.status
         }));
         
-        // Create workbook and worksheet
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.json_to_sheet(excelData);
         
-        // Set column widths
         const colWidths = [
-            { wch: 15 }, // Livestock ID
-            { wch: 20 }, // Kind of Livestock
-            { wch: 10 }, // Gender
-            { wch: 12 }, // Weight
-            { wch: 20 }  // Status
+            { wch: 15 },
+            { wch: 20 },
+            { wch: 10 },
+            { wch: 12 },
+            { wch: 20 }
         ];
         ws['!cols'] = colWidths;
         
-        // Add worksheet to workbook
         XLSX.utils.book_append_sheet(wb, ws, 'Livestock Records');
-        
-        // Save the file
         XLSX.writeFile(wb, 'livestock_records_' + new Date().toISOString().split('T')[0] + '.xlsx');
     }
 
@@ -667,6 +759,4 @@ document.addEventListener("DOMContentLoaded", () => {
     preLoadCalculations();
     highlightIndexBtn();
     displayIndexBtn();
-    
-    
 });

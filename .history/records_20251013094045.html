@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSMO - SuperAdmin</title>
+
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    crossorigin="anonymous"
+  />
+
+  <!-- DataTables CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+  />
+
+  <!-- Custom CSS -->
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      color: #111;
+    }
+
+    /* SIDEBAR */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 230px;
+      height: 100%;
+      background: #1d3557;
+      padding: 20px 0;
+      color: #fff;
+    }
+
+    #sidebar .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      padding: 0 20px;
+      color: #fff;
+    }
+
+    #sidebar .brand img {
+      width: 40px;
+    }
+
+    #sidebar ul {
+      list-style: none;
+      margin-top: 20px;
+      padding-left: 0;
+    }
+
+    #sidebar ul li {
+      margin: 10px 0;
+    }
+
+    #sidebar ul li a {
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    #sidebar ul li.active a,
+    #sidebar ul li a:hover {
+      background: #457b9d;
+      border-radius: 8px;
+    }
+
+    /* CONTENT */
+    #content {
+      margin-left: 230px;
+      padding: 20px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      position: sticky;
+      top: 10px;
+      z-index: 99;
+    }
+
+    .form-input input {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    /* SWITCH BUTTON OLD DESIGN */
+    .switch-mode {
+      width: 45px;
+      height: 25px;
+      background: #ccc;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .switch-mode::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      top: 2.5px;
+      left: 2.5px;
+      transition: 0.3s;
+    }
+
+    #switch-mode:checked + .switch-mode {
+      background: #1d3557;
+    }
+
+    #switch-mode:checked + .switch-mode::before {
+      left: 22px;
+    }
+
+    .notification i {
+      font-size: 20px;
+      color: #1d3557;
+    }
+
+    .profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .filterEntries {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .actionButtons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .actionButtons button {
+      background: #1d3557;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .actionButtons .exportMenu {
+      position: relative;
+    }
+
+    .exportOptions {
+      display: none;
+      position: absolute;
+      top: 38px;
+      left: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 99;
+    }
+
+    .exportOptions button {
+      display: block;
+      width: 100%;
+      border: none;
+      background: #fff;
+      color: #111;
+      text-align: left;
+      padding: 8px 15px;
+      cursor: pointer;
+    }
+
+    .exportOptions button:hover {
+      background: #f0f0f0;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table.dataTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table.dataTable thead th {
+      background: #1d3557;
+      color: #fff;
+      text-align: left;
+      padding: 10px;
+    }
+
+    table.dataTable tbody td {
+      padding: 10px;
+    }
+
+    /* Pagination visible in light mode */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      background: #1d3557 !important;
+      color: #fff !important;
+      border-radius: 6px !important;
+      border: none !important;
+      padding: 5px 10px !important;
+      margin: 2px !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      background: #457b9d !important;
+      color: #fff !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+      background: #457b9d !important;
+    }
+
+    footer {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="index.html" class="brand">
+      <img src="IMAGES/PSMO.png" alt="PSMO Logo" />
+      <span class="text">SuperAdmin</span>
+    </a>
+    <ul class="side-menu top">
+      <li><a href="index.html"><i class="bx bxs-dashboard"></i>Dashboard</a></li>
+      <li class="active"><a href="records.html"><i class="bx bxs-shopping-bag-alt"></i>Records</a></li>
+      <li><a href="archive.html"><i class="bx bxs-doughnut-chart"></i>Archives</a></li>
+      <li><a href="reports.html"><i class="bx bxs-message-dots"></i>Reports</a></li>
+      <li><a href="team.html"><i class="bx bxs-calendar"></i>Role Management</a></li>
+    </ul>
+  </section>
+
+  <!-- CONTENT -->
+  <section id="content">
+    <nav>
+      <i class="bx bx-menu"></i>
+      <form action="#">
+        <div class="form-input">
+          <input type="search" placeholder="Search..." />
+          <button type="submit" class="search-btn"><i class="bx bx-search"></i></button>
+        </div>
+      </form>
+
+      <input type="checkbox" id="switch-mode" hidden />
+      <label for="switch-mode" class="switch-mode"></label>
+
+      <a href="notif.html" class="notification">
+        <i class="bx bxs-bell"></i>
+      </a>
+
+      <a href="#" class="profile">
+        <img src="IMAGES/user.png" alt="Profile" />
+      </a>
+    </nav>
+
+    <div class="container">
+      <header>
+        <div class="filterEntries">
+          <div class="entries">
+            Show
+            <select id="table_size">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            entries
+          </div>
+          <div class="filter">
+            <label for="search">Search:</label>
+            <input type="search" id="search" placeholder="Enter livestock ID or type" />
+          </div>
+        </div>
+
+        <div class="actionButtons">
+          <button id="registerLivestockBtn">Register Livestock</button>
+          <div class="exportMenu">
+            <button class="exportBtn">Export Data <i class="fas fa-chevron-down"></i></button>
+            <div class="exportOptions">
+              <button id="exportPDF">Export as PDF</button>
+              <button id="exportExcel">Export as Excel</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="table-container">
+        <table id="livestockTable" class="display">
+          <thead>
+            <tr>
+              <th>Livestock ID</th>
+              <th>Kind of Livestock</th>
+              <th>Gender</th>
+              <th>Weight</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LS-001</td>
+              <td>Pig</td>
+              <td>Male</td>
+              <td>85</td>
+              <td>In Entry Point</td>
+              <td><button>Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-002</td>
+              <td>Cattle</td>
+              <td>Female</td>
+              <td>120</td>
+              <td>In Holding Pen</td>
+              <td><button>Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <footer>
+        <span>Showing 1 to 2 of 2 entries</span>
+      </footer>
+    </div>
+  </section>
+
+  <!-- jQuery + DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Initialize DataTable
+      $('#livestockTable').DataTable({
+        autoWidth: false,
+        pageLength: 5,
+        columns: [
+          { title: "Livestock ID" },
+          { title: "Kind of Livestock" },
+          { title: "Gender" },
+          { title: "Weight" },
+          { title: "Status" },
+          { title: "Action", orderable: false },
+        ]
+      });
+
+      // Export dropdown toggle
+      $(".exportBtn").on("click", function () {
+        $(".exportOptions").toggle();
+      });
+
+      $(document).on("click", function (e) {
+        if (!$(e.target).closest(".exportMenu").length) {
+          $(".exportOptions").hide();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

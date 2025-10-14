@@ -56,7 +56,6 @@ body {
     background: var(--light);
     z-index: 2000;
     font-family: var(--lato);
-    transition: .3s ease;
     overflow-x: hidden;
     scrollbar-width: none;
 }
@@ -140,7 +139,6 @@ body {
 }
 #sidebar.hide .side-menu li a {
     width: calc(48px - (4px * 2));
-    transition: width .3s ease;
 }
 #sidebar .side-menu li a.logout {
     color: var(--red);
@@ -166,7 +164,6 @@ body {
     position: relative;
     width: calc(100% - 280px);
     left: 280px;
-    transition: .3s ease;
 }
 #sidebar.hide ~ #content {
     width: calc(100% - 60px);
@@ -206,7 +203,6 @@ body {
 }
 #content nav .nav-link {
     font-size: 16px;
-    transition: .3s ease;
 }
 #content nav .nav-link:hover {
     color: var(--blue);
@@ -290,7 +286,6 @@ body {
     width: calc(25px - 4px);
     background: var(--blue);
     border-radius: 50%;
-    transition: all .3s ease;
 }
 #content nav #switch-mode:checked + .switch-mode::before {
     left: calc(100% - (25px - 4px) - 2px);
@@ -344,7 +339,6 @@ body {
     background: var(--dark4);
     border-radius: 5px;
     outline: none;
-    transition: 0.3s;
     cursor: pointer;
 }
 
@@ -414,7 +408,6 @@ table .heading{
 
 table .heading th:hover{
     background: var(--dark4);
-    transition: 0.3s;
 }
 
 table tr th, table tr td{
@@ -632,7 +625,6 @@ table tr .empty{
     opacity: 0;
     visibility: hidden;
     z-index: 9999;
-    transition: all 0.3s ease;
 }
 
 .confirmation_bg.active {
@@ -644,7 +636,6 @@ table tr .empty{
     border-radius: 5px;
     box-shadow: 3px 3px 20px rgba(0,0,0,0.3);
     background: var(--dark3);
-    transition: 0.4s;
     user-select: none;
     transform: scale(0.7);
     opacity: 0;
@@ -682,7 +673,6 @@ table tr .empty{
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 3px;
-    transition: background-color 0.3s;
 }
 
 .closeConfirmBtn:hover{
@@ -715,7 +705,6 @@ table tr .empty{
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    transition: all 0.3s ease;
 }
 
 .cancelConfirmBtn {

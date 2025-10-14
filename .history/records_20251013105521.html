@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSMO - SuperAdmin</title>
+
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+  <!-- SheetJS for Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- QR Code Scanner -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="records.css" />
+
+  <style>
+    /* Enhanced Layout Matching Second Image */
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Header Layout Improvements */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .filterEntries {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .entries {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .entries select {
+      padding: 6px 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    /* Search Bar Styling - Matching Second Image */
+    .filter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter label {
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .filter input {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 250px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    .filter input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    /* Action Buttons */
+    .actionButtons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .actionButtons button,
+    .exportOptions button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .actionButtons button:hover,
+    .exportOptions button:hover {
+      background-color: #0056b3;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+    }
+
+    /* Export Menu */
+    .exportMenu {
+      position: relative;
+    }
+
+    .exportOptions {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+      min-width: 160px;
+    }
+
+    .exportOptions button {
+      width: 100%;
+      text-align: left;
+      background: white;
+      color: #333;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 0;
+      justify-content: flex-start;
+    }
+
+    .exportOptions button:hover {
+      background: #f8f9fa;
+      color: #007bff;
+      transform: none;
+    }
+
+    /* Table Styling - Blue Header */
+    table.dataTable {
+      width: 100% !important;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table.dataTable thead th {
+      background-color: #007bff !important;
+      color: white !important;
+      text-align: center;
+      padding: 12px 8px;
+      font-weight: 600;
+      border: none;
+    }
+
+    table.dataTable tbody td {
+      text-align: center;
+      padding: 12px 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    table.dataTable tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    /* Enhanced Pagination - Making Buttons Highly Visible */
+    .dataTables_wrapper {
+      margin-top: 20px;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+      padding-top: 8px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+      float: right;
+      text-align: right;
+      padding-top: 8px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      box-sizing: border-box;
+      display: inline-block;
+      min-width: 1.5em;
+      padding: 8px 12px;
+      margin-left: 4px;
+      text-align: center;
+      text-decoration: none !important;
+      cursor: pointer;
+      color: #fff !important;
+      border: 1px solid #007bff;
+      border-radius: 6px;
+      background: #007bff;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      background: #0056b3 !important;
+      border-color: #0056b3 !important;
+      color: #fff !important;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+      background: #28a745 !important;
+      border-color: #28a745 !important;
+      color: #fff !important;
+      font-weight: 600;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+      background: #6c757d !important;
+      border-color: #6c757d !important;
+      color: #fff !important;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+      background: #6c757d !important;
+      border-color: #6c757d !important;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Previous/Next button specific styling */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+      font-weight: 600;
+      padding: 8px 16px;
+      background: #007bff;
+      border-color: #007bff;
+    }
+
+    /* Theme Toggle Switch - Matching Second Image */
+    .switch-mode {
+      position: relative;
+      display: block;
+      width: 50px;
+      height: 24px;
+      background: #ccc;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .switch-mode::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    #switch-mode:checked + .switch-mode {
+      background: #007bff;
+    }
+
+    #switch-mode:checked + .switch-mode::before {
+      transform: translateX(26px);
+    }
+
+    /* Dark theme styles */
+    [data-theme="dark"] .container {
+      background: #2d3748;
+      color: #e2e8f0;
+    }
+
+    [data-theme="dark"] table.dataTable tbody td {
+      color: #e2e8f0;
+      border-bottom: 1px solid #4a5568;
+    }
+
+    [data-theme="dark"] table.dataTable tbody tr:hover {
+      background-color: #4a5568;
+    }
+
+    [data-theme="dark"] .filter input,
+    [data-theme="dark"] .entries select {
+      background: #4a5568;
+      border-color: #718096;
+      color: #e2e8f0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filterEntries {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .filter input {
+        width: 100%;
+      }
+
+      .actionButtons {
+        justify-content: center;
+      }
+
+      .dataTables_wrapper .dataTables_paginate .paginate_button {
+        padding: 6px 8px;
+        margin-left: 2px;
+        font-size: 12px;
+      }
+    }
+
+    /* Action button in table */
+    table.dataTable tbody td button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    table.dataTable tbody td button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="index.html" class="brand">
+      <img src="IMAGES/PSMO.png" class="logo" alt="PSMO Logo" />
+      <span class="text">SuperAdmin</span>
+    </a>
+
+    <ul class="side-menu top">
+      <li>
+        <a href="index.html">
+          <i class="bx bxs-dashboard"></i>
+          <span class="text">Dashboard</span>
+        </a>
+      </li>
+      <li class="active">
+        <a href="records.html">
+          <i class="bx bxs-shopping-bag-alt"></i>
+          <span class="text">Records</span>
+        </a>
+      </li>
+      <li>
+        <a href="archive.html">
+          <i class="bx bxs-doughnut-chart"></i>
+          <span class="text">Archives</span>
+        </a>
+      </li>
+      <li>
+        <a href="reports.html">
+          <i class="bx bxs-message-dots"></i>
+          <span class="text">Reports</span>
+        </a>
+      </li>
+      <li>
+        <a href="team.html">
+          <i class="bx bxs-calendar"></i>
+          <span class="text">Role Management</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR END -->
+
+  <!-- CONTENT -->
+  <section id="content">
+    <!-- NAVBAR -->
+    <nav>
+      <i class="bx bx-menu"></i>
+      <form action="#">
+        <div class="form-input">
+          <input type="search" placeholder="Search..." />
+          <button type="submit" class="search-btn"><i class="bx bx-search"></i></button>
+        </div>
+      </form>
+
+      <input type="checkbox" id="switch-mode" hidden />
+      <label for="switch-mode" class="switch-mode"></label>
+
+      <a href="notif.html" class="notification">
+        <i class="bx bxs-bell"></i>
+        <span class="num"></span>
+      </a>
+
+      <a href="profile.html" class="profile">
+        <img src="IMAGES/" id="navbar-profile-img" alt="Profile" />
+      </a>
+    </nav>
+    <!-- NAVBAR END -->
+
+    <!-- LIVESTOCK RECORDS -->
+    <div class="container">
+      <header>
+        <div class="filterEntries">
+          <div class="entries">
+            Show
+            <select id="table_size">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            entries
+          </div>
+
+          <div class="filter">
+            <label for="search">Search:</label>
+            <input type="search" id="search" placeholder="Enter livestock ID or type" />
+          </div>
+        </div>
+
+        <div class="actionButtons">
+          <button id="registerLivestockBtn">
+            <i class="fas fa-plus"></i>
+            Register Livestock
+          </button>
+          <div class="exportMenu">
+            <button class="exportBtn">
+              <i class="fas fa-download"></i>
+              Export Data 
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="exportOptions">
+              <button id="exportPDF">
+                <i class="fas fa-file-pdf"></i>
+                Export as PDF
+              </button>
+              <button id="exportExcel">
+                <i class="fas fa-file-excel"></i>
+                Export as Excel
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="table-container">
+        <table id="livestockTable" class="display">
+          <thead>
+            <tr class="heading">
+              <th>Livestock ID</th>
+              <th>Kind of Livestock</th>
+              <th>Gender</th>
+              <th>Weight</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="userInfo">
+            <tr>
+              <td>LS-001</td>
+              <td>Pig</td>
+              <td>Male</td>
+              <td>85 kg</td>
+              <td>In Entry Point</td>
+              <td><button><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-002</td>
+              <td>Cattle</td>
+              <td>Female</td>
+              <td>120 kg</td>
+              <td>In Holding Pen</td>
+              <td><button><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-003</td>
+              <td>Carabao</td>
+              <td>Male</td>
+              <td>200 kg</td>
+              <td>In Slaughter House</td>
+              <td><button><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-004</td>
+              <td>Pig</td>
+              <td>Female</td>
+              <td>95 kg</td>
+              <td>In Exit Point</td>
+              <td><button><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+            <tr>
+              <td>LS-005</td>
+              <td>Cattle</td>
+              <td>Male</td>
+              <td>150 kg</td>
+              <td>Anomaly Detected</td>
+              <td><button><i class="fas fa-edit"></i> Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LIVESTOCK REGISTER POPUP -->
+    <div class="dark_bg">
+      <div class="popup">
+        <header>
+          <h2 class="modalTitle">Register New Livestock</h2>
+          <button class="closeBtn">&times;</button>
+        </header>
+
+        <div class="body">
+          <form id="myForm">
+            <div class="inputFieldContainer">
+              <div class="form_control">
+                <label for="livestockId">Livestock ID:</label>
+                <div class="id-input-container">
+                  <input type="text" id="livestockId" required />
+                  <button type="button" id="qrScanBtn" class="qr-scan-btn">
+                    <i class="fas fa-qrcode"></i> Scan QR
+                  </button>
+                </div>
+              </div>
+
+              <div class="form_control">
+                <label for="kindOfLivestock">Kind of Livestock:</label>
+                <select id="kindOfLivestock" required>
+                  <option value="">Select type</option>
+                  <option value="Pig">Pig</option>
+                  <option value="Cattle">Cattle</option>
+                  <option value="Carabao">Carabao</option>
+                </select>
+              </div>
+
+              <div class="form_control">
+                <label for="gender">Gender:</label>
+                <select id="gender" required>
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+
+              <div class="form_control">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" step="0.1" min="0" required />
+              </div>
+
+              <div class="form_control">
+                <label for="status">Status:</label>
+                <select id="status" required>
+                  <option value="">Select status</option>
+                  <option value="In Entry Point">In Entry Point</option>
+                  <option value="In Holding Pen">In Holding Pen</option>
+                  <option value="In Slaughter House">In Slaughter House</option>
+                  <option value="In Exit Point">In Exit Point</option>
+                  <option value="Anomaly Detected">Anomaly Detected</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <footer class="popupFooter">
+          <button type="button" class="cancelBtn" style="display: none;">Cancel</button>
+          <button form="myForm" class="submitBtn">Submit</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- QR Scanner Modal -->
+    <div class="qr_scanner_bg">
+      <div class="qr_scanner_popup">
+        <header>
+          <h2>QR Code Scanner</h2>
+          <button class="closeQRBtn">&times;</button>
+        </header>
+        <div class="scanner-container">
+          <div id="qr-reader"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTERNAL SCRIPT -->
+  <script src="records.js"></script>
+
+  <!-- jQuery + DataTables JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Initialize DataTable with enhanced pagination
+      $('#livestockTable').DataTable({
+        pageLength: 10,
+        lengthChange: false,
+        language: { 
+          emptyTable: "No data available in table",
+          info: "Showing _START_ to _END_ of _TOTAL_ entries",
+          infoEmpty: "Showing 0 to 0 of 0 entries",
+          paginate: {
+            first: "First",
+            last: "Last",
+            next: "Next",
+            previous: "Prev"
+          }
+        },
+        dom: 't<"d-flex justify-content-between align-items-center mt-3"<"dataTables_info"i><"dataTables_paginate"p>>',
+        pagingType: "full_numbers"
+      });
+
+      // Export menu toggle
+      $('.exportBtn').click(function(e) {
+        e.stopPropagation();
+        $('.exportOptions').toggle();
+      });
+
+      $(document).click(function() {
+        $('.exportOptions').hide();
+      });
+
+      // Theme toggle functionality
+      $('#switch-mode').change(function() {
+        if (this.checked) {
+          document.body.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+
+      // Load saved theme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.setAttribute('data-theme', 'dark');
+        $('#switch-mode').prop('checked', true);
+      }
+
+      // Custom search functionality
+      $('#search').on('keyup', function() {
+        $('#livestockTable').DataTable().search(this.value).draw();
+      });
+
+      // Custom entries per page
+      $('#table_size').change(function() {
+        $('#livestockTable').DataTable().page.len(parseInt(this.value)).draw();
+      });
+    });
+
+    // Profile dropdown functionality
+    document.addEventListener("DOMContentLoaded", () => {
+      const profile = document.querySelector(".profile");
+      const dropdown = document.createElement("div");
+      dropdown.id = "profileDropdown";
+      dropdown.style.display = "none";
+      dropdown.style.position = "absolute";
+      dropdown.style.background = "#fff";
+      dropdown.style.border = "1px solid #ddd";
+      dropdown.style.borderRadius = "10px";
+      dropdown.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+      dropdown.style.padding = "5px 0";
+      dropdown.style.width = "140px";
+      dropdown.style.fontFamily = "Poppins, sans-serif";
+      dropdown.style.fontSize = "14px";
+      dropdown.style.zIndex = "1000";
+
+      dropdown.innerHTML = `
+        <a href="profile.html" style="display:block;padding:10px 15px;text-decoration:none;color:#111;">Profile</a>
+        <a href="#" id="logoutBtn" style="display:block;padding:10px 15px;text-decoration:none;color:#111;">Logout</a>
+      `;
+      document.body.appendChild(dropdown);
+
+      profile.addEventListener("click", (e) => {
+        e.preventDefault();
+        const rect = profile.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom + window.scrollY + 10}px`;
+        dropdown.style.left = `${rect.left - 30}px`;
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".profile") && !e.target.closest("#profileDropdown")) {
+          dropdown.style.display = "none";
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (e.target.id === "logoutBtn") {
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.href = "sign.html";
+        }
+      });
+    });
+    <!-- Floating QR Button -->
+    <div class="floating-btn" onclick="startQrScanner()">
+      <i class='bx bx-qr-scan'></i>
+    </div>
+    
+    <!-- Scanner Container -->
+    <div id="qr-scanner" style="display: none;">
+      <div id="reader" style="width: 100%; height: 100vh;"></div>
+      <button id="close-scanner" onclick="stopQrScanner()">Close Scanner</button>
+    </div>
+    
+    <!-- Boxicons + QR Scanner Library -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    q
+      
+      <script src="notification.js"></script>
+        <script src="reports.js"></script>
+      <!-- Simple Profile Dropdown Function -->
+    <script>
+  </script>
+</body>
+</html>

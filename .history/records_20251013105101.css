@@ -1,0 +1,392 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* =======================
+   GLOBAL RESETS
+======================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+a { text-decoration: none; }
+li { list-style: none; }
+
+html, body {
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* =======================
+   COLOR VARIABLES
+======================= */
+:root {
+  --poppins: 'Poppins', sans-serif;
+  --lato: 'Lato', sans-serif;
+
+  --light: #F9F9F9;
+  --blue: #3C91E6;
+  --light-blue: #CFE8FF;
+  --grey: #eee;
+  --dark-grey: #AAAAAA;
+  --dark: #342E37;
+  --red: #DB504A;
+  --yellow: #FFCE26;
+  --light-yellow: #FFF2C6;
+  --orange: #FD7238;
+  --light-orange: #FFE0D3;
+
+  --dark1: #0000004d;
+  --dark2: #181c20;
+  --dark3: #212529;
+  --dark4: #2d3135;
+  --dark5: #424549;
+  --dark6: #404346;
+  --dark7: #9c9c9c;
+  --dark8: #dae0e7;
+  --dark9: #262a2e;
+  --red1: #902e31;
+  --green: #28a745;
+  --orange2: #fd7e14;
+}
+
+/* =======================
+   THEME BASE
+======================= */
+body {
+  background: var(--grey);
+  color: var(--dark);
+}
+
+body.dark {
+  --light: #0C0C1E;
+  --grey: #060714;
+  --dark: #FBFBFB;
+  background: var(--dark2);
+  color: var(--dark8);
+}
+
+/* =======================
+   SIDEBAR
+======================= */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background: var(--light);
+  transition: .3s ease;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+#sidebar::-webkit-scrollbar { display: none; }
+#sidebar.hide { width: 60px; }
+
+#sidebar .brand {
+  font-size: 23px;
+  font-weight: 600;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  color: var(--blue);
+  background: var(--light);
+  padding-bottom: 20px;
+}
+
+#sidebar .side-menu {
+  width: 100%;
+  margin-top: 48px;
+}
+
+#sidebar .side-menu li {
+  height: 48px;
+  margin-left: 6px;
+  border-radius: 48px 0 0 48px;
+  padding: 4px;
+}
+
+#sidebar .side-menu li.active {
+  background: var(--grey);
+}
+
+#sidebar .side-menu li a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 48px;
+  font-size: 16px;
+  color: var(--dark);
+  background: var(--light);
+}
+
+#sidebar .side-menu li a:hover,
+#sidebar .side-menu li.active a {
+  color: var(--blue);
+}
+
+body.dark #sidebar {
+  background: var(--dark3);
+}
+body.dark #sidebar .side-menu li.active {
+  background: var(--dark4);
+}
+body.dark #sidebar .side-menu li a {
+  color: var(--dark8);
+}
+
+/* =======================
+   CONTENT AREA / NAVBAR
+======================= */
+#content {
+  position: relative;
+  width: calc(100% - 280px);
+  left: 280px;
+  transition: .3s ease;
+}
+#sidebar.hide ~ #content {
+  width: calc(100% - 60px);
+  left: 60px;
+}
+
+#content nav {
+  height: 56px;
+  background: var(--light);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+#content nav a { color: var(--dark); }
+#content nav .bx.bx-menu { cursor: pointer; color: var(--dark); }
+
+/* =======================
+   CONTAINER
+======================= */
+.container {
+  padding: 20px;
+  box-shadow: 3px 3px 20px var(--dark1);
+  background: var(--light);
+  border-radius: 10px;
+  margin: 10px;
+  margin-top: 50px;
+  overflow-x: auto;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+body.dark .container {
+  background: var(--dark3);
+  color: var(--dark8);
+}
+
+/* =======================
+   FILTER + SEARCH BAR
+======================= */
+.container header .filterEntries {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filterEntries .entries select,
+.filterEntries .filter input {
+  padding: 7px 10px;
+  border: 1px solid var(--dark6);
+  color: var(--dark);
+  background: white;
+  border-radius: 5px;
+  outline: none;
+  transition: 0.3s;
+}
+
+body.dark .filterEntries .entries select,
+body.dark .filterEntries .filter input {
+  background: var(--dark4);
+  color: var(--dark8);
+  border-color: var(--dark6);
+}
+
+/* =======================
+   ACTION BUTTONS
+======================= */
+.actionButtons button {
+  padding: 9px 14px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid var(--dark6);
+  background: var(--dark4);
+  color: var(--dark8);
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.actionButtons button:hover {
+  background: var(--dark5);
+}
+.exportBtn {
+  background: var(--green) !important;
+  border-color: var(--green) !important;
+}
+.exportBtn:hover { background: #218838 !important; }
+
+/* =======================
+   TABLE
+======================= */
+.container table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+table tr th, table tr td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--dark6);
+  color: var(--dark);
+}
+table tr th {
+  background: var(--dark5);
+  color: white;
+}
+table tr:hover {
+  background: var(--light-blue);
+  cursor: pointer;
+}
+
+/* DARK MODE TABLE */
+body.dark table {
+  background: var(--dark4);
+}
+body.dark table tr th {
+  background: var(--dark5);
+  color: var(--dark8);
+}
+body.dark table tr td {
+  color: var(--dark8);
+  border-color: var(--dark6);
+}
+body.dark table tr:hover {
+  background: var(--dark2);
+}
+
+/* =======================
+   DATATABLE PAGINATION + SEARCH + DROPDOWN
+======================= */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+  border: 1px solid var(--dark6);
+  border-radius: 5px;
+  padding: 6px 8px;
+  outline: none;
+  background: white;
+  color: var(--dark);
+  transition: all 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus,
+.dataTables_wrapper .dataTables_length select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 4px rgba(60,145,230,0.4);
+}
+
+.dataTables_wrapper .dataTables_info {
+  color: var(--dark);
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: var(--dark) !important;
+  background: var(--light) !important;
+  border: 1px solid var(--dark6);
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 0 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: var(--blue) !important;
+  color: white !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: var(--blue) !important;
+  color: white !important;
+}
+
+/* DARK MODE DATATABLE */
+body.dark .dataTables_wrapper .dataTables_filter input,
+body.dark .dataTables_wrapper .dataTables_length select {
+  background: var(--dark4);
+  color: var(--dark8);
+  border-color: var(--dark6);
+}
+
+body.dark .dataTables_wrapper .dataTables_info {
+  color: var(--dark8);
+}
+
+body.dark .dataTables_wrapper .dataTables_paginate .paginate_button {
+  background: var(--dark4) !important;
+  color: var(--dark8) !important;
+  border-color: var(--dark6);
+}
+
+body.dark .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+body.dark .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: var(--blue) !important;
+  color: white !important;
+}
+
+/* =======================
+   FOOTER + PAGINATION
+======================= */
+.container footer {
+  margin-top: 25px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer .pagination {
+  display: flex;
+}
+footer .pagination button {
+  width: 40px;
+  padding: 5px 0;
+  background: transparent;
+  border: 1px solid var(--dark6);
+  color: var(--dark);
+  cursor: pointer;
+}
+footer .pagination button.active,
+footer .pagination button:hover {
+  background: var(--blue);
+  color: white;
+}
+body.dark footer .pagination button {
+  color: var(--dark8);
+  border-color: var(--dark6);
+}
+body.dark footer .pagination button.active {
+  background: var(--blue);
+  color: white;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 768px) {
+  .container table { font-size: 12px; min-width: 100%; }
+  table tr th, table tr td { padding: 6px 8px; }
+  .actionButtons { flex-wrap: wrap; }
+}

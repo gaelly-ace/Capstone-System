@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<script>
+		// 🔒 Prevent white flash instantly before CSS or JS loads
+		(() => {
+		  const theme = localStorage.getItem('theme');
+		  if (theme === 'dark') {
+			document.documentElement.classList.add('dark');
+			document.documentElement.style.background = '#0C0C1E';
+			document.write('<style>html{background:#0C0C1E!important;}</style>');
+		  } else {
+			document.documentElement.style.background = '#F9F9F9';
+			document.write('<style>html{background:#F9F9F9!important;}</style>');
+		  }
+		})();
+	  </script>
+	  
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
@@ -140,7 +152,7 @@
 <!-- Boxicons + QR Scanner Library -->
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
 <script src="https://unpkg.com/html5-qrcode"></script>
-
+q
 	
 	<script src="notification.js"></script>
     <script src="reports.js"></script>

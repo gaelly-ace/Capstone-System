@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* === FLASH-FREE THEME SETUP === */
+html {
+  background-color: #f4f5f9;
+  transition: none !important;
+}
+html.dark {
+  background-color: #0C0C1E;
+}
+body {
+  background-color: var(--grey);
+  overflow-x: hidden;
+  transition: none !important;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+}
+
+/* === COLOR VARIABLES === */
+:root {
+  --poppins: 'Poppins', sans-serif;
+  --lato: 'Lato', sans-serif;
+  --light: #f4f5f9;
+  --blue: #3C91E6;
+  --light-blue: #CFE8FF;
+  --grey: #e6e8ec;
+  --dark-grey: #AAAAAA;
+  --dark: #342E37;
+  --red: #DB504A;
+  --yellow: #FFCE26;
+  --light-yellow: #FFF2C6;
+  --orange: #FD7238;
+  --light-orange: #FFE0D3;
+  --dark1: #0000004d;
+  --dark2: #181c20;
+  --dark3: #212529;
+  --dark4: #2d3135;
+  --dark5: #424549;
+  --dark6: #404346;
+  --dark7: #9c9c9c;
+  --dark8: #dae0e7;
+  --dark9: #262a2e;
+  --red1: #902e31;
+  --green: #28a745;
+  --orange2: #fd7e14;
+}
+
+/* === DARK MODE PALETTE === */
+body.dark {
+  --light: #0C0C1E;
+  --grey: #060714;
+  --dark: #FBFBFB;
+}
+
+/* === GLOBAL RESETS === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--poppins);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+a { text-decoration: none; }
+li { list-style: none; }
+
+/* === SIDEBAR === */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 280px;
+  height: 100%;
+  background: var(--light);
+  z-index: 2000;
+  font-family: var(--lato);
+  transition: .3s ease;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+#sidebar::-webkit-scrollbar { display: none; }
+#sidebar.hide { width: 60px; }
+
+#sidebar .brand {
+  font-size: 23px;
+  font-weight: 600;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  color: var(--blue);
+  background: var(--light);
+  position: sticky;
+  top: 0;
+  padding-bottom: 20px;
+}
+#sidebar .side-menu {
+  width: 100%;
+  margin-top: 48px;
+}
+#sidebar .side-menu li {
+  height: 48px;
+  margin-left: 6px;
+  border-radius: 48px 0 0 48px;
+  padding: 4px;
+}
+#sidebar .side-menu li.active {
+  background: var(--grey);
+}
+#sidebar .side-menu li a {
+  width: 100%;
+  height: 100%;
+  background: var(--light);
+  display: flex;
+  align-items: center;
+  border-radius: 48px;
+  font-size: 16px;
+  color: var(--dark);
+  white-space: nowrap;
+}
+#sidebar .side-menu.top li.active a,
+#sidebar .side-menu.top li a:hover {
+  color: var(--blue);
+}
+#sidebar .side-menu li a.logout { color: var(--red); }
+
+/* === CONTENT === */
+#content {
+  position: relative;
+  width: calc(100% - 280px);
+  left: 280px;
+  transition: .3s ease;
+}
+#sidebar.hide ~ #content {
+  width: calc(100% - 60px);
+  left: 60px;
+}
+
+/* === NAVBAR === */
+#content nav {
+  height: 56px;
+  background: var(--light);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+#content nav a { color: var(--dark); }
+#content nav .bx.bx-menu { cursor: pointer; color: var(--dark); }
+#content nav form {
+  max-width: 400px;
+  width: 100%;
+  margin-right: auto;
+}
+#content nav form .form-input {
+  display: flex;
+  align-items: center;
+  height: 36px;
+}
+#content nav form .form-input input {
+  flex: 1;
+  padding: 0 16px;
+  border: none;
+  background: var(--grey);
+  color: var(--dark);
+  border-radius: 36px 0 0 36px;
+}
+#content nav form .form-input button {
+  width: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--blue);
+  color: var(--light);
+  font-size: 18px;
+  border: none;
+  border-radius: 0 36px 36px 0;
+  cursor: pointer;
+}
+
+/* === THEME SWITCH === */
+#content nav .switch-mode {
+  display: block;
+  min-width: 50px;
+  height: 25px;
+  border-radius: 25px;
+  background: var(--grey);
+  cursor: pointer;
+  position: relative;
+}
+#content nav .switch-mode::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 21px;
+  height: 21px;
+  background: var(--blue);
+  border-radius: 50%;
+  transition: all .3s ease;
+}
+#switch-mode:checked + .switch-mode {
+  background: var(--dark5);
+}
+#switch-mode:checked + .switch-mode::before {
+  left: calc(100% - 23px);
+}
+
+/* === CONTAINER === */
+.container {
+  padding: 20px;
+  box-shadow: 3px 3px 20px var(--dark1);
+  background: var(--light);
+  border-radius: 10px;
+  margin: 20px;
+  overflow-x: auto;
+}
+body.dark .container {
+  background: var(--dark3);
+  color: var(--dark8);
+}
+
+/* === TABLE === */
+.container table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+  background: var(--light);
+  min-width: 1200px;
+}
+body.dark .container table {
+  background: var(--dark3);
+}
+table tr th {
+  background: var(--dark5);
+  color: #fff;
+  padding: 10px;
+}
+table tr td {
+  color: var(--dark8);
+  border-bottom: 1px solid var(--dark6);
+}
+table tr:hover {
+  background: var(--grey);
+}
+body.dark table tr:hover {
+  background: var(--dark4);
+}
+
+/* === BUTTONS === */
+.actionButtons button {
+  padding: 9px 14px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+.actionButtons button:hover {
+  background: #2b6cb0;
+}
+
+/* === DARK MODE OVERRIDES === */
+body.dark #sidebar,
+body.dark #content nav,
+body.dark .container,
+body.dark table,
+body.dark .popup {
+  background: var(--dark3);
+  color: var(--dark8);
+}
+body.dark #sidebar .side-menu li a {
+  background: var(--dark3);
+  color: var(--dark8);
+}
+body.dark #sidebar .side-menu li.active {
+  background: var(--dark4);
+}
+body.dark #content nav .switch-mode {
+  background: var(--dark5);
+}
+body.dark #content nav .switch-mode::before {
+  background: #fff;
+}
+
+/* === INPUTS & SELECTS === */
+input, select, textarea {
+  background: var(--grey);
+  color: var(--dark);
+  border: 1px solid var(--dark6);
+  border-radius: 5px;
+  padding: 6px 10px;
+}
+body.dark input, body.dark select, body.dark textarea {
+  background: var(--dark4);
+  color: var(--dark8);
+  border-color: var(--dark6);
+}
+input::placeholder { color: var(--dark7); }
+
+/* === EXPORT MENU === */
+.exportOptions {
+  background: var(--light);
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+body.dark .exportOptions {
+  background: var(--dark4);
+}
+
+/* === SMOOTH TRANSITION CLEANUP === */
+*, html, body {
+  transition: none !important;
+}

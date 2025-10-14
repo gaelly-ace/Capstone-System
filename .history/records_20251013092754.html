@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSMO - SuperAdmin</title>
+
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+  <!-- ===== Custom Styling ===== -->
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f6f9ff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Table container */
+    .table-container {
+      width: 90%;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+      padding: 20px;
+    }
+
+    /* DataTable Header */
+    table.dataTable thead th {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      font-weight: 600;
+      padding: 10px;
+    }
+
+    /* DataTable Body */
+    table.dataTable tbody td {
+      background-color: #eaf3ff;
+      text-align: center;
+      padding: 10px;
+    }
+
+    /* Pagination Buttons */
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+      background-color: #007bff !important;
+      color: white !important;
+      border-radius: 6px;
+      padding: 4px 10px;
+      margin: 2px;
+      border: none !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+      background-color: #0056b3 !important;
+      color: white !important;
+    }
+
+    /* Pagination Position */
+    .dataTables_wrapper .dataTables_paginate {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    /* Search & Show entries spacing */
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+      margin: 15px;
+    }
+
+    /* Buttons */
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Make pagination clearly visible */
+    .dataTables_info {
+      margin: 15px;
+    }
+
+    /* Responsive table */
+    @media screen and (max-width: 768px) {
+      .table-container {
+        width: 100%;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Simple Header -->
+  <nav style="background:#007bff; color:#fff; padding:15px;">
+    <h2>Livestock Records - SuperAdmin</h2>
+  </nav>
+
+  <!-- TABLE SECTION -->
+  <div class="table-container">
+    <table id="livestockTable" class="display">
+      <thead>
+        <tr class="heading">
+          <th>Livestock ID</th>
+          <th>Kind of Livestock</th>
+          <th>Gender</th>
+          <th>Weight</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="userInfo">
+        <tr>
+          <td>LS-001</td>
+          <td>Pig</td>
+          <td>Male</td>
+          <td>85</td>
+          <td>In Entry Point</td>
+          <td><button>Edit</button></td>
+        </tr>
+        <tr>
+          <td>LS-002</td>
+          <td>Cattle</td>
+          <td>Female</td>
+          <td>120</td>
+          <td>In Holding Pen</td>
+          <td><button>Edit</button></td>
+        </tr>
+        <tr>
+          <td>LS-003</td>
+          <td>Carabao</td>
+          <td>Male</td>
+          <td>300</td>
+          <td>In Slaughter House</td>
+          <td><button>Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- jQuery + DataTables JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#livestockTable').DataTable({
+        pageLength: 5,
+        language: {
+          emptyTable: "No data available in table",
+          paginate: {
+            next: 'Next ▶',
+            previous: '◀ Previous'
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
