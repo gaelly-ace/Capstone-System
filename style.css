@@ -49,8 +49,13 @@ body.dark {
 body {
 	background: var(--grey);
 	overflow-x: hidden;
+	transition: none;
 }
 
+/* Prevent flicker on initial load */
+body.dark-init {
+	transition: none !important;
+}
 
 
 
@@ -313,6 +318,17 @@ body {
 #content nav #switch-mode:checked + .switch-mode::before {
 	left: calc(100% - (25px - 4px) - 2px);
 }
+#content nav #sun-icon,
+#content nav #moon-icon {
+	font-size: 20px;
+	color: var(--dark);
+}
+#content nav #sun-icon {
+	margin-right: 8px;
+}
+#content nav #moon-icon {
+	margin-left: 8px;
+}
 
 /* NAVBAR */
 
@@ -439,6 +455,10 @@ body {
 	flex-grow: 1;
 	flex-basis: 500px;
 }
+#content main .table-data .order.full-width {
+	flex-basis: 100%;
+	width: 100%;
+}
 #content main .table-data .order table {
 	width: 100%;
 	border-collapse: collapse;
@@ -539,6 +559,408 @@ body {
 /* MAIN */
 
 
+/* FLOATING SCANNER BUTTON */
+.floating-scanner-btn {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: var(--blue);
+	border: none;
+	color: white;
+	font-size: 28px;
+	cursor: pointer;
+	box-shadow: 0 4px 12px rgba(60, 145, 230, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1500;
+	transition: all 0.3s ease;
+}
+
+.floating-scanner-btn:hover {
+	transform: scale(1.1);
+	box-shadow: 0 6px 16px rgba(60, 145, 230, 0.6);
+}
+
+.floating-scanner-btn:active {
+	transform: scale(0.95);
+}
+
+/* MODAL STYLES */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 3000;
+	backdrop-filter: blur(5px);
+}
+
+.modal-overlay.active {
+	display: flex;
+}
+
+.modal-content {
+	background: var(--light);
+	border-radius: 20px;
+	padding: 30px;
+	max-width: 500px;
+	width: 90%;
+	max-height: 90vh;
+	overflow-y: auto;
+	position: relative;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+	animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-50px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.modal-close {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	background: transparent;
+	border: none;
+	font-size: 28px;
+	color: var(--dark);
+	cursor: pointer;
+	width: 35px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+	background: var(--grey);
+	transform: rotate(90deg);
+}
+
+.modal-header {
+	margin-bottom: 25px;
+}
+
+.modal-header h2 {
+	color: var(--dark);
+	font-family: var(--poppins);
+	font-size: 24px;
+	font-weight: 600;
+}
+
+/* FORM STYLES */
+.registration-form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.form-group label {
+	color: var(--dark);
+	font-weight: 500;
+	font-size: 14px;
+	font-family: var(--poppins);
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+	padding: 12px 16px;
+	border: 2px solid var(--grey);
+	border-radius: 10px;
+	font-size: 15px;
+	color: var(--dark);
+	background: var(--grey);
+	transition: all 0.3s ease;
+	font-family: var(--poppins);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus {
+	outline: none;
+	border-color: var(--blue);
+	background: var(--light);
+}
+
+/* WEIGHT INPUT */
+.weight-input {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.weight-input input {
+	flex: 1;
+}
+
+.weight-controls {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.weight-btn {
+	width: 40px;
+	height: 30px;
+	border: none;
+	background: var(--blue);
+	color: white;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	transition: all 0.2s ease;
+}
+
+.weight-btn:first-child {
+	border-radius: 8px 8px 0 0;
+}
+
+.weight-btn:last-child {
+	border-radius: 0 0 8px 8px;
+}
+
+.weight-btn:hover {
+	background: #2f7bc7;
+}
+
+.weight-btn:active {
+	transform: scale(0.95);
+}
+
+/* GENDER SELECT */
+.gender-select {
+	display: flex;
+	gap: 12px;
+}
+
+.gender-btn {
+	flex: 1;
+	padding: 15px;
+	border: 2px solid var(--grey);
+	background: var(--grey);
+	border-radius: 10px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	transition: all 0.3s ease;
+	color: var(--dark);
+	font-family: var(--poppins);
+}
+
+.gender-btn i {
+	font-size: 40px;
+}
+
+.gender-btn span {
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.gender-btn:hover {
+	border-color: var(--blue);
+	transform: translateY(-2px);
+}
+
+.gender-btn.active {
+	border-color: var(--blue);
+	background: var(--light-blue);
+	color: var(--blue);
+}
+
+/* ID INPUT */
+.id-input {
+	display: flex;
+	gap: 10px;
+}
+
+.id-input input {
+	flex: 1;
+}
+
+.scan-qr-btn {
+	padding: 12px 20px;
+	border: none;
+	background: var(--orange);
+	color: white;
+	border-radius: 10px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--poppins);
+	font-weight: 500;
+	transition: all 0.3s ease;
+	white-space: nowrap;
+}
+
+.scan-qr-btn i {
+	font-size: 20px;
+}
+
+.scan-qr-btn:hover {
+	background: #e05520;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(253, 114, 56, 0.3);
+}
+
+/* SUBMIT BUTTON */
+.submit-btn {
+	margin-top: 10px;
+	padding: 15px;
+	border: none;
+	background: var(--blue);
+	color: white;
+	border-radius: 12px;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	font-family: var(--poppins);
+	transition: all 0.3s ease;
+}
+
+.submit-btn i {
+	font-size: 22px;
+}
+
+.submit-btn:hover {
+	background: #2f7bc7;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(60, 145, 230, 0.4);
+}
+
+.submit-btn:active {
+	transform: translateY(0);
+}
+
+/* QR SCANNER MODAL */
+.qr-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.85);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 4000;
+}
+
+.qr-modal-overlay.active {
+	display: flex;
+}
+
+.qr-modal-content {
+	background: var(--light);
+	border-radius: 20px;
+	padding: 30px;
+	max-width: 600px;
+	width: 90%;
+	position: relative;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+	animation: modalSlideIn 0.3s ease;
+}
+
+.qr-modal-header {
+	margin-bottom: 20px;
+}
+
+.qr-modal-header h2 {
+	color: var(--dark);
+	font-family: var(--poppins);
+	font-size: 24px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.qr-scanner-container {
+	position: relative;
+	width: 100%;
+	height: 400px;
+	background: #000;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+#qrVideo {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.qr-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+}
+
+.qr-frame {
+	width: 250px;
+	height: 250px;
+	border: 3px solid var(--blue);
+	border-radius: 12px;
+	box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+	animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+	0%, 100% {
+		border-color: var(--blue);
+	}
+	50% {
+		border-color: var(--light-blue);
+	}
+}
+
+.qr-instructions {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.qr-instructions p {
+	color: var(--dark);
+	font-family: var(--poppins);
+	font-size: 14px;
+}
+
+
 
 @media screen and (max-width: 768px) {
 	#sidebar {
@@ -562,6 +984,28 @@ body {
 		display: block;
 		margin: 5px;
 		overflow-x: auto;
+	}
+
+	.floating-scanner-btn {
+		width: 55px;
+		height: 55px;
+		font-size: 24px;
+		bottom: 20px;
+		right: 20px;
+	}
+
+	.modal-content {
+		padding: 20px;
+		width: 95%;
+	}
+
+	.qr-scanner-container {
+		height: 300px;
+	}
+
+	.qr-frame {
+		width: 200px;
+		height: 200px;
 	}
 }
 
@@ -615,5 +1059,17 @@ body {
 	}
 	.charts-card {
 		overflow-x: auto;
-	} 
+	}
+
+	.gender-select {
+		flex-direction: column;
+	}
+
+	.scan-qr-btn span {
+		display: none;
+	}
+
+	.scan-qr-btn {
+		padding: 12px 15px;
+	}
 }

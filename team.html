@@ -8,13 +8,22 @@
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
 	<link rel="stylesheet" href="team.css">
+	<link rel="stylesheet" href="style.css">
 
 	<title>PSMO - SuperAdmin</title>
+    <script>
+	(function() {
+		if (sessionStorage.getItem('darkMode') === 'enabled') {
+			document.documentElement.classList.add('dark-init');
+			document.body.classList.add('dark');
+		}
+	})();
+</script> 
 </head>
 <body>
 
 
-	<!-- SIDEBAR -->
+<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="index.html" class="brand">
 			<img src="IMAGES/PSMO.png" class="logo">
@@ -27,6 +36,12 @@
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
+            <li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
 			<li>
 				<a href="records.html">
 					<i class='bx bxs-shopping-bag-alt' ></i>
@@ -34,15 +49,22 @@
 				</a>
 			</li>
 			<li>
-				<a href="archive*/.html">
+				<a href="archive.html">
 					<i class='bx bxs-doughnut-chart' ></i>
 					<span class="text">Archives</span>
 				</a>
 			</li>
+			
 			<li>
-				<a href="reports.html">
-					<i class='bx bxs-message-dots' ></i>
-					<span class="text">Reports</span>
+				<a href="requests.html">
+					<i class='bx bxs-file-doc' ></i>
+					<span class="text">Requests</span>
+				</a>
+			</li>
+			<li>
+				<a href="analytics.html">
+					<i class='bx bxs-bar-chart-alt-2' ></i>
+					<span class="text">Analytics</span>
 				</a>
 			</li>
             <li class="active">
@@ -66,26 +88,39 @@
 
 	<!-- CONTENT -->
 	<section id="content">
-		<!-- NAVBAR -->
-		<nav>
-			<i class='bx bx-menu' ></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<a href="notif.html" class="notification">
-				<i class='bx bxs-bell' ></i>
-				<span class="num">8</span>
-			</a>
-			<a href="profile.html" class="profile">
-				<img src="images/1.webp" id="navbar-profile-img">
-			</a>
-		</nav>
-		<!-- NAVBAR -->
+	<!-- NAVBAR - Copy this entire section to all your HTML pages -->
+<nav>
+    <!-- Menu Toggle Button -->
+    <i class='bx bx-menu'></i>
+    
+    <!-- Search Form -->
+    <form action="#">
+        <div class="form-input">
+            <input type="search" placeholder="Search...">
+            <button type="submit" class="search-btn">
+                <i class='bx bx-search'></i>
+            </button>
+        </div>
+    </form>
+    
+    <!-- Dark/Light Mode Toggle -->
+    <i class='bx bx-sun' id="sun-icon"></i>
+    <input type="checkbox" id="switch-mode" hidden>
+    <label for="switch-mode" class="switch-mode"></label>
+    <i class='bx bx-moon' id="moon-icon"></i>
+    
+    <!-- Notification Icon -->
+    <a href="notif.html" class="notification">
+        <i class='bx bxs-bell'></i>
+        <span class="num"></span>
+    </a>
+    
+    <!-- Profile Icon -->
+    <a href="profile.html" class="profile">
+        <img src="IMAGES/" id="navbar-profile-img" alt="Profile">
+    </a>
+</nav>
+<!-- END NAVBAR -->
 
 		 <!-- MAIN CONTENT -->
 		 <main>
@@ -95,20 +130,24 @@
 					<input type="text" id="fullName" placeholder="Full Name" required>
                     <input type="text" id="username" placeholder="Username" required>
                     <input type="password" id="password" placeholder="Password" required>
+                    <input type="tel" id="contactNumber" placeholder="Contact Number" required>
                     <select id="role" required>
                         <option value="">Select Role</option>
                         <option value="Admin">Admin</option>
                         <option value="Super Admin">Super Admin</option>
+                        <option value="Dealer">Dealer</option>
                     </select>
-                    <button type="submit" id="addAdmin">Add Admin</button>
+                    <button type="submit" id="addAdmin">Add Role</button>
                 </form>
                 <table class="admin-table">
 					<thead>
 						<tr>
+							<th>ID</th>
 							<th>Full Name</th>
 							<th>Username</th>
-							<th>Password</th>
+							<th>Contact Number</th>
 							<th>Role</th>
+							<th>Password</th>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -116,15 +155,176 @@
 						<!-- Admin list will be displayed dynamically -->
 					</tbody>
 				</table>
-                
+            </div>
+
+			<div class="container" style="margin-top: 30px;">
+                <h2>Archived Accounts</h2>
+                <table class="admin-table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Full Name</th>
+							<th>Username</th>
+							<th>Contact Number</th>
+							<th>Role</th>
+							<th>Password</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody id="archivedTableBody">
+						<!-- Archived admin list will be displayed dynamically -->
+					</tbody>
+				</table>
+            </div>
+
+			<div class="container" style="margin-top: 30px;">
+                <h2>Activity Logs</h2>
+                <div class="activity-filters">
+                    <input type="text" id="searchLogs" placeholder="Search by admin name, ID, or description...">
+                    <select id="filterActivityType">
+                        <option value="">All Activity Types</option>
+                        <option value="Login">Login</option>
+                        <option value="Livestock Registration">Livestock Registration</option>
+                        <option value="Record Modification">Record Modification</option>
+                        <option value="Record Deletion">Record Deletion</option>
+                        <option value="Record Access">Record Access</option>
+                        <option value="Unauthorized Access">Unauthorized Access</option>
+                        <option value="Report Generation">Report Generation</option>
+                        <option value="Account Creation">Account Creation</option>
+                        <option value="Account Archive">Account Archive</option>
+                        <option value="Account Restoration">Account Restoration</option>
+                    </select>
+                    <select id="filterStatus">
+                        <option value="">All Status</option>
+                        <option value="success">Success</option>
+                        <option value="warning">Warning</option>
+                        <option value="error">Error</option>
+                    </select>
+                    <button id="clearFilters" class="clear-filters-btn">Clear Filters</button>
+                </div>
+                <table class="admin-table">
+					<thead>
+						<tr>
+							<th>Timestamp</th>
+							<th>Admin ID</th>
+							<th>Admin Name</th>
+							<th>Role</th>
+							<th>Activity Type</th>
+							<th>Description</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody id="activityLogsBody">
+						<!-- Activity logs will be displayed dynamically -->
+					</tbody>
+				</table>
             </div>
         </main>
         <!-- MAIN CONTENT -->
 
     </section>
 	<!-- CONTENT -->
-	
+	<!-- FLOATING SCANNER BUTTON -->
+<button class="floating-scanner-btn" id="scannerBtn">
+    <i class='bx bx-qr-scan'></i>
+</button>
 
+<!-- REGISTRATION MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">
+            <i class='bx bx-x'></i>
+        </button>
+        
+        <div class="modal-header">
+            <h2>Register New Livestock</h2>
+        </div>
+
+        <form class="registration-form" id="registrationForm">
+            <div class="form-group">
+                <label>Kind of Live Food</label>
+                <input type="text" id="liveFood" placeholder="e.g., Pig, Cattle, Carabao" required>
+            </div>
+
+            <div class="form-group">
+                <label>Weight (Kilogram)</label>
+                <div class="weight-input">
+                    <input type="number" id="weight" step="0.1" min="0" value="0.0" required>
+                    <div class="weight-controls">
+                        <button type="button" class="weight-btn" id="weightUp">
+                            <i class='bx bx-chevron-up'></i>
+                        </button>
+                        <button type="button" class="weight-btn" id="weightDown">
+                            <i class='bx bx-chevron-down'></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <div class="gender-select">
+                    <button type="button" class="gender-btn" data-gender="male">
+                        <i class='bx bx-male-sign'></i>
+                        <span>Male</span>
+                    </button>
+                    <button type="button" class="gender-btn" data-gender="female">
+                        <i class='bx bx-female-sign'></i>
+                        <span>Female</span>
+                    </button>
+                </div>
+                <input type="hidden" id="gender" required>
+            </div>
+
+            <div class="form-group">
+                <label>Livestock ID</label>
+                <div class="id-input">
+                    <input type="text" id="livestockId" placeholder="Scan QR Code" readonly required>
+                    <button type="button" class="scan-qr-btn" id="scanQrBtn">
+                        <i class='bx bx-qr-scan'></i>
+                        <span>Scan QR</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dealer Name</label>
+                <input type="text" id="dealerName" placeholder="Enter dealer name" required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class='bx bx-check'></i>
+                Register Livestock
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- QR SCANNER MODAL -->
+<div class="qr-modal-overlay" id="qrModalOverlay">
+    <div class="qr-modal-content">
+        <button class="modal-close" id="qrModalClose">
+            <i class='bx bx-x'></i>
+        </button>
+        
+        <div class="qr-modal-header">
+            <h2>Scan QR Code</h2>
+        </div>
+
+        <div class="qr-scanner-container">
+            <video id="qrVideo" autoplay></video>
+            <div class="qr-overlay">
+                <div class="qr-frame"></div>
+            </div>
+        </div>
+
+        <div class="qr-instructions">
+            <p>Position the QR code within the frame</p>
+        </div>
+    </div>
+</div>
+
+    <script src="script.js"></script>
 	<script src="team.js"></script>
 </body>
 </html>
