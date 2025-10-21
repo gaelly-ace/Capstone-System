@@ -50,30 +50,45 @@ window.addEventListener('resize', function () {
 	}
 })
 
-// Dark Mode DO NOT REMOVE
+// Dark Mode - Using sessionStorage for persistence across pages
 const switchMode = document.getElementById('switch-mode');
 
-// Check stored preference on page load
-if (localStorage.getItem('dark-mode') === 'true') {
-    document.body.classList.add('dark');
-    switchMode.checked = true;
+// Initialize dark mode immediately to prevent flicker
+(function initializeDarkMode() {
+    const darkModeState = sessionStorage.getItem('darkMode');
+    if (darkModeState === 'enabled') {
+        document.body.classList.add('dark');
+        if (switchMode) {
+            switchMode.checked = true;
+        }
+    }
+})();
+
+// Dark mode toggle handler
+if (switchMode) {
+    switchMode.addEventListener('change', function () {
+        if (this.checked) {
+            document.body.classList.add('dark');
+            sessionStorage.setItem('darkMode', 'enabled');
+        } else {
+            document.body.classList.remove('dark');
+            sessionStorage.setItem('darkMode', 'disabled');
+        }
+    });
 }
 
-switchMode.addEventListener('change', function () {
-    if (this.checked) {
-        document.body.classList.add('dark');
-        localStorage.setItem('dark-mode', 'true');
-    } else {
-        document.body.classList.remove('dark');
-        localStorage.setItem('dark-mode', 'false');
-    }
-});
-
-//Profile Image DO NOT REMOVE
+//Profile Image - Using sessionStorage for profile image persistence
 document.addEventListener("DOMContentLoaded", function() {
     let ProfileImg = document.getElementById("profile-img");
     let NavbarProfileImg = document.getElementById("navbar-profile-img");
     let insertFile = document.getElementById("insert-file");
+
+    // Load saved profile image from sessionStorage
+    const savedImage = sessionStorage.getItem('profileImage');
+    if (savedImage) {
+        if (ProfileImg) ProfileImg.src = savedImage;
+        if (NavbarProfileImg) NavbarProfileImg.src = savedImage;
+    }
 
     function updateProfileImages(imageSrc) {
         if (ProfileImg) {
@@ -82,12 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (NavbarProfileImg) {
             NavbarProfileImg.src = imageSrc;
         }
-        localStorage.setItem('profileImage', imageSrc);
-    }
-
-    if (localStorage.getItem('profileImage')) {
-        let savedImageSrc = localStorage.getItem('profileImage');
-        updateProfileImages(savedImageSrc);
+        // Store in sessionStorage
+        sessionStorage.setItem('profileImage', imageSrc);
     }
 
     if (insertFile) {
@@ -105,6 +116,28 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+// Helper function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+}
+
+// Helper function to format time
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const strHours = String(hours).padStart(2, '0');
+    return `${strHours}:${minutes}:${seconds} ${ampm}`;
+}
+
 // Livestock Records Management Functionality
 document.addEventListener("DOMContentLoaded", () => {
     // Get DOM elements
@@ -117,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
         modalTitle = document.querySelector('.modalTitle'),
         popupFooter = document.querySelector('.popupFooter'),
         form = document.querySelector('form'),
-        formInputFields = document.querySelectorAll('form input, form select'),
         entries = document.querySelector(".showEntries"),
         tabSize = document.getElementById("table_size"),
         userInfo = document.querySelector(".userInfo"),
@@ -128,25 +160,145 @@ document.addEventListener("DOMContentLoaded", () => {
     const qrScanBtn = document.getElementById('qrScanBtn'),
         qrScannerBg = document.querySelector('.qr_scanner_bg'),
         closeQRBtn = document.querySelector('.closeQRBtn'),
-        livestockIdInput = document.getElementById('livestockId');
+        livestockIdValue = document.getElementById('livestockIdValue');
+
+    // Gender selection elements
+    const genderOptions = document.querySelectorAll('.gender-option'),
+        genderInput = document.getElementById('gender');
+
+    // Weight control elements
+    const weightValue = document.getElementById('weightValue'),
+        weightInput = document.getElementById('weight'),
+        weightUpBtn = document.getElementById('weightUp'),
+        weightDownBtn = document.getElementById('weightDown'),
+        weightInputField = document.getElementById('weightInputField');
+
+    // Initialize weight and gender
+    let currentWeight = 0.0;
+    let selectedGender = '';
+    let scannedId = '';
+
+    // Sample data - Pre-populated records
+    let originalData = [
+        {
+            livestockId: "LV-2024-001",
+            kindOfLivestock: "Pig",
+            gender: "Male",
+            weight: 85.5,
+            dealer: "Juan Dela Cruz",
+            status: "In Entry Point",
+            createdDate: new Date('2024-10-15T08:30:00').toISOString(),
+            lastModified: new Date('2024-10-15T08:30:00').toISOString()
+        },
+        {
+            livestockId: "LV-2024-002",
+            kindOfLivestock: "Cattle",
+            gender: "Female",
+            weight: 320.8,
+            dealer: "Maria Santos",
+            status: "In Holding Pen",
+            createdDate: new Date('2024-10-16T09:15:00').toISOString(),
+            lastModified: new Date('2024-10-16T09:15:00').toISOString()
+        },
+        {
+            livestockId: "LV-2024-003",
+            kindOfLivestock: "Carabao",
+            gender: "Male",
+            weight: 450.2,
+            dealer: "Pedro Garcia",
+            status: "In Slaughter House",
+            createdDate: new Date('2024-10-17T10:45:00').toISOString(),
+            lastModified: new Date('2024-10-17T10:45:00').toISOString()
+        },
+        {
+            livestockId: "LV-2024-004",
+            kindOfLivestock: "Pig",
+            gender: "Female",
+            weight: 92.3,
+            dealer: "Rosa Reyes",
+            status: "In Exit Point",
+            createdDate: new Date('2024-10-18T11:20:00').toISOString(),
+            lastModified: new Date('2024-10-18T11:20:00').toISOString()
+        },
+        {
+            livestockId: "LV-2024-005",
+            kindOfLivestock: "Cattle",
+            gender: "Male",
+            weight: 380.5,
+            dealer: "Jose Mendoza",
+            status: "In Entry Point",
+            createdDate: new Date('2024-10-19T07:50:00').toISOString(),
+            lastModified: new Date('2024-10-19T07:50:00').toISOString()
+        },
+        {
+            livestockId: "LV-2024-006",
+            kindOfLivestock: "Pig",
+            gender: "Male",
+            weight: 78.9,
+            dealer: "Ana Cruz",
+            status: "In Holding Pen",
+            createdDate: new Date('2024-10-19T14:30:00').toISOString(),
+            lastModified: new Date('2024-10-19T14:30:00').toISOString()
+        },
+        {
+            livestockId: "LV-2024-007",
+            kindOfLivestock: "Carabao",
+            gender: "Female",
+            weight: 410.7,
+            dealer: "Carlos Ramos",
+            status: "Anomaly Detected",
+            createdDate: new Date('2024-10-20T06:15:00').toISOString(),
+            lastModified: new Date('2024-10-20T06:15:00').toISOString()
+        },
+        {
+            livestockId: "LV-2024-008",
+            kindOfLivestock: "Pig",
+            gender: "Female",
+            weight: 88.4,
+            dealer: "Liza Torres",
+            status: "In Entry Point",
+            createdDate: new Date('2024-10-20T08:40:00').toISOString(),
+            lastModified: new Date('2024-10-20T08:40:00').toISOString()
+        }
+    ];
+
+    let getData = [...originalData];
 
     // QR Scanner functionality
     let html5QrcodeScanner = null;
 
-    qrScanBtn.addEventListener('click', function() {
-        qrScannerBg.classList.add('active');
-        startQRScanner();
-    });
+    if (qrScanBtn) {
+        qrScanBtn.addEventListener('click', function() {
+            qrScannerBg.classList.add('active');
+            startQRScanner();
+        });
+    }
 
-    closeQRBtn.addEventListener('click', function() {
-        stopQRScanner();
-        qrScannerBg.classList.remove('active');
-    });
+    if (closeQRBtn) {
+        closeQRBtn.addEventListener('click', function() {
+            stopQRScanner();
+            qrScannerBg.classList.remove('active');
+        });
+    }
+
+    // Click outside QR scanner to close
+    if (qrScannerBg) {
+        qrScannerBg.addEventListener('click', (e) => {
+            if (e.target === qrScannerBg) {
+                stopQRScanner();
+                qrScannerBg.classList.remove('active');
+            }
+        });
+    }
 
     function startQRScanner() {
         html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader",
-            { fps: 10, qrbox: { width: 250, height: 250 } },
+            { 
+                fps: 10, 
+                qrbox: { width: 250, height: 250 },
+                aspectRatio: 1.0
+            },
             false
         );
 
@@ -163,25 +315,103 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function onScanSuccess(decodedText, decodedResult) {
-        // Put the scanned text into the livestock ID input
-        livestockIdInput.value = decodedText;
+        scannedId = decodedText;
+        livestockIdValue.textContent = decodedText;
+        document.getElementById('livestockId').value = decodedText;
         
-        // Close the QR scanner
         stopQRScanner();
         qrScannerBg.classList.remove('active');
         
-        // Show success message
         alert('QR Code scanned successfully! Livestock ID: ' + decodedText);
     }
 
     function onScanFailure(error) {
-        // Handle scan failure silently
         console.warn(`QR scan error: ${error}`);
     }
 
-    // Get original data from localStorage or initialize empty array
-    let originalData = JSON.parse(localStorage.getItem('livestockRecords')) || [];
-    let getData = [...originalData];
+    // Gender selection
+    genderOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            genderOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            selectedGender = option.dataset.gender;
+            genderInput.value = selectedGender;
+        });
+    });
+
+    // Weight controls with typing support
+    if (weightUpBtn) {
+        weightUpBtn.addEventListener('click', () => {
+            currentWeight += 0.1;
+            currentWeight = Math.round(currentWeight * 10) / 10;
+            updateWeightDisplay();
+        });
+    }
+
+    if (weightDownBtn) {
+        weightDownBtn.addEventListener('click', () => {
+            if (currentWeight > 0) {
+                currentWeight -= 0.1;
+                currentWeight = Math.max(0, Math.round(currentWeight * 10) / 10);
+                updateWeightDisplay();
+            }
+        });
+    }
+
+    // Add input event for direct typing
+    if (weightInputField) {
+        weightInputField.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/[^0-9.]/g, '');
+            
+            // Prevent multiple decimal points
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            
+            e.target.value = value;
+            
+            if (value === '' || value === '.') {
+                currentWeight = 0;
+            } else {
+                currentWeight = parseFloat(value) || 0;
+            }
+            
+            weightValue.textContent = currentWeight.toFixed(1);
+            weightInput.value = currentWeight;
+        });
+
+        // Add blur event to format the weight
+        weightInputField.addEventListener('blur', (e) => {
+            if (e.target.value) {
+                currentWeight = parseFloat(e.target.value) || 0;
+                e.target.value = currentWeight.toFixed(1);
+                updateWeightDisplay();
+            }
+        });
+    }
+
+    function updateWeightDisplay() {
+        weightValue.textContent = currentWeight.toFixed(1);
+        weightInput.value = currentWeight;
+        if (weightInputField) weightInputField.value = currentWeight.toFixed(1);
+    }
+
+    // Reset form function
+    function resetForm() {
+        if (form) form.reset();
+        currentWeight = 0.0;
+        selectedGender = '';
+        scannedId = '';
+        weightValue.textContent = '0.0';
+        weightInput.value = '';
+        if (weightInputField) weightInputField.value = '';
+        genderInput.value = '';
+        livestockIdValue.textContent = 'Not Scanned';
+        document.getElementById('livestockId').value = '';
+        document.getElementById('dealer').value = '';
+        genderOptions.forEach(opt => opt.classList.remove('selected'));
+    }
 
     let isEdit = false, editId;
     let arrayLength = 0;
@@ -237,7 +467,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Enable/disable prev and next buttons
         const prevBtn = document.querySelector('.pagination .prev');
         const nextBtn = document.querySelector('.pagination .next');
         
@@ -269,13 +498,19 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let i = tab_start; i < tab_end; i++) {
                 const record = getData[i];
                 if (record) {
+                    const createdDate = formatDate(record.createdDate);
+                    const createdTime = formatTime(record.createdDate);
+                    
                     let createElement = `
                         <tr class="recordDetails">
                             <td>${record.livestockId}</td>
                             <td>${record.kindOfLivestock}</td>
                             <td>${record.gender}</td>
                             <td>${record.weight} kg</td>
+                            <td>${record.dealer}</td>
                             <td>${record.status}</td>
+                            <td>${createdDate}</td>
+                            <td>${createdTime}</td>
                             <td>
                                 <button onclick="window.recordsApp.readInfo('${record.livestockId}')" class="editBtn">Edit</button>
                                 <button onclick="window.recordsApp.archiveInfo('${record.livestockId}')" class="archiveBtn">Archive</button>
@@ -286,7 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         } else {
-            userInfo.innerHTML = `<tr class="recordDetails"><td class="empty" colspan="6" align="center">No data available in table</td></tr>`;
+            userInfo.innerHTML = `<tr class="recordDetails"><td class="empty" colspan="9" align="center">No data available in table</td></tr>`;
         }
     }
 
@@ -300,51 +535,46 @@ document.addEventListener("DOMContentLoaded", () => {
         isEdit = true;
         editId = actualIndex;
 
-        document.getElementById("livestockId").value = record.livestockId;
+        scannedId = record.livestockId;
+        livestockIdValue.textContent = record.livestockId;
+        document.getElementById('livestockId').value = record.livestockId;
         document.getElementById("kindOfLivestock").value = record.kindOfLivestock;
-        document.getElementById("gender").value = record.gender;
-        document.getElementById("weight").value = record.weight;
+        document.getElementById("dealer").value = record.dealer;
+        
+        selectedGender = record.gender;
+        genderInput.value = record.gender;
+        genderOptions.forEach(opt => {
+            if (opt.dataset.gender === record.gender) {
+                opt.classList.add('selected');
+            } else {
+                opt.classList.remove('selected');
+            }
+        });
+        
+        currentWeight = parseFloat(record.weight);
+        updateWeightDisplay();
+        
         document.getElementById("status").value = record.status;
 
         darkBg.classList.add('active');
         popupForm.classList.add('active');
-        popupFooter.style.display = "block";
+        popupFooter.style.display = "flex";
         modalTitle.innerHTML = "Edit Livestock Record";
         submitBtn.innerHTML = "Save Changes";
-        cancelBtn.style.display = "inline-block";
-        
-        formInputFields.forEach(input => {
-            input.disabled = false;
-        });
-
-        // Disable livestock ID editing
-        document.getElementById("livestockId").disabled = true;
     }
 
-    // Archive (move to archives) record
+    // Archive record
     function archiveInfo(livestockId) {
         if (confirm("Are you sure you want to archive this record? It will be moved to the Archives section.")) {
             const recordIndex = originalData.findIndex(r => r.livestockId === livestockId);
             
             if (recordIndex > -1) {
                 const recordToArchive = originalData[recordIndex];
-                
-                // Get existing archived records or create empty array
-                let archivedRecords = JSON.parse(localStorage.getItem('archivedLivestockRecords')) || [];
-                
-                // Add timestamp to the record when archiving
                 recordToArchive.archivedDate = new Date().toISOString();
                 
-                // Add to archived records
-                archivedRecords.push(recordToArchive);
+                console.log('Archived:', recordToArchive);
                 
-                // Remove from active records
                 originalData.splice(recordIndex, 1);
-                
-                // Update localStorage
-                localStorage.setItem("livestockRecords", JSON.stringify(originalData));
-                localStorage.setItem("archivedLivestockRecords", JSON.stringify(archivedRecords));
-
                 getData = [...originalData];
 
                 preLoadCalculations();
@@ -369,29 +599,20 @@ document.addEventListener("DOMContentLoaded", () => {
     function generateReport(livestockId) {
         const record = originalData.find(r => r.livestockId === livestockId);
         if (record) {
-            // Create report data
             const reportData = {
                 livestockId: record.livestockId,
                 kindOfLivestock: record.kindOfLivestock,
                 gender: record.gender,
                 weight: record.weight,
+                dealer: record.dealer,
                 status: record.status,
+                createdDate: record.createdDate,
                 reportDate: new Date().toISOString(),
                 reportType: 'Individual Livestock Report'
             };
             
-            // Get existing reports or create empty array
-            let reports = JSON.parse(localStorage.getItem('livestockReports')) || [];
-            reports.push(reportData);
-            
-            // Save to localStorage
-            localStorage.setItem('livestockReports', JSON.stringify(reports));
-            
-            // Redirect to reports page
-            alert(`Report generated for Livestock ID: ${livestockId}. Redirecting to reports section...`);
-            setTimeout(() => {
-                window.location.href = 'reports.html';
-            }, 1500);
+            console.log('Report generated:', reportData);
+            alert(`Report generated for Livestock ID: ${livestockId}`);
         }
     }
 
@@ -426,199 +647,191 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Event Listeners
-    registerLivestockBtn.addEventListener('click', () => {
-        isEdit = false;
-        submitBtn.innerHTML = "Submit";
-        modalTitle.innerHTML = "Register New Livestock";
-        popupFooter.style.display = "block";
-        darkBg.classList.add('active');
-        popupForm.classList.add('active');
-        form.reset();
-        cancelBtn.style.display = "none";
-        
-        // Enable all form fields
-        formInputFields.forEach(input => {
-            input.disabled = false;
+    if (registerLivestockBtn) {
+        registerLivestockBtn.addEventListener('click', () => {
+            isEdit = false;
+            submitBtn.innerHTML = "Submit";
+            modalTitle.innerHTML = "Register New Livestock";
+            popupFooter.style.display = "flex";
+            darkBg.classList.add('active');
+            popupForm.classList.add('active');
+            resetForm();
         });
-    });
+    }
 
-    crossBtn.addEventListener('click', () => {
-        darkBg.classList.remove('active');
-        popupForm.classList.remove('active');
-        form.reset();
-        cancelBtn.style.display = "none";
-    });
-
-    cancelBtn.addEventListener('click', () => {
-        darkBg.classList.remove('active');
-        popupForm.classList.remove('active');
-        form.reset();
-        cancelBtn.style.display = "none";
-    });
-
-    // Click outside popup to close
-    darkBg.addEventListener('click', (e) => {
-        if (e.target === darkBg) {
+    if (crossBtn) {
+        crossBtn.addEventListener('click', () => {
             darkBg.classList.remove('active');
             popupForm.classList.remove('active');
-            form.reset();
-            cancelBtn.style.display = "none";
-        }
-    });
+            resetForm();
+        });
+    }
 
-    // Click outside QR scanner to close
-    qrScannerBg.addEventListener('click', (e) => {
-        if (e.target === qrScannerBg) {
-            stopQRScanner();
-            qrScannerBg.classList.remove('active');
-        }
-    });
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            darkBg.classList.remove('active');
+            popupForm.classList.remove('active');
+            resetForm();
+        });
+    }
 
-    submitBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+    if (darkBg) {
+        darkBg.addEventListener('click', (e) => {
+            if (e.target === darkBg) {
+                darkBg.classList.remove('active');
+                popupForm.classList.remove('active');
+                resetForm();
+            }
+        });
+    }
 
-        // Validate form data
-        const livestockId = document.getElementById("livestockId").value.trim();
-        const kindOfLivestock = document.getElementById("kindOfLivestock").value;
-        const gender = document.getElementById("gender").value;
-        const weight = document.getElementById("weight").value;
-        const status = document.getElementById("status").value;
+    if (submitBtn) {
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
 
-        if (!livestockId || !kindOfLivestock || !gender || !weight || !status) {
-            alert("Please fill in all fields");
-            return;
-        }
-
-        // Check for duplicate ID when adding new record
-        if (!isEdit) {
-            const existingRecord = originalData.find(record => record.livestockId === livestockId);
-            if (existingRecord) {
-                alert("A record with this Livestock ID already exists!");
+            if (!scannedId) {
+                alert("Please scan a QR code first!");
                 return;
             }
-        }
 
-        // Create new record object
-        const newRecord = {
-            livestockId: livestockId,
-            kindOfLivestock: kindOfLivestock,
-            gender: gender,
-            weight: parseFloat(weight),
-            status: status,
-            createdDate: isEdit ? originalData[editId].createdDate : new Date().toISOString(),
-            lastModified: new Date().toISOString()
-        };
+            const kindOfLivestock = document.getElementById("kindOfLivestock").value;
+            const dealer = document.getElementById("dealer").value;
+            const status = document.getElementById("status").value;
 
-        // Update or add record
-        if (isEdit) {
-            originalData[editId] = newRecord;
-        } else {
-            originalData.push(newRecord);
-        }
+            if (!kindOfLivestock || !selectedGender || currentWeight <= 0 || !dealer || !status) {
+                alert("Please fill in all fields correctly");
+                return;
+            }
 
-        // Save to localStorage
-        localStorage.setItem("livestockRecords", JSON.stringify(originalData));
+            if (!isEdit) {
+                const existingRecord = originalData.find(record => record.livestockId === scannedId);
+                if (existingRecord) {
+                    alert("A record with this Livestock ID already exists!");
+                    return;
+                }
+            }
 
-        // Update getData with originalData
-        getData = [...originalData];
+            const newRecord = {
+                livestockId: scannedId,
+                kindOfLivestock: kindOfLivestock,
+                gender: selectedGender,
+                weight: parseFloat(currentWeight),
+                dealer: dealer,
+                status: status,
+                createdDate: isEdit ? originalData[editId].createdDate : new Date().toISOString(),
+                lastModified: new Date().toISOString()
+            };
 
-        // Close popup and reset form
-        darkBg.classList.remove('active');
-        popupForm.classList.remove('active');
-        form.reset();
-        cancelBtn.style.display = "none";
+            if (isEdit) {
+                originalData[editId] = newRecord;
+            } else {
+                originalData.push(newRecord);
+            }
 
-        // Update display
-        preLoadCalculations();
-        showInfo();
-        highlightIndexBtn();
-        displayIndexBtn();
-
-        // Show success message
-        if (isEdit) {
-            alert("Livestock record updated successfully!");
-        } else {
-            alert("New livestock record added successfully!");
-        }
-    });
-
-    // Table size change
-    tabSize.addEventListener('change', (e) => {
-        tableSize = parseInt(e.target.value);
-        currentIndex = 1;
-        showInfo();
-        highlightIndexBtn();
-        displayIndexBtn();
-    });
-
-    // Search functionality
-    filterData.addEventListener("keyup", function (e) {
-        const searchString = e.target.value.trim().toLowerCase();
-        
-        if (searchString === '') {
             getData = [...originalData];
-        } else {
-            getData = originalData.filter(item => {
-                return item.livestockId.toLowerCase().includes(searchString) ||
-                    item.kindOfLivestock.toLowerCase().includes(searchString) ||
-                    item.gender.toLowerCase().includes(searchString) ||
-                    item.weight.toString().toLowerCase().includes(searchString) ||
-                    item.status.toLowerCase().includes(searchString);
-            });
-        }
 
-        currentIndex = 1;
-        preLoadCalculations();
-        showInfo();
-        highlightIndexBtn();
-        displayIndexBtn();
-    });
+            darkBg.classList.remove('active');
+            popupForm.classList.remove('active');
+            resetForm();
+
+            preLoadCalculations();
+            showInfo();
+            highlightIndexBtn();
+            displayIndexBtn();
+
+            if (isEdit) {
+                alert("Livestock record updated successfully!");
+            } else {
+                alert("New livestock record added successfully!");
+            }
+        });
+    }
+
+    if (tabSize) {
+        tabSize.addEventListener('change', (e) => {
+            tableSize = parseInt(e.target.value);
+            currentIndex = 1;
+            showInfo();
+            highlightIndexBtn();
+            displayIndexBtn();
+        });
+    }
+
+    if (filterData) {
+        filterData.addEventListener("keyup", function (e) {
+            const searchString = e.target.value.trim().toLowerCase();
+            
+            if (searchString === '') {
+                getData = [...originalData];
+            } else {
+                getData = originalData.filter(item => {
+                    return item.livestockId.toLowerCase().includes(searchString) ||
+                        item.kindOfLivestock.toLowerCase().includes(searchString) ||
+                        item.gender.toLowerCase().includes(searchString) ||
+                        item.weight.toString().toLowerCase().includes(searchString) ||
+                        item.dealer.toLowerCase().includes(searchString) ||
+                        item.status.toLowerCase().includes(searchString);
+                });
+            }
+
+            currentIndex = 1;
+            preLoadCalculations();
+            showInfo();
+            highlightIndexBtn();
+            displayIndexBtn();
+        });
+    }
 
     // Export functionality
-    document.getElementById('exportPDF').addEventListener('click', function() {
-        exportToPDF();
-    });
+    const exportPDFBtn = document.getElementById('exportPDF');
+    const exportExcelBtn = document.getElementById('exportExcel');
 
-    document.getElementById('exportExcel').addEventListener('click', function() {
-        exportToExcel();
-    });
+    if (exportPDFBtn) {
+        exportPDFBtn.addEventListener('click', function() {
+            exportToPDF();
+        });
+    }
 
-    // Export to PDF function
+    if (exportExcelBtn) {
+        exportExcelBtn.addEventListener('click', function() {
+            exportToExcel();
+        });
+    }
+
     function exportToPDF() {
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+        const doc = new jsPDF('landscape');
         
-        // Add title
         doc.setFontSize(20);
         doc.text('Livestock Records Report', 14, 22);
         
-        // Add date
         doc.setFontSize(11);
-        doc.text('Generated on: ' + new Date().toLocaleDateString(), 14, 32);
+        doc.text('Generated on: ' + new Date().toLocaleDateString() + ' at ' + new Date().toLocaleTimeString(), 14, 32);
         
-        // Prepare data for table
         const tableData = originalData.map(record => [
             record.livestockId,
             record.kindOfLivestock,
             record.gender,
             record.weight + ' kg',
-            record.status
+            record.dealer,
+            record.status,
+            formatDate(record.createdDate),
+            formatTime(record.createdDate)
         ]);
         
-        // Add table
         doc.autoTable({
-            head: [['Livestock ID', 'Kind of Livestock', 'Gender', 'Weight', 'Status']],
+            head: [['Livestock ID', 'Kind', 'Gender', 'Weight', 'Dealer', 'Status', 'Date', 'Time']],
             body: tableData,
             startY: 40,
             theme: 'grid',
             styles: {
-                fontSize: 10,
-                cellPadding: 3,
+                fontSize: 8,
+                cellPadding: 2,
             },
             headStyles: {
                 fillColor: [66, 69, 73],
                 textColor: [255, 255, 255],
-                fontSize: 11,
+                fontSize: 9,
                 fontStyle: 'bold'
             },
             alternateRowStyles: {
@@ -626,39 +839,37 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         
-        // Save the PDF
         doc.save('livestock_records_' + new Date().toISOString().split('T')[0] + '.pdf');
     }
 
-    // Export to Excel function
     function exportToExcel() {
-        // Prepare data for Excel
         const excelData = originalData.map(record => ({
             'Livestock ID': record.livestockId,
             'Kind of Livestock': record.kindOfLivestock,
             'Gender': record.gender,
             'Weight (kg)': record.weight,
-            'Status': record.status
+            'Dealer': record.dealer,
+            'Status': record.status,
+            'Date Created': formatDate(record.createdDate),
+            'Time Created': formatTime(record.createdDate)
         }));
         
-        // Create workbook and worksheet
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.json_to_sheet(excelData);
         
-        // Set column widths
         const colWidths = [
-            { wch: 15 }, // Livestock ID
-            { wch: 20 }, // Kind of Livestock
-            { wch: 10 }, // Gender
-            { wch: 12 }, // Weight
-            { wch: 20 }  // Status
+            { wch: 15 },
+            { wch: 20 },
+            { wch: 10 },
+            { wch: 12 },
+            { wch: 20 },
+            { wch: 20 },
+            { wch: 15 },
+            { wch: 15 }
         ];
         ws['!cols'] = colWidths;
         
-        // Add worksheet to workbook
         XLSX.utils.book_append_sheet(wb, ws, 'Livestock Records');
-        
-        // Save the file
         XLSX.writeFile(wb, 'livestock_records_' + new Date().toISOString().split('T')[0] + '.xlsx');
     }
 

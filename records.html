@@ -17,12 +17,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 	<!-- My CSS -->
 	<link rel="stylesheet" href="records.css">
+    <link rel="stylesheet" href="style.css">
 
 <title>PSMO - SuperAdmin</title>
+<script>
+	(function() {
+		if (sessionStorage.getItem('darkMode') === 'enabled') {
+			document.documentElement.classList.add('dark-init');
+			document.body.classList.add('dark');
+		}
+	})();
+</script> 
 </head>
 <body>
 
-	<!-- SIDEBAR -->
+<!-- SIDEBAR -->
 	<section id="sidebar">
 		<a href="index.html" class="brand">
 			<img src="IMAGES/PSMO.png" class="logo">
@@ -33,6 +42,12 @@
 				<a href="index.html">
 					<i class='bx bxs-dashboard' ></i>
 					<span class="text">Dashboard</span>
+				</a>
+			</li>
+            <li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
 				</a>
 			</li>
 			<li class="active">
@@ -47,10 +62,17 @@
 					<span class="text">Archives</span>
 				</a>
 			</li>
+			
 			<li>
-				<a href="reports.html">
-					<i class='bx bxs-message-dots' ></i>
-					<span class="text">Reports</span>
+				<a href="requests.html">
+					<i class='bx bxs-file-doc' ></i>
+					<span class="text">Requests</span>
+				</a>
+			</li>
+			<li>
+				<a href="analytics.html">
+					<i class='bx bxs-bar-chart-alt-2' ></i>
+					<span class="text">Analytics</span>
 				</a>
 			</li>
             <li>
@@ -71,31 +93,35 @@
 	</section>
 	<!-- SIDEBAR -->
 
-
-
 	<!-- CONTENT -->
 	<section id="content">
 		<!-- NAVBAR -->
-		<nav>
-			<i class='bx bx-menu' ></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<a href="notif.html" class="notification">
-				<i class='bx bxs-bell' ></i>
-				<span class="num"></span>
-			</a>
-			<a href="profile.html" class="profile">
-				<img src="IMAGES/" id="navbar-profile-img">
-			</a>
-		</nav>
-		<!-- NAVBAR -->
-
+<nav>
+    <i class='bx bx-menu'></i>
+    
+    <form action="#">
+        <div class="form-input">
+            <input type="search" placeholder="Search...">
+            <button type="submit" class="search-btn">
+                <i class='bx bx-search'></i>
+            </button>
+        </div>
+    </form>
+    
+    <i class='bx bx-sun' id="sun-icon"></i>
+    <input type="checkbox" id="switch-mode" hidden>
+    <label for="switch-mode" class="switch-mode"></label>
+    <i class='bx bx-moon' id="moon-icon"></i>
+    
+    <a href="notif.html" class="notification">
+        <i class='bx bxs-bell'></i>
+        <span class="num"></span>
+    </a>
+    
+    <a href="profile.html" class="profile">
+        <img src="IMAGES/" id="navbar-profile-img" alt="Profile">
+    </a>
+</nav>
 
 		 <!-- LIVESTOCK RECORDS -->
         <div class="container">
@@ -136,7 +162,10 @@
                             <th>Kind of Livestock</th>
                             <th>Gender</th>
                             <th>Weight</th>
+                            <th>Dealer</th>
                             <th>Status</th>
+                            <th>Date Created</th>
+                            <th>Time Created</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -154,7 +183,7 @@
             </footer>
         </div>
 
-        <!-- Popup Form -->
+        <!-- Enhanced Popup Form -->
         <div class="dark_bg">
             <div class="popup">
                 <header>
@@ -164,19 +193,27 @@
 
                 <div class="body">
                     <form action="#" id="myForm">
-                        <div class="inputFieldContainer">
+                        <!-- Livestock ID with QR Scanner -->
+                        <div class="inputFieldContainer full-width">
                             <div class="form_control">
                                 <label for="livestockId">Livestock ID:</label>
-                                <div class="id-input-container">
-                                    <input type="text" name="" id="livestockId" required>
-                                    <button type="button" id="qrScanBtn" class="qr-scan-btn">
-                                        <i class="fas fa-qrcode"></i> Scan QR
+                                <div class="qr-id-display">
+                                    <div class="id-display-box">
+                                        <span class="id-label">ID:</span>
+                                        <span class="id-value" id="livestockIdValue">Not Scanned</span>
+                                    </div>
+                                    <button type="button" id="qrScanBtn" class="qr-scan-btn-new">
+                                        <i class="fas fa-qrcode"></i> Scan QR Code
                                     </button>
                                 </div>
+                                <input type="hidden" id="livestockId" required>
                             </div>
+                        </div>
 
+                        <!-- Kind of Livestock -->
+                        <div class="inputFieldContainer">
                             <div class="form_control">
-                                <label for="kindOfLivestock">Kind of Livestock:</label>
+                                <label for="kindOfLivestock">Kind of Live Food:</label>
                                 <select name="" id="kindOfLivestock" required>
                                     <option value="">Select type</option>
                                     <option value="Pig">Pig</option>
@@ -184,21 +221,59 @@
                                     <option value="Carabao">Carabao</option>
                                 </select>
                             </div>
+                        </div>
 
+                        <!-- Gender Selection with Icons -->
+                        <div class="inputFieldContainer">
                             <div class="form_control">
-                                <label for="gender">Gender:</label>
-                                <select name="" id="gender" required>
-                                    <option value="">Select gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
+                                <label>Gender:</label>
+                                <div class="gender-selection">
+                                    <div class="gender-option" data-gender="Male">
+                                        <i class="fas fa-mars"></i>
+                                        <span>Male</span>
+                                    </div>
+                                    <div class="gender-option" data-gender="Female">
+                                        <i class="fas fa-venus"></i>
+                                        <span>Female</span>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="gender" required>
                             </div>
+                        </div>
 
+                        <!-- Weight with Increment/Decrement and Input Field -->
+                        <div class="inputFieldContainer">
                             <div class="form_control">
                                 <label for="weight">Weight (kg):</label>
-                                <input type="number" name="" id="weight" step="0.1" min="0" required>
+                                <div class="weight-control">
+                                    <div class="weight-display">
+                                        <span class="weight-value" id="weightValue">0.0</span>
+                                        <span class="weight-unit">kilogram</span>
+                                    </div>
+                                    <div class="weight-buttons">
+                                        <button type="button" id="weightUp" class="weight-btn">
+                                            <i class="fas fa-chevron-up"></i>
+                                        </button>
+                                        <button type="button" id="weightDown" class="weight-btn">
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="text" id="weightInputField" placeholder="Or type weight here..." style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #dee2e6; border-radius: 8px; font-size: 14px;">
+                                <input type="hidden" id="weight" required>
                             </div>
+                        </div>
 
+                        <!-- Dealer Name -->
+                        <div class="inputFieldContainer full-width">
+                            <div class="form_control">
+                                <label for="dealer">Dealer Name:</label>
+                                <input type="text" id="dealer" placeholder="Enter dealer name" required style="width: 100%; padding: 12px 15px; border: 2px solid #dee2e6; border-radius: 8px; font-size: 15px; outline: none;">
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="inputFieldContainer full-width">
                             <div class="form_control">
                                 <label for="status">Status:</label>
                                 <select name="" id="status" required>
@@ -215,29 +290,112 @@
                 </div>
 
                 <footer class="popupFooter">
-                    <button type="button" class="cancelBtn" style="display: none;">Cancel</button>
+                    <button type="button" class="cancelBtn">Cancel</button>
                     <button form="myForm" class="submitBtn">Submit</button>
                 </footer>
             </div>
         </div>
+<!-- FLOATING SCANNER BUTTON -->
+<button class="floating-scanner-btn" id="scannerBtn">
+    <i class='bx bx-qr-scan'></i>
+</button>
 
-        <!-- QR Scanner Modal -->
-        <div class="qr_scanner_bg">
-            <div class="qr_scanner_popup">
-                <header>
-                    <h2>QR Code Scanner</h2>
-                    <button class="closeQRBtn">&times;</button>
-                </header>
-                <div class="scanner-container">
-                    <div id="qr-reader"></div>
+<!-- REGISTRATION MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">
+            <i class='bx bx-x'></i>
+        </button>
+        
+        <div class="modal-header">
+            <h2>Register New Livestock</h2>
+        </div>
+
+        <form class="registration-form" id="registrationForm">
+            <div class="form-group">
+                <label>Kind of Live Food</label>
+                <input type="text" id="liveFood" placeholder="e.g., Pig, Cattle, Carabao" required>
+            </div>
+
+            <div class="form-group">
+                <label>Weight (Kilogram)</label>
+                <div class="weight-input">
+                    <input type="number" id="weight" step="0.1" min="0" value="0.0" required>
+                    <div class="weight-controls">
+                        <button type="button" class="weight-btn" id="weightUp">
+                            <i class='bx bx-chevron-up'></i>
+                        </button>
+                        <button type="button" class="weight-btn" id="weightDown">
+                            <i class='bx bx-chevron-down'></i>
+                        </button>
+                    </div>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <div class="gender-select">
+                    <button type="button" class="gender-btn" data-gender="male">
+                        <i class='bx bx-male-sign'></i>
+                        <span>Male</span>
+                    </button>
+                    <button type="button" class="gender-btn" data-gender="female">
+                        <i class='bx bx-female-sign'></i>
+                        <span>Female</span>
+                    </button>
+                </div>
+                <input type="hidden" id="gender" required>
+            </div>
+
+            <div class="form-group">
+                <label>Livestock ID</label>
+                <div class="id-input">
+                    <input type="text" id="livestockId" placeholder="Scan QR Code" readonly required>
+                    <button type="button" class="scan-qr-btn" id="scanQrBtn">
+                        <i class='bx bx-qr-scan'></i>
+                        <span>Scan QR</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dealer Name</label>
+                <input type="text" id="dealerName" placeholder="Enter dealer name" required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class='bx bx-check'></i>
+                Register Livestock
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- QR SCANNER MODAL -->
+<div class="qr-modal-overlay" id="qrModalOverlay">
+    <div class="qr-modal-content">
+        <button class="modal-close" id="qrModalClose">
+            <i class='bx bx-x'></i>
+        </button>
+        
+        <div class="qr-modal-header">
+            <h2>Scan QR Code</h2>
+        </div>
+
+        <div class="qr-scanner-container">
+            <video id="qrVideo" autoplay></video>
+            <div class="qr-overlay">
+                <div class="qr-frame"></div>
             </div>
         </div>
 
-        <!-- LIVESTOCK RECORDS ENDS HERE -->
-    </section>
-    <!-- CONTENT -->
+        <div class="qr-instructions">
+            <p>Position the QR code within the frame</p>
+        </div>
+    </div>
+</div> 
 
     <script src="records.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

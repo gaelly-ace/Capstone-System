@@ -7,10 +7,10 @@
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
-	<link rel="stylesheet" href="reports.css">
+	<link rel="stylesheet" href="requests.css">
 	<link rel="stylesheet" href="style.css">
 
-	<title>PSMO - SuperAdmin</title>
+	<title>PSMO - SuperAdmin - Requests</title>
     <script>
 	(function() {
 		if (sessionStorage.getItem('darkMode') === 'enabled') {
@@ -35,7 +35,7 @@
 					<span class="text">Dashboard</span>
 				</a>
 			</li>
-            <li class="active">
+            <li>
 				<a href="reports.html">
 					<i class='bx bxs-message-dots' ></i>
 					<span class="text">Reports</span>
@@ -54,7 +54,7 @@
 				</a>
 			</li>
 			
-			<li>
+			<li class="active">
 				<a href="requests.html">
 					<i class='bx bxs-file-doc' ></i>
 					<span class="text">Requests</span>
@@ -120,20 +120,20 @@
 </nav>
 <!-- END NAVBAR -->
 
-		<!-- ANOMALIES SECTION -->
-		<div class="reports-section">
-            <h2>Anomalies</h2>
+        <!-- REQUESTS SECTION -->
+        <div class="reports-section">
+            <h2>Requests</h2>
             <div class="table-wrapper">
-                <table id="anomalies-table">
+                <table id="requests-table">
                     <thead>
                         <tr>
-                            <th>Live Food ID</th>
-                            <th>Live Food</th>
-                            <th>Time</th>
-                            <th>Gender</th>
-                            <th>Weight</th>
+                            <th>Request ID</th>
+                            <th>Type</th>
+                            <th>Requested By</th>
+                            <th>Role</th>
+                            <th>Details</th>
+                            <th>Date Requested</th>
                             <th>Status</th>
-                            <th>Anomaly/ies</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -144,7 +144,7 @@
     </section>
 	<!-- CONTENT -->
 
-<!-- FLOATING SCANNER BUTTON -->
+	<!-- FLOATING SCANNER BUTTON -->
 <button class="floating-scanner-btn" id="scannerBtn">
     <i class='bx bx-qr-scan'></i>
 </button>
@@ -243,8 +243,9 @@
         </div>
     </div>
 </div>
+
     <script src="script.js"></script>
 	<script src="notification.js"></script>
-    <script src="reports.js"></script>
+    <script src="requests.js"></script>
 </body>
 </html>

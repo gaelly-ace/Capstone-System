@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="analytics.css">
+	<title>PSMO - Analytics</title>
+<script>
+	(function() {
+		if (sessionStorage.getItem('darkMode') === 'enabled') {
+			document.documentElement.classList.add('dark-init');
+			document.body.classList.add('dark');
+		}
+	})();
+</script>
+</head>
+<body>
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">SuperAdmin</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="index.html">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+            <li>
+				<a href="reports.html">
+					<i class='bx bxs-message-dots' ></i>
+					<span class="text">Reports</span>
+				</a>
+			</li>
+			<li>
+				<a href="records.html">
+					<i class='bx bxs-shopping-bag-alt' ></i>
+					<span class="text">Records</span>
+				</a>
+			</li>
+			<li>
+				<a href="archive.html">
+					<i class='bx bxs-doughnut-chart' ></i>
+					<span class="text">Archives</span>
+				</a>
+			</li>
+			
+			<li>
+				<a href="requests.html">
+					<i class='bx bxs-file-doc' ></i>
+					<span class="text">Requests</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="analytics.html">
+					<i class='bx bxs-bar-chart-alt-2' ></i>
+					<span class="text">Analytics</span>
+				</a>
+			</li>
+            <li>
+				<a href="team.html">
+					<i class='bx bxs-calendar' ></i>
+					<span class="text">Role Management</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="sign.html" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR - Copy this entire section to all your HTML pages -->
+<nav>
+    <!-- Menu Toggle Button -->
+    <i class='bx bx-menu'></i>
+    
+    <!-- Search Form -->
+    <form action="#">
+        <div class="form-input">
+            <input type="search" placeholder="Search...">
+            <button type="submit" class="search-btn">
+                <i class='bx bx-search'></i>
+            </button>
+        </div>
+    </form>
+    
+    <!-- Dark/Light Mode Toggle -->
+    <i class='bx bx-sun' id="sun-icon"></i>
+    <input type="checkbox" id="switch-mode" hidden>
+    <label for="switch-mode" class="switch-mode"></label>
+    <i class='bx bx-moon' id="moon-icon"></i>
+    
+    <!-- Notification Icon -->
+    <a href="notif.html" class="notification">
+        <i class='bx bxs-bell'></i>
+        <span class="num"></span>
+    </a>
+    
+    <!-- Profile Icon -->
+    <a href="profile.html" class="profile">
+        <img src="IMAGES/" id="navbar-profile-img" alt="Profile">
+    </a>
+</nav>
+<!-- END NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Analytics Dashboard</h1>
+					<p class="subtitle">Comprehensive data analysis and insights</p>
+				</div>
+				<div class="filter-controls">
+					<select id="time-filter" class="filter-select">
+						<option value="week">This Week</option>
+						<option value="month" selected>This Month</option>
+						<option value="quarter">This Quarter</option>
+						<option value="year">This Year</option>
+					</select>
+					<button class="export-btn">
+						<i class='bx bx-download'></i>
+						Export Report
+					</button>
+				</div>
+			</div>
+
+			<!-- Category Filters -->
+			<div class="category-filters">
+				<button class="category-btn active" data-category="all">
+					<i class='bx bx-grid-alt'></i>
+					All Livestock
+				</button>
+				<button class="category-btn" data-category="pig">
+					<i class='bx bxs-cat'></i>
+					Pigs Only
+				</button>
+				<button class="category-btn" data-category="cattle">
+					<i class='bx bxs-dog'></i>
+					Cattle Only
+				</button>
+				<button class="category-btn" data-category="carabao">
+					<i class='bx bxs-cat'></i>
+					Carabao Only
+				</button>
+			</div>
+
+			<!-- Report Type Filters -->
+			<div class="report-filters">
+				<button class="report-btn active" data-report="daily">
+					Daily Report
+				</button>
+				<button class="report-btn" data-report="weekly">
+					Weekly Report
+				</button>
+				<button class="report-btn" data-report="monthly">
+					Monthly Report
+				</button>
+			</div>
+
+			<!-- Key Metrics Cards -->
+			<div class="analytics-cards">
+				<div class="metric-card">
+					<div class="metric-icon" style="background: var(--light-blue); color: var(--blue);">
+						<i class='bx bx-trending-up'></i>
+					</div>
+					<div class="metric-info">
+						<h3>15,234</h3>
+						<p>Total Transactions</p>
+						<span class="metric-change positive">
+							<i class='bx bx-up-arrow-alt'></i> 12.5% from last month
+						</span>
+					</div>
+				</div>
+
+				<div class="metric-card">
+					<div class="metric-icon" style="background: var(--light-yellow); color: var(--yellow);">
+						<i class='bx bx-package'></i>
+					</div>
+					<div class="metric-info">
+						<h3>8,456</h3>
+						<p>Live Food Processed</p>
+						<span class="metric-change positive">
+							<i class='bx bx-up-arrow-alt'></i> 8.2% from last month
+						</span>
+					</div>
+				</div>
+
+				<div class="metric-card">
+					<div class="metric-icon" style="background: var(--light-orange); color: var(--orange);">
+						<i class='bx bx-group'></i>
+					</div>
+					<div class="metric-info">
+						<h3>2,834</h3>
+						<p>Active Dealers</p>
+						<span class="metric-change positive">
+							<i class='bx bx-up-arrow-alt'></i> 5.3% from last month
+						</span>
+					</div>
+				</div>
+
+				<div class="metric-card">
+					<div class="metric-icon" style="background: #ffebee; color: var(--red);">
+						<i class='bx bx-error-circle'></i>
+					</div>
+					<div class="metric-info">
+						<h3>124</h3>
+						<p>Anomalies Detected</p>
+						<span class="metric-change negative">
+							<i class='bx bx-down-arrow-alt'></i> 3.1% from last month
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Charts Section -->
+			<div class="charts-grid">
+				<!-- Transaction Trends -->
+				<div class="chart-container large">
+					<div class="chart-header">
+						<h3>Transaction Trends</h3>
+						<div class="chart-controls">
+							<button class="chart-tab active" data-chart="line">Line</button>
+							<button class="chart-tab" data-chart="bar">Bar</button>
+						</div>
+					</div>
+					<div id="transaction-chart"></div>
+				</div>
+
+				<!-- Live Food Distribution -->
+				<div class="chart-container medium">
+					<div class="chart-header">
+						<h3>Live Food Distribution</h3>
+					</div>
+					<div id="distribution-chart"></div>
+				</div>
+
+				<!-- Regional Performance -->
+				<div class="chart-container large">
+					<div class="chart-header">
+						<h3>Regional Performance</h3>
+					</div>
+					<div id="regional-chart"></div>
+				</div>
+
+				<!-- Dealer Activity -->
+				<div class="chart-container medium">
+					<div class="chart-header">
+						<h3>Dealer Activity Status</h3>
+					</div>
+					<div id="dealer-activity-chart"></div>
+				</div>
+
+				<!-- Processing Time Analysis -->
+				<div class="chart-container large">
+					<div class="chart-header">
+						<h3>Average Processing Time</h3>
+					</div>
+					<div id="processing-time-chart"></div>
+				</div>
+
+				<!-- Anomaly Types -->
+				<div class="chart-container medium">
+					<div class="chart-header">
+						<h3>Anomaly Categories</h3>
+					</div>
+					<div id="anomaly-chart"></div>
+				</div>
+			</div>
+
+			<!-- Data Tables -->
+			<div class="analytics-tables">
+				<div class="table-container">
+					<div class="table-header">
+						<h3>Top Performing Dealers</h3>
+						<button class="view-all-btn">View All</button>
+					</div>
+					<table class="analytics-table">
+						<thead>
+							<tr>
+								<th>Dealer Name</th>
+								<th>Region</th>
+								<th>Transactions</th>
+								<th>Success Rate</th>
+								<th>Revenue</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<div class="dealer-info">
+										<div class="dealer-avatar">JD</div>
+										<span>John Dela Cruz</span>
+									</div>
+								</td>
+								<td>Cavite</td>
+								<td>1,245</td>
+								<td><span class="success-rate high">98.5%</span></td>
+								<td>₱1,245,000</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="dealer-info">
+										<div class="dealer-avatar">MS</div>
+										<span>Maria Santos</span>
+									</div>
+								</td>
+								<td>Batangas</td>
+								<td>1,103</td>
+								<td><span class="success-rate high">97.2%</span></td>
+								<td>₱1,103,000</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="dealer-info">
+										<div class="dealer-avatar">PR</div>
+										<span>Pedro Reyes</span>
+									</div>
+								</td>
+								<td>Laguna</td>
+								<td>956</td>
+								<td><span class="success-rate medium">94.8%</span></td>
+								<td>₱956,000</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="dealer-info">
+										<div class="dealer-avatar">AT</div>
+										<span>Ana Torres</span>
+									</div>
+								</td>
+								<td>Manila</td>
+								<td>887</td>
+								<td><span class="success-rate medium">93.5%</span></td>
+								<td>₱887,000</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="dealer-info">
+										<div class="dealer-avatar">RG</div>
+										<span>Ramon Garcia</span>
+									</div>
+								</td>
+								<td>Rizal</td>
+								<td>823</td>
+								<td><span class="success-rate medium">92.1%</span></td>
+								<td>₱823,000</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="table-container">
+					<div class="table-header">
+						<h3>Recent Anomalies</h3>
+						<button class="view-all-btn">View All</button>
+					</div>
+					<table class="analytics-table">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Type</th>
+								<th>Dealer</th>
+								<th>Severity</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Oct 14, 2025</td>
+								<td>Documentation</td>
+								<td>Juan Cruz</td>
+								<td><span class="severity low">Low</span></td>
+								<td><span class="status-badge resolved">Resolved</span></td>
+							</tr>
+							<tr>
+								<td>Oct 13, 2025</td>
+								<td>Weight Discrepancy</td>
+								<td>Lisa Gomez</td>
+								<td><span class="severity medium">Medium</span></td>
+								<td><span class="status-badge investigating">Investigating</span></td>
+							</tr>
+							<tr>
+								<td>Oct 13, 2025</td>
+								<td>Health Certificate</td>
+								<td>Carlos Ramos</td>
+								<td><span class="severity high">High</span></td>
+								<td><span class="status-badge pending">Pending</span></td>
+							</tr>
+							<tr>
+								<td>Oct 12, 2025</td>
+								<td>Late Submission</td>
+								<td>Elena Cruz</td>
+								<td><span class="severity low">Low</span></td>
+								<td><span class="status-badge resolved">Resolved</span></td>
+							</tr>
+							<tr>
+								<td>Oct 11, 2025</td>
+								<td>Quality Issue</td>
+								<td>Miguel Santos</td>
+								<td><span class="severity medium">Medium</span></td>
+								<td><span class="status-badge resolved">Resolved</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+
+	<!-- FLOATING SCANNER BUTTON -->
+<button class="floating-scanner-btn" id="scannerBtn">
+    <i class='bx bx-qr-scan'></i>
+</button>
+
+<!-- REGISTRATION MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">
+            <i class='bx bx-x'></i>
+        </button>
+        
+        <div class="modal-header">
+            <h2>Register New Livestock</h2>
+        </div>
+
+        <form class="registration-form" id="registrationForm">
+            <div class="form-group">
+                <label>Kind of Live Food</label>
+                <input type="text" id="liveFood" placeholder="e.g., Pig, Cattle, Carabao" required>
+            </div>
+
+            <div class="form-group">
+                <label>Weight (Kilogram)</label>
+                <div class="weight-input">
+                    <input type="number" id="weight" step="0.1" min="0" value="0.0" required>
+                    <div class="weight-controls">
+                        <button type="button" class="weight-btn" id="weightUp">
+                            <i class='bx bx-chevron-up'></i>
+                        </button>
+                        <button type="button" class="weight-btn" id="weightDown">
+                            <i class='bx bx-chevron-down'></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <div class="gender-select">
+                    <button type="button" class="gender-btn" data-gender="male">
+                        <i class='bx bx-male-sign'></i>
+                        <span>Male</span>
+                    </button>
+                    <button type="button" class="gender-btn" data-gender="female">
+                        <i class='bx bx-female-sign'></i>
+                        <span>Female</span>
+                    </button>
+                </div>
+                <input type="hidden" id="gender" required>
+            </div>
+
+            <div class="form-group">
+                <label>Livestock ID</label>
+                <div class="id-input">
+                    <input type="text" id="livestockId" placeholder="Scan QR Code" readonly required>
+                    <button type="button" class="scan-qr-btn" id="scanQrBtn">
+                        <i class='bx bx-qr-scan'></i>
+                        <span>Scan QR</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Dealer Name</label>
+                <input type="text" id="dealerName" placeholder="Enter dealer name" required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class='bx bx-check'></i>
+                Register Livestock
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- QR SCANNER MODAL -->
+<div class="qr-modal-overlay" id="qrModalOverlay">
+    <div class="qr-modal-content">
+        <button class="modal-close" id="qrModalClose">
+            <i class='bx bx-x'></i>
+        </button>
+        
+        <div class="qr-modal-header">
+            <h2>Scan QR Code</h2>
+        </div>
+
+        <div class="qr-scanner-container">
+            <video id="qrVideo" autoplay></video>
+            <div class="qr-overlay">
+                <div class="qr-frame"></div>
+            </div>
+        </div>
+
+        <div class="qr-instructions">
+            <p>Position the QR code within the frame</p>
+        </div>
+    </div>
+</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+	<script src="script.js"></script>
+	<script src="analytics.js"></script>
+</body>
+</html>

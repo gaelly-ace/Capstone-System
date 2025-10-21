@@ -52,7 +52,6 @@ window.addEventListener('resize', function () {
 // Dark Mode
 const switchMode = document.getElementById('switch-mode');
 
-// Check stored preference on page load
 if (localStorage.getItem('dark-mode') === 'true') {
     document.body.classList.add('dark');
     switchMode.checked = true;
@@ -71,117 +70,49 @@ switchMode.addEventListener('change', function () {
 // ANOMALIES DATA - Live food reports with anomalies
 const anomaliesData = [
     {
-        id: "LF001",
-        kind: "Pig",
+        id: "123",
+        kind: "Swine",
+        time: "10:00",
         gender: "Male",
-        weight: "85 kg",
+        weight: "200kg",
         status: "Holding Pen",
-        anomalies: "Skin lesions on back leg",
-        reportedBy: "Dr. Santos",
-        dateReported: "2024-08-05",
-        severity: "Medium"
+        anomalies: "none"
     },
     {
-        id: "LF003",
+        id: "124",
         kind: "Cattle",
+        time: "10:15",
         gender: "Female",
-        weight: "420 kg",
+        weight: "420kg",
         status: "Slaughterhouse",
-        anomalies: "Limping, swollen joints",
-        reportedBy: "Vet. Cruz",
-        dateReported: "2024-08-04",
-        severity: "High"
+        anomalies: "Limping, swollen joints"
     },
     {
-        id: "LF007",
+        id: "125",
         kind: "Carabao",
+        time: "10:30",
         gender: "Male",
-        weight: "480 kg",
+        weight: "480kg",
         status: "Holding Pen",
-        anomalies: "Respiratory issues, coughing",
-        reportedBy: "Dr. Reyes",
-        dateReported: "2024-08-03",
-        severity: "High"
+        anomalies: "Respiratory issues"
     },
     {
-        id: "LF012",
-        kind: "Pig",
+        id: "126",
+        kind: "Swine",
+        time: "11:00",
         gender: "Female",
-        weight: "92 kg",
+        weight: "92kg",
         status: "Holding Pen",
-        anomalies: "Loss of appetite, lethargy",
-        reportedBy: "Vet. Garcia",
-        dateReported: "2024-08-02",
-        severity: "Medium"
+        anomalies: "Loss of appetite"
     },
     {
-        id: "LF015",
+        id: "127",
         kind: "Cattle",
+        time: "11:20",
         gender: "Male",
-        weight: "510 kg",
+        weight: "510kg",
         status: "Exit",
-        anomalies: "Minor cuts from transport",
-        reportedBy: "Dr. Santos",
-        dateReported: "2024-08-01",
-        severity: "Low"
-    }
-];
-
-// REQUESTS DATA - Password changes and record edit/archive requests
-const requestsData = [
-    {
-        id: "REQ001",
-        type: "Password Change",
-        requestedBy: "John Doe",
-        role: "Veterinarian",
-        details: "Forgot current password",
-        dateRequested: "2024-08-05",
-        status: "Pending"
-    },
-    {
-        id: "REQ002",
-        type: "Edit Record",
-        requestedBy: "Maria Santos",
-        role: "Admin Assistant",
-        details: "Update weight for LF008 - Cattle",
-        dateRequested: "2024-08-04",
-        status: "Approved"
-    },
-    {
-        id: "REQ003",
-        type: "Archive Record",
-        requestedBy: "Carlos Reyes",
-        role: "Supervisor",
-        details: "Archive completed records from July",
-        dateRequested: "2024-08-04",
-        status: "Pending"
-    },
-    {
-        id: "REQ004",
-        type: "Password Change",
-        requestedBy: "Ana Garcia",
-        role: "Veterinarian",
-        details: "Security update - regular password change",
-        dateRequested: "2024-08-03",
-        status: "Completed"
-    },
-    {
-        id: "REQ005",
-        type: "Edit Record",
-        requestedBy: "Roberto Cruz",
-        role: "Data Entry",
-        details: "Correct anomaly description for LF003",
-        dateRequested: "2024-08-02",
-        status: "Rejected"
-    },
-    {
-        id: "REQ006",
-        type: "Archive Record",
-        requestedBy: "Lisa Torres",
-        role: "Admin Assistant",
-        details: "Archive inactive livestock records",
-        dateRequested: "2024-08-01",
-        status: "Pending"
+        anomalies: "none"
     }
 ];
 
@@ -191,7 +122,7 @@ function handleAnomalyAction(action, anomalyId, rowElement) {
     if (dataItem) {
         switch(action) {
             case 'view':
-                alert(`Anomaly Details:\n\nLive Food ID: ${dataItem.id}\nKind: ${dataItem.kind}\nAnomalies: ${dataItem.anomalies}\nReported by: ${dataItem.reportedBy}\nDate: ${dataItem.dateReported}\nSeverity: ${dataItem.severity}`);
+                alert(`Anomaly Details:\n\nLive Food ID: ${dataItem.id}\nKind: ${dataItem.kind}\nTime: ${dataItem.time}\nGender: ${dataItem.gender}\nWeight: ${dataItem.weight}\nStatus: ${dataItem.status}\nAnomalies: ${dataItem.anomalies}`);
                 break;
             case 'resolve':
                 if (confirm(`Mark anomaly for ${dataItem.kind} (${anomalyId}) as resolved?`)) {
@@ -206,65 +137,37 @@ function handleAnomalyAction(action, anomalyId, rowElement) {
     }
 }
 
-// Function to handle request actions
-function handleRequestAction(action, requestId, rowElement) {
-    const dataItem = requestsData.find(item => item.id === requestId);
-    if (dataItem) {
-        switch(action) {
-            case 'approve':
-                if (confirm(`Approve request ${requestId}?`)) {
-                    dataItem.status = 'Approved';
-                    populateRequestsTable();
-                    console.log(`Request ${requestId} approved`);
-                }
-                break;
-            case 'reject':
-                if (confirm(`Reject request ${requestId}?`)) {
-                    dataItem.status = 'Rejected';
-                    populateRequestsTable();
-                    console.log(`Request ${requestId} rejected`);
-                }
-                break;
-            case 'view':
-                alert(`Request Details:\n\nRequest ID: ${dataItem.id}\nType: ${dataItem.type}\nRequested by: ${dataItem.requestedBy}\nRole: ${dataItem.role}\nDetails: ${dataItem.details}\nDate: ${dataItem.dateRequested}\nStatus: ${dataItem.status}`);
-                break;
-        }
-    }
-}
-
 // Function to populate the anomalies table
 function populateAnomaliesTable() {
     const tbody = document.querySelector("#anomalies-table tbody");
-    tbody.innerHTML = ""; // Clear existing rows
+    tbody.innerHTML = "";
 
     anomaliesData.forEach((item) => {
         const row = document.createElement("tr");
 
-        // Live Food ID cell
         const idCell = document.createElement("td");
         idCell.textContent = item.id;
         row.appendChild(idCell);
 
-        // Kind of Live Food cell
         const kindCell = document.createElement("td");
         kindCell.textContent = item.kind;
         row.appendChild(kindCell);
 
-        // Gender cell
+        const timeCell = document.createElement("td");
+        timeCell.textContent = item.time;
+        row.appendChild(timeCell);
+
         const genderCell = document.createElement("td");
         genderCell.textContent = item.gender;
         row.appendChild(genderCell);
 
-        // Weight cell
         const weightCell = document.createElement("td");
         weightCell.textContent = item.weight;
         row.appendChild(weightCell);
 
-        // Status cell
         const statusCell = document.createElement("td");
         statusCell.textContent = item.status;
         
-        // Add status-based styling
         switch(item.status) {
             case 'Holding Pen':
                 statusCell.style.color = '#ffc107';
@@ -281,138 +184,26 @@ function populateAnomaliesTable() {
         }
         row.appendChild(statusCell);
 
-        // Anomalies cell
         const anomaliesCell = document.createElement("td");
         anomaliesCell.textContent = item.anomalies;
-        anomaliesCell.style.color = '#dc3545';
+        if (item.anomalies !== 'none') {
+            anomaliesCell.style.color = '#dc3545';
+        }
         row.appendChild(anomaliesCell);
 
-        // Severity cell
-        const severityCell = document.createElement("td");
-        severityCell.textContent = item.severity;
-        
-        // Add severity-based styling
-        switch(item.severity) {
-            case 'Low':
-                severityCell.style.color = '#28a745';
-                break;
-            case 'Medium':
-                severityCell.style.color = '#ffc107';
-                break;
-            case 'High':
-                severityCell.style.color = '#dc3545';
-                break;
-        }
-        severityCell.style.fontWeight = 'bold';
-        row.appendChild(severityCell);
-
-        // Action cell
         const actionCell = document.createElement("td");
         
-        // View button
         const viewButton = document.createElement("button");
         viewButton.textContent = "View";
         viewButton.classList.add("view-btn");
         viewButton.onclick = () => handleAnomalyAction('view', item.id, row);
         actionCell.appendChild(viewButton);
         
-        // Resolve button
         const resolveButton = document.createElement("button");
         resolveButton.textContent = "Resolve";
         resolveButton.classList.add("resolve-btn");
         resolveButton.onclick = () => handleAnomalyAction('resolve', item.id, row);
         actionCell.appendChild(resolveButton);
-        
-        row.appendChild(actionCell);
-        tbody.appendChild(row);
-    });
-}
-
-// Function to populate the requests table
-function populateRequestsTable() {
-    const tbody = document.querySelector("#requests-table tbody");
-    tbody.innerHTML = ""; // Clear existing rows
-
-    requestsData.forEach((item) => {
-        const row = document.createElement("tr");
-
-        // Request ID cell
-        const idCell = document.createElement("td");
-        idCell.textContent = item.id;
-        row.appendChild(idCell);
-
-        // Type cell
-        const typeCell = document.createElement("td");
-        typeCell.textContent = item.type;
-        row.appendChild(typeCell);
-
-        // Requested By cell
-        const requestedByCell = document.createElement("td");
-        requestedByCell.textContent = item.requestedBy;
-        row.appendChild(requestedByCell);
-
-        // Role cell
-        const roleCell = document.createElement("td");
-        roleCell.textContent = item.role;
-        row.appendChild(roleCell);
-
-        // Details cell
-        const detailsCell = document.createElement("td");
-        detailsCell.textContent = item.details;
-        row.appendChild(detailsCell);
-
-        // Date cell
-        const dateCell = document.createElement("td");
-        dateCell.textContent = item.dateRequested;
-        row.appendChild(dateCell);
-
-        // Status cell
-        const statusCell = document.createElement("td");
-        statusCell.textContent = item.status;
-        
-        // Add status-based styling
-        switch(item.status) {
-            case 'Pending':
-                statusCell.style.color = '#ffc107';
-                break;
-            case 'Approved':
-                statusCell.style.color = '#28a745';
-                break;
-            case 'Completed':
-                statusCell.style.color = '#17a2b8';
-                break;
-            case 'Rejected':
-                statusCell.style.color = '#dc3545';
-                break;
-        }
-        statusCell.style.fontWeight = 'bold';
-        row.appendChild(statusCell);
-
-        // Action cell
-        const actionCell = document.createElement("td");
-        
-        if (item.status === 'Pending') {
-            // Approve button
-            const approveButton = document.createElement("button");
-            approveButton.textContent = "Approve";
-            approveButton.classList.add("approve-btn");
-            approveButton.onclick = () => handleRequestAction('approve', item.id, row);
-            actionCell.appendChild(approveButton);
-            
-            // Reject button
-            const rejectButton = document.createElement("button");
-            rejectButton.textContent = "Reject";
-            rejectButton.classList.add("reject-btn");
-            rejectButton.onclick = () => handleRequestAction('reject', item.id, row);
-            actionCell.appendChild(rejectButton);
-        }
-        
-        // View button (always available)
-        const viewButton = document.createElement("button");
-        viewButton.textContent = "View";
-        viewButton.classList.add("view-btn");
-        viewButton.onclick = () => handleRequestAction('view', item.id, row);
-        actionCell.appendChild(viewButton);
         
         row.appendChild(actionCell);
         tbody.appendChild(row);
@@ -438,10 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     loadNotificationCount();
-
-    // Populate both tables
     populateAnomaliesTable();
-    populateRequestsTable();
 });
 
 //Profile Image
@@ -450,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let NavbarProfileImg = document.getElementById("navbar-profile-img");
     let insertFile = document.getElementById("insert-file");
 
-    // Function to update profile images
     function updateProfileImages(imageSrc) {
         if (ProfileImg) {
             ProfileImg.src = imageSrc;
@@ -458,17 +245,14 @@ document.addEventListener("DOMContentLoaded", function() {
         if (NavbarProfileImg) {
             NavbarProfileImg.src = imageSrc;
         }
-        // Update profile image in localStorage
         localStorage.setItem('profileImage', imageSrc);
     }
 
-    // Load saved image from localStorage on page load
     if (localStorage.getItem('profileImage')) {
         let savedImageSrc = localStorage.getItem('profileImage');
         updateProfileImages(savedImageSrc);
     }
 
-    // Handle file input change
     if (insertFile) {
         insertFile.onchange = function () {
             let file = insertFile.files[0];
@@ -485,33 +269,36 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let html5QrCode;
 
-function startQrScanner() {
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(() => {
-      document.getElementById("qr-scanner").style.display = "block";
-      html5QrCode = new Html5Qrcode("reader");
-      html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        qrCodeMessage => {
-          alert("Scanned: " + qrCodeMessage);
-          stopQrScanner();
-        },
-        errorMessage => console.warn("Scanning error", errorMessage)
-      );
-    })
-    .catch(() => {
-      alert("Camera access denied. Returning to site.");
-      window.location.href = "/";
-    });
-}
+    function startQrScanner() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(() => {
+                document.getElementById("qr-scanner").style.display = "block";
+                html5QrCode = new Html5Qrcode("reader");
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    { fps: 10, qrbox: { width: 250, height: 250 } },
+                    qrCodeMessage => {
+                        alert("Scanned: " + qrCodeMessage);
+                        stopQrScanner();
+                    },
+                    errorMessage => console.warn("Scanning error", errorMessage)
+                );
+            })
+            .catch(() => {
+                alert("Camera access denied. Returning to site.");
+                window.location.href = "/";
+            });
+    }
 
-function stopQrScanner() {
-  if (html5QrCode) {
-    html5QrCode.stop().then(() => {
-      html5QrCode.clear();
-      document.getElementById("qr-scanner").style.display = "none";
-    }).catch(err => console.error("Stop error:", err));
-  }
-}
+    function stopQrScanner() {
+        if (html5QrCode) {
+            html5QrCode.stop().then(() => {
+                html5QrCode.clear();
+                document.getElementById("qr-scanner").style.display = "none";
+            }).catch(err => console.error("Stop error:", err));
+        }
+    }
+
+    window.startQrScanner = startQrScanner;
+    window.stopQrScanner = stopQrScanner;
 });

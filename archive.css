@@ -44,6 +44,12 @@ body.dark {
 body {
     background: var(--grey);
     overflow-x: hidden;
+    transition: none;
+}
+
+/* Prevent flicker on initial load */
+body.dark-init {
+    transition: none !important;
 }
 
 /* SIDEBAR */
@@ -319,8 +325,6 @@ body {
 
 .container{
     padding: 20px;
-    box-shadow: 3px 3px 20px var(--dark1);
-    background: var(--dark3);
     border-radius: 10px;
     margin: 10px;
     margin-top: 50px;
@@ -333,15 +337,8 @@ body {
     margin-bottom: 20px;
 }
 
-.filterEntries .entries{
-    color: var(--dark8);
-}
-
 .filterEntries .entries select, .filterEntries .filter input{
     padding: 7px 10px;
-    border: 1px solid var(--dark6);
-    color: var(--dark8);
-    background: var(--dark4);
     border-radius: 5px;
     outline: none;
     transition: 0.3s;
@@ -358,12 +355,7 @@ body {
 }
 
 .filter label{
-    color: var(--dark8);
     margin-right: 5px;
-}
-
-.filter input:focus{
-    border-color: var(--dark7);
 }
 
 .container header .actionButtons {
@@ -375,51 +367,30 @@ body {
 
 .actionButtons button{
     padding: 9px 14px;
-    color: var(--dark8);
-    background: transparent;
     font-size: 16px;
     cursor: pointer;
     pointer-events: auto;
     outline: none;
-    border: 1px solid var(--dark6);
-    background: var(--dark4);
     border-radius: 5px;
-}
-
-.actionButtons button:hover{
-    background: var(--dark5);
-}
-
-.exportBtn {
-    background: var(--green) !important;
-    border-color: var(--green) !important;
-}
-
-.exportBtn:hover {
-    background: #218838 !important;
 }
 
 .container table{
     border-collapse: collapse;
     text-align: left;
     width: 100%;
-    table-layout: fixed;
+    min-width: 1600px;
 }
 
 table .heading{
-    background: var(--dark5);
     background: transparent;
-    color: var(--dark8);
 }
 
 table .heading th:hover{
-    background: var(--dark4);
     transition: 0.3s;
 }
 
 table tr th, table tr td{
     padding: 8px 12px;
-    color: var(--dark8);
     vertical-align: middle;
     text-align: center;
     word-wrap: break-word;
@@ -435,84 +406,23 @@ table tr th{
 table tr td img{
     vertical-align: middle;
 }
+
 table tr:hover{
     cursor: pointer;
-    background: var(--dark9);
-}
-
-table tr td{
-    border-bottom: 1px solid var(--dark6);
-}
-
-table tbody tr:first-child td{
-    border-top: 1px solid var(--dark6);
-}
-
-table tbody tr:nth-child(odd){
-    background: var(--dark9);
 }
 
 table tr td{
     font-size: 14px;
 }
 
-/* Set specific column widths that work within screen bounds */
-.container table th:nth-child(1),
-.container table td:nth-child(1) {
-    width: 15%;
-}
-
-.container table th:nth-child(2),
-.container table td:nth-child(2) {
-    width: 20%;
-}
-
-.container table th:nth-child(3),
-.container table td:nth-child(3) {
-    width: 10%;
-}
-
-.container table th:nth-child(4),
-.container table td:nth-child(4) {
-    width: 12%;
-}
-
-.container table th:nth-child(5),
-.container table td:nth-child(5) {
-    width: 18%;
-}
-
-.container table th:nth-child(6),
-.container table td:nth-child(6) {
-    width: 15%;
-}
-
-.container table th:nth-child(7),
-.container table td:nth-child(7) {
-    width: 10%;
-}
-
 table td button{
     margin: 2px;
     padding: 5px 8px;
-    background: var(--dark5);
-    color: var(--dark8);
     font-size: 12px;
     cursor: pointer;
     pointer-events: auto;
     outline: none;
-    border: 1px solid var(--dark7);
     border-radius: 3px;
-}
-
-.unarchiveBtn {
-    background: var(--red) !important;
-    border-color: var(--red) !important;
-    color: white !important;
-}
-
-.unarchiveBtn:hover {
-    background: #c1432d !important;
 }
 
 .container footer{
@@ -523,10 +433,6 @@ table td button{
     align-items: center;
 }
 
-.container footer span{
-    color: var(--dark8);
-}
-
 footer .pagination{
     display: flex;
 }
@@ -534,13 +440,10 @@ footer .pagination{
 footer .pagination button{
     width: 40px;
     padding: 5px 0;
-    color: var(--dark8);
-    background: transparent;
     font-size: 16px;
     cursor: pointer;
     pointer-events: auto;
     outline: none;
-    border: 1px solid var(--dark6);
     border-left: none;
     margin: 0;
 }
@@ -549,7 +452,6 @@ footer .pagination button{
     width: 85px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    border-left: 1px solid var(--dark6);
     opacity: 0.6;
     pointer-events: none;
 }
@@ -560,10 +462,6 @@ footer .pagination button{
     border-bottom-right-radius: 5px;
     opacity: 0.6;
     pointer-events: none;
-}
-
-.pagination button.active, .pagination button:hover{
-    background: var(--red1);
 }
 
 .pagination button.act:first-child{
@@ -578,7 +476,15 @@ footer .pagination button{
 
 table tr .empty{
     padding: 6px;
-    background: var(--dark9);
+}
+
+.container {
+    overflow-x: auto;
+}
+
+.table-container {
+    overflow-x: auto;
+    width: 100%;
 }
 
 .exportMenu {
@@ -589,7 +495,6 @@ table tr .empty{
 .exportOptions {
     display: none;
     position: absolute;
-    background-color: var(--dark4);
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     border-radius: 5px;
@@ -599,7 +504,6 @@ table tr .empty{
 }
 
 .exportOptions button {
-    color: var(--dark8);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -608,10 +512,6 @@ table tr .empty{
     border: none;
     background: none;
     cursor: pointer;
-}
-
-.exportOptions button:hover {
-    background-color: var(--dark5);
 }
 
 .exportMenu:hover .exportOptions {
@@ -625,7 +525,6 @@ table tr .empty{
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -643,7 +542,6 @@ table tr .empty{
 .confirmation_popup{
     border-radius: 5px;
     box-shadow: 3px 3px 20px rgba(0,0,0,0.3);
-    background: var(--dark3);
     transition: 0.4s;
     user-select: none;
     transform: scale(0.7);
@@ -664,9 +562,7 @@ table tr .empty{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--dark7);
     padding: 15px 20px;
-    color: var(--dark8);
 }
 
 .confirmation_popup header h2 {
@@ -677,16 +573,11 @@ table tr .empty{
 .closeConfirmBtn{
     background: none;
     border: none;
-    color: var(--dark8);
     font-size: 24px;
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 3px;
     transition: background-color 0.3s;
-}
-
-.closeConfirmBtn:hover{
-    background: var(--dark5);
 }
 
 .confirmation-body {
@@ -695,13 +586,11 @@ table tr .empty{
 }
 
 .confirmation-body p {
-    color: var(--dark8);
     font-size: 16px;
     margin: 0;
 }
 
 .confirmationFooter{
-    border-top: 1px solid var(--dark7);
     padding: 15px 20px;
     text-align: right;
     display: flex;
@@ -711,37 +600,401 @@ table tr .empty{
 
 .cancelConfirmBtn, .confirmBtn {
     padding: 10px 20px;
-    border: 1px solid var(--dark6);
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
 }
 
-.cancelConfirmBtn {
-    background: var(--dark4);
+/* Archive specific styles */
+.archived-date {
+    font-size: 12px;
+}
+
+/* ============================================ */
+/* LIGHT MODE STYLES (DEFAULT) */
+/* ============================================ */
+
+body:not(.dark) .container {
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark) .container header .filterEntries .entries,
+body:not(.dark) .container header .filterEntries .filter label,
+body:not(.dark) .container footer span {
+    color: #2c3e50;
+}
+
+body:not(.dark) .filterEntries .entries select,
+body:not(.dark) .filterEntries .filter input {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border: 1px solid #dee2e6;
+}
+
+body:not(.dark) .filterEntries .filter input:focus {
+    border-color: #adb5bd;
+}
+
+body:not(.dark) .actionButtons button {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border: 1px solid #dee2e6;
+}
+
+body:not(.dark) .actionButtons button:hover {
+    background: #e9ecef;
+}
+
+body:not(.dark) .exportBtn {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    border-color: #28a745 !important;
+}
+
+body:not(.dark) .exportBtn:hover {
+    background: #218838 !important;
+}
+
+body:not(.dark) .clearAllBtn {
+    background: #dc3545 !important;
+    color: #ffffff !important;
+    border-color: #dc3545 !important;
+}
+
+body:not(.dark) .clearAllBtn:hover {
+    background: #c82333 !important;
+}
+
+body:not(.dark) .exportOptions {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+}
+
+body:not(.dark) .exportOptions button {
+    color: #2c3e50;
+}
+
+body:not(.dark) .exportOptions button:hover {
+    background-color: #f8f9fa;
+}
+
+/* Table Styles - Light Mode */
+body:not(.dark) table .heading {
+    background: #f8f9fa;
+    color: #2c3e50;
+}
+
+body:not(.dark) table .heading th:hover {
+    background: #e9ecef;
+}
+
+body:not(.dark) table tr th,
+body:not(.dark) table tr td {
+    color: #2c3e50;
+}
+
+body:not(.dark) table tr:hover {
+    background: #f8f9fa;
+}
+
+body:not(.dark) table tr td {
+    border-bottom: 1px solid #dee2e6;
+}
+
+body:not(.dark) table tbody tr:first-child td {
+    border-top: 1px solid #dee2e6;
+}
+
+body:not(.dark) table tbody tr:nth-child(odd) {
+    background: #ffffff;
+}
+
+body:not(.dark) table tbody tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+body:not(.dark) table td button {
+    background: #e9ecef;
+    color: #2c3e50;
+    border: 1px solid #ced4da;
+}
+
+body:not(.dark) table tr .empty {
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+body:not(.dark) .unarchiveBtn {
+    background: #3C91E6 !important;
+    color: #ffffff !important;
+    border-color: #3C91E6 !important;
+}
+
+body:not(.dark) .unarchiveBtn:hover {
+    background: #2980b9 !important;
+}
+
+body:not(.dark) .archived-date {
+    color: #6c757d;
+}
+
+/* Pagination - Light Mode */
+body:not(.dark) footer .pagination button {
+    background: #ffffff;
+    color: #2c3e50;
+    border: 1px solid #dee2e6;
+}
+
+body:not(.dark) .pagination button.active,
+body:not(.dark) .pagination button:hover {
+    background: #3C91E6;
+    color: #ffffff;
+}
+
+body:not(.dark) .pagination button:first-child,
+body:not(.dark) .pagination button:last-child {
+    border: 1px solid #dee2e6;
+}
+
+/* Confirmation Modal - Light Mode */
+body:not(.dark) .confirmation_bg {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+body:not(.dark) .confirmation_popup {
+    background: #ffffff;
+}
+
+body:not(.dark) .confirmation_popup header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    color: #2c3e50;
+}
+
+body:not(.dark) .closeConfirmBtn {
+    color: #2c3e50;
+}
+
+body:not(.dark) .closeConfirmBtn:hover {
+    background: #e9ecef;
+}
+
+body:not(.dark) .confirmation-body p {
+    color: #2c3e50;
+}
+
+body:not(.dark) .confirmationFooter {
+    border-top: 1px solid #dee2e6;
+}
+
+body:not(.dark) .cancelConfirmBtn {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border: 1px solid #dee2e6;
+}
+
+body:not(.dark) .cancelConfirmBtn:hover {
+    background: #e9ecef;
+}
+
+body:not(.dark) .confirmBtn {
+    background: #3C91E6;
+    color: white;
+    border: 1px solid #3C91E6;
+}
+
+body:not(.dark) .confirmBtn:hover {
+    background: #2980b9;
+}
+
+/* ============================================ */
+/* DARK MODE STYLES */
+/* ============================================ */
+
+body.dark .container {
+    background: var(--dark3);
+    box-shadow: 3px 3px 20px var(--dark1);
+}
+
+body.dark .container header .filterEntries .entries,
+body.dark .container header .filterEntries .filter label,
+body.dark .container footer span {
     color: var(--dark8);
 }
 
-.cancelConfirmBtn:hover {
+body.dark .filterEntries .entries select,
+body.dark .filterEntries .filter input {
+    background: var(--dark4);
+    color: var(--dark8);
+    border: 1px solid var(--dark6);
+}
+
+body.dark .filterEntries .filter input:focus {
+    border-color: var(--dark7);
+}
+
+body.dark .actionButtons button {
+    background: var(--dark4);
+    color: var(--dark8);
+    border: 1px solid var(--dark6);
+}
+
+body.dark .actionButtons button:hover {
     background: var(--dark5);
 }
 
-.confirmBtn {
+body.dark .exportBtn {
+    background: var(--green) !important;
+    border-color: var(--green) !important;
+}
+
+body.dark .exportBtn:hover {
+    background: #218838 !important;
+}
+
+body.dark .clearAllBtn {
+    background: var(--red1) !important;
+    border-color: var(--red1) !important;
+}
+
+body.dark .clearAllBtn:hover {
+    background: #7a252a !important;
+}
+
+body.dark .exportOptions {
+    background-color: var(--dark4);
+}
+
+body.dark .exportOptions button {
+    color: var(--dark8);
+}
+
+body.dark .exportOptions button:hover {
+    background-color: var(--dark5);
+}
+
+/* Table Styles - Dark Mode */
+body.dark table .heading {
+    background: transparent;
+    color: var(--dark8);
+}
+
+body.dark table .heading th:hover {
+    background: var(--dark4);
+}
+
+body.dark table tr th,
+body.dark table tr td {
+    color: var(--dark8);
+}
+
+body.dark table tr:hover {
+    background: var(--dark9);
+}
+
+body.dark table tr td {
+    border-bottom: 1px solid var(--dark6);
+}
+
+body.dark table tbody tr:first-child td {
+    border-top: 1px solid var(--dark6);
+}
+
+body.dark table tbody tr:nth-child(odd) {
+    background: var(--dark9);
+}
+
+body.dark table td button {
+    background: var(--dark5);
+    color: var(--dark8);
+    border: 1px solid var(--dark7);
+}
+
+body.dark table tr .empty {
+    background: var(--dark9);
+}
+
+body.dark .unarchiveBtn {
+    background: var(--red) !important;
+    border-color: var(--red) !important;
+    color: white !important;
+}
+
+body.dark .unarchiveBtn:hover {
+    background: #c1432d !important;
+}
+
+body.dark .archived-date {
+    color: var(--dark7);
+}
+
+/* Pagination - Dark Mode */
+body.dark footer .pagination button {
+    background: transparent;
+    color: var(--dark8);
+    border: 1px solid var(--dark6);
+}
+
+body.dark .pagination button.active,
+body.dark .pagination button:hover {
+    background: var(--red1);
+}
+
+/* Confirmation Modal - Dark Mode */
+body.dark .confirmation_bg {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+body.dark .confirmation_popup {
+    background: var(--dark3);
+}
+
+body.dark .confirmation_popup header {
+    border-bottom: 1px solid var(--dark7);
+    color: var(--dark8);
+}
+
+body.dark .closeConfirmBtn {
+    color: var(--dark8);
+}
+
+body.dark .closeConfirmBtn:hover {
+    background: var(--dark5);
+}
+
+body.dark .confirmation-body p {
+    color: var(--dark8);
+}
+
+body.dark .confirmationFooter {
+    border-top: 1px solid var(--dark7);
+}
+
+body.dark .cancelConfirmBtn {
+    background: var(--dark4);
+    color: var(--dark8);
+    border: 1px solid var(--dark6);
+}
+
+body.dark .cancelConfirmBtn:hover {
+    background: var(--dark5);
+}
+
+body.dark .confirmBtn {
     background: var(--red1);
     color: white;
     border-color: var(--red1);
 }
 
-.confirmBtn:hover {
+body.dark .confirmBtn:hover {
     background: #7a252a;
 }
 
-/* Archive specific styles */
-.archived-date {
-    font-size: 12px;
-    color: var(--dark7);
-}
+/* ============================================ */
+/* RESPONSIVE STYLES */
+/* ============================================ */
 
 @media only screen and (max-width: 1024px) {
     .container table {
@@ -766,31 +1019,6 @@ table tr .empty{
     
     .actionButtons {
         flex-wrap: wrap;
-    }
-
-    /* Adjust column widths for mobile */
-    .container table th:nth-child(2),
-    .container table td:nth-child(2) {
-        width: 25%;
-    }
-    
-    .container table th:nth-child(6),
-    .container table td:nth-child(6) {
-        display: none;
-    }
-}
-
-@media only screen and (max-width: 480px) {
-    .container table th:nth-child(4),
-    .container table td:nth-child(4),
-    .container table th:nth-child(5),
-    .container table td:nth-child(5) {
-        display: none;
-    }
-    
-    .container table th:nth-child(2),
-    .container table td:nth-child(2) {
-        width: 40%;
     }
 }
 
