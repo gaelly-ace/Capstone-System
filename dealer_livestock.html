@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="dealer_style.css">
+    <link rel="stylesheet" href="dealer_livestock.css">
+
+    <!-- Prevent dark mode flicker -->
+    <script>
+        (function() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.documentElement.classList.add('dark-init');
+                document.body.classList.add('dark');
+            }
+        })();
+    </script>
+
+    <title>PSMO - My Livestock</title>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="dealer_index.html" class="brand">
+            <img src="IMAGES/PSMO.png" class="logo">
+            <span class="text">Dealer</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="dealer_index.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li class="active">
+                <a href="dealer_livestock.html">
+                    <i class='bx bxs-box'></i>
+                    <span class="text">My Livestock</span>
+                </a>
+            </li>
+            <li>
+                <a href="dealer_history.html">
+                    <i class='bx bxs-time'></i>
+                    <span class="text">History</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="dealer_sign.html" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search livestock..." id="searchInput">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <i class='bx bx-sun' id="sun-icon"></i>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <i class='bx bx-moon' id="moon-icon"></i>
+            <a href="dealer_profile.html" class="profile">
+                <img src="IMAGES/" id="navbar-profile-img">
+            </a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>My Livestock</h1>
+                    <p class="dealer-note">Manage your livestock inventory</p>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="livestock-stats">
+                <div class="stat-item">
+                    <div class="label">Total Pigs</div>
+                    <div class="value" id="totalPigs">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">Total Cattle</div>
+                    <div class="value" id="totalCattle">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">Total Carabao</div>
+                    <div class="value" id="totalCarabao">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">Total Weight</div>
+                    <div class="value" id="totalWeight">0 kg</div>
+                </div>
+            </div>
+
+            <!-- LIVESTOCK TABLE -->
+            <div class="table-data">
+                <div class="order full-width">
+                    <div class="head">
+                        <h3>Livestock List</h3>
+                        <div class="filter-group">
+                            <select id="typeFilter" class="status-filter">
+                                <option value="all">All Types</option>
+                                <option value="Pig">Pig</option>
+                                <option value="Cattle">Cattle</option>
+                                <option value="Carabao">Carabao</option>
+                            </select>
+                            <button class="add-livestock-btn" id="addLivestockBtn">
+                                <i class='bx bx-plus'></i> Add Livestock
+                            </button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Livestock ID</th>
+                                <th>Type</th>
+                                <th>Weight (kg)</th>
+                                <th>Gender</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="livestock-tbody">
+                            <!-- Livestock will be loaded here dynamically -->
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="emptyState" style="display: none;">
+                        <i class='bx bx-package'></i>
+                        <p>No livestock in your inventory yet. Add some to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <!-- ADD/EDIT MODAL -->
+    <div class="modal-overlay" id="formModalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="formModalClose">
+                <i class='bx bx-x'></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2 id="formModalTitle">Add New Livestock</h2>
+            </div>
+
+            <form class="modal-form" id="livestockForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Livestock Type *</label>
+                        <select name="kindOfLivestock" required>
+                            <option value="">Select Type</option>
+                            <option value="Pig">Pig</option>
+                            <option value="Cattle">Cattle</option>
+                            <option value="Carabao">Carabao</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender *</label>
+                        <select name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg) *</label>
+                        <input type="number" name="weight" step="0.1" min="0" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save Livestock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div class="modal-overlay" id="deleteModalOverlay">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="modal-close" id="deleteModalClose">
+                <i class='bx bx-x'></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2>Delete Livestock</h2>
+            </div>
+
+            <div class="details-content">
+                <p>Are you sure you want to delete this livestock record?</p>
+                <p style="color: var(--red); font-size: 14px; margin-top: 10px;">This action cannot be undone.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" id="cancelDeleteBtn">Cancel</button>
+                <button type="button" class="submit-btn delete-btn" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dealer_script.js"></script>
+    <script src="dealer_livestock.js"></script>
+</body>
+</html>

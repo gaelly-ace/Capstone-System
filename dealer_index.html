@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="dealer_style.css">
+
+	<!-- Prevent dark mode flicker -->
+	<script>
+		(function() {
+			if (localStorage.getItem('darkMode') === 'enabled') {
+				document.documentElement.classList.add('dark-init');
+				document.body.classList.add('dark');
+			}
+		})();
+	</script>
+
+	<title>PSMO - Dealer Dashboard</title>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="dealer_index.html" class="brand">
+			<img src="IMAGES/PSMO.png" class="logo">
+			<span class="text">Dealer</span>
+		</a>
+		<ul class="side-menu top">
+			<li class="active">
+				<a href="dealer_index.html">
+					<i class='bx bxs-dashboard'></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="dealer_livestock.html">
+					<i class='bx bxs-box'></i>
+					<span class="text">My Livestock</span>
+				</a>
+			</li>
+			<li>
+				<a href="dealer_history.html">
+					<i class='bx bxs-time'></i>
+					<span class="text">History</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="dealer_sign.html" class="logout">
+					<i class='bx bxs-log-out-circle'></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu'></i>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search..." id="searchInput">
+					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+				</div>
+			</form>
+			<i class='bx bx-sun' id="sun-icon"></i>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<i class='bx bx-moon' id="moon-icon"></i>
+			<a href="dealer_profile.html" class="profile">
+				<img src="IMAGES/" id="navbar-profile-img">
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Dashboard</h1>
+					<p class="dealer-note">Welcome, <span id="dealerName">Dealer</span></p>
+				</div>
+			</div>
+
+			<!-- STATS CARDS -->
+			<ul class="box-info">
+				<li>
+					<i class='bx bxs-box'></i>
+					<span class="text">
+						<h3 id="totalLivestock">0</h3>
+						<p>Total Livestock Supplied</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-truck'></i>
+					<span class="text">
+						<h3 id="inTransit">0</h3>
+						<p>In Transit/Processing</p>
+					</span>
+				</li>
+				<li>
+					<i class='bx bxs-check-circle'></i>
+					<span class="text">
+						<h3 id="completed">0</h3>
+						<p>Completed</p>
+					</span>
+				</li>
+			</ul>
+
+			<!-- RECENT LIVESTOCK TABLE -->
+			<div class="table-data">
+				<div class="order full-width">
+					<div class="head">
+						<h3>Recent Livestock Status</h3>
+						<div class="filter-group">
+							<select id="statusFilter" class="status-filter">
+								<option value="all">All Status</option>
+								<option value="In Entry Point">Entry Point</option>
+								<option value="In Holding Pen">Holding Pen</option>
+								<option value="In Slaughter House">Slaughter House</option>
+								<option value="In Exit Point">Exit Point</option>
+								<option value="Anomaly Detected">Anomaly</option>
+							</select>
+						</div>
+					</div>
+					<table>
+						<thead>
+							<tr>
+								<th>Livestock ID</th>
+								<th>Type</th>
+								<th>Weight (kg)</th>
+								<th>Gender</th>
+								<th>Current Status</th>
+								<th>Last Updated</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody id="livestock-tbody">
+							<!-- Livestock will be loaded here dynamically -->
+						</tbody>
+					</table>
+					<div class="empty-state" id="emptyState" style="display: none;">
+						<i class='bx bx-package'></i>
+						<p>No livestock records found for your dealership.</p>
+					</div>
+				</div>
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+
+	<!-- DETAILS MODAL -->
+	<div class="modal-overlay" id="detailsModalOverlay">
+		<div class="modal-content">
+			<button class="modal-close" id="detailsModalClose">
+				<i class='bx bx-x'></i>
+			</button>
+			
+			<div class="modal-header">
+				<h2>Livestock Details</h2>
+			</div>
+
+			<div class="details-content" id="detailsContent">
+				<!-- Details will be loaded here -->
+			</div>
+		</div>
+	</div>
+
+	<script src="dealer_script.js"></script>
+</body>
+</html>

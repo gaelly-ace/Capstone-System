@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="dealer_style.css">
+    <link rel="stylesheet" href="dealer_profile.css">
+
+    <!-- Prevent dark mode flicker -->
+    <script>
+        (function() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.documentElement.classList.add('dark-init');
+                document.body.classList.add('dark');
+            }
+        })();
+    </script>
+
+    <title>PSMO - Profile</title>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="dealer_index.html" class="brand">
+            <img src="IMAGES/PSMO.png" class="logo">
+            <span class="text">Dealer</span>
+        </a>
+        <ul class="side-menu top">
+            <li>
+                <a href="dealer_index.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="dealer_livestock.html">
+                    <i class='bx bxs-box'></i>
+                    <span class="text">My Livestock</span>
+                </a>
+            </li>
+            <li>
+                <a href="dealer_history.html">
+                    <i class='bx bxs-time'></i>
+                    <span class="text">History</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-menu">
+            <li>
+                <a href="dealer_sign.html" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search..." id="searchInput">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <i class='bx bx-sun' id="sun-icon"></i>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <i class='bx bx-moon' id="moon-icon"></i>
+            <a href="dealer_profile.html" class="profile">
+                <img src="IMAGES/" id="navbar-profile-img">
+            </a>
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Profile</h1>
+                    <p class="dealer-note">Manage your profile information</p>
+                </div>
+            </div>
+
+            <div class="profile-container">
+                <!-- PROFILE CARD -->
+                <div class="profile-card">
+                    <div class="profile-image-container">
+                        <img src="IMAGES/default-avatar.png" class="profile-image" id="profileImage">
+                        <label class="profile-image-upload">
+                            <i class='bx bx-camera'></i>
+                            <input type="file" id="profileImageInput" accept="image/*">
+                        </label>
+                    </div>
+                    <div class="profile-name" id="profileName">Juan Dela Cruz</div>
+                    <div class="profile-role">Livestock Dealer</div>
+
+                    <div class="profile-stats">
+                        <div class="stat-row">
+                            <span class="label">Total Livestock</span>
+                            <span class="value" id="statTotalLivestock">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="label">Completed</span>
+                            <span class="value" id="statCompleted">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="label">Member Since</span>
+                            <span class="value" id="statMemberSince">Nov 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROFILE INFO -->
+                <div>
+                    <div class="profile-info-card">
+                        <div class="head">
+                            <h3>Personal Information</h3>
+                            <button class="edit-profile-btn" id="editProfileBtn">
+                                <i class='bx bx-edit'></i> Edit Profile
+                            </button>
+                        </div>
+
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Full Name</span>
+                                <span class="value" id="infoFullName">Juan Dela Cruz</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Email</span>
+                                <span class="value" id="infoEmail">juan.delacruz@example.com</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Phone Number</span>
+                                <span class="value" id="infoPhone">+63 912 345 6789</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Address</span>
+                                <span class="value" id="infoAddress">Santa Rosa, Laguna</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Business Name</span>
+                                <span class="value" id="infoBusinessName">JDC Livestock Trading</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Dealer ID</span>
+                                <span class="value" id="infoDealerId">DEALER-001</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECURITY SECTION -->
+                    <div class="security-section">
+                        <h3>Security Settings</h3>
+                        <div class="security-option">
+                            <div class="info">
+                                <div class="title">Password</div>
+                                <div class="desc">Last changed 30 days ago</div>
+                            </div>
+                            <button class="change-password-btn" id="changePasswordBtn">
+                                <i class='bx bx-lock'></i> Change Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
+
+    <!-- EDIT PROFILE MODAL -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal-content">
+            <button class="modal-close" id="editProfileClose">
+                <i class='bx bx-x'></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+            </div>
+
+            <form class="modal-form" id="editProfileForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address *</label>
+                        <input type="text" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Business Name</label>
+                        <input type="text" name="businessName">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelEditBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CHANGE PASSWORD MODAL -->
+    <div class="modal-overlay" id="changePasswordModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="modal-close" id="changePasswordClose">
+                <i class='bx bx-x'></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2>Change Password</h2>
+            </div>
+
+            <form class="modal-form" id="changePasswordForm">
+                <div class="form-group">
+                    <label>Current Password *</label>
+                    <input type="password" name="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>New Password *</label>
+                    <input type="password" name="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password *</label>
+                    <input type="password" name="confirmPassword" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelPasswordBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="dealer_script.js"></script>
+    <script src="dealer_profile.js"></script>
+</body>
+</html>
