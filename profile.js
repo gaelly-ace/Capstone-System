@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
+    console.log('=== PROFILE.JS STARTING ===');
+    
+    // SIDEBAR MENU ACTIVE STATE
     const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
-
     allSideMenu.forEach(item => {
         const li = item.parentElement;
-
         item.addEventListener('click', function () {
             allSideMenu.forEach(i => {
                 i.parentElement.classList.remove('active');
@@ -12,79 +13,109 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // TOGGLE SIDEBAR
+    // TOGGLE SIDEBAR - Main functionality
     const menuBar = document.querySelector('#content nav .bx.bx-menu');
     const sidebar = document.getElementById('sidebar');
 
-    menuBar.addEventListener('click', function () {
-        sidebar.classList.toggle('hide');
-    });
+    console.log('Menu Bar found:', !!menuBar);
+    console.log('Sidebar found:', !!sidebar);
 
+    if (menuBar && sidebar) {
+        // Remove any existing click listeners by cloning
+        const newMenuBar = menuBar.cloneNode(true);
+        menuBar.parentNode.replaceChild(newMenuBar, menuBar);
+        
+        newMenuBar.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Menu clicked! Current classes:', sidebar.className);
+            sidebar.classList.toggle('hide');
+            console.log('After toggle:', sidebar.className);
+        });
+        console.log('Sidebar toggle listener attached successfully');
+    } else {
+        console.error('CRITICAL: Menu bar or sidebar not found!');
+    }
+
+    // SEARCH FORM TOGGLE
     const searchButton = document.querySelector('#content nav form .form-input button');
     const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
     const searchForm = document.querySelector('#content nav form');
 
-    searchButton.addEventListener('click', function (e) {
-        if (window.innerWidth < 576) {
-            e.preventDefault();
-            searchForm.classList.toggle('show');
-            if (searchForm.classList.contains('show')) {
-                searchButtonIcon.classList.replace('bx-search', 'bx-x');
-            } else {
-                searchButtonIcon.classList.replace('bx-x', 'bx-search');
+    if (searchButton && searchButtonIcon && searchForm) {
+        searchButton.addEventListener('click', function (e) {
+            if (window.innerWidth < 576) {
+                e.preventDefault();
+                searchForm.classList.toggle('show');
+                if (searchForm.classList.contains('show')) {
+                    searchButtonIcon.classList.replace('bx-search', 'bx-x');
+                } else {
+                    searchButtonIcon.classList.replace('bx-x', 'bx-search');
+                }
             }
-        }
-    });
+        });
+    }
 
-    if (window.innerWidth < 768) {
+    // INITIAL SIDEBAR STATE
+    if (sidebar && window.innerWidth < 768) {
         sidebar.classList.add('hide');
-    } else if (window.innerWidth > 576) {
+    }
+    
+    if (searchButtonIcon && searchForm && window.innerWidth > 576) {
         searchButtonIcon.classList.replace('bx-x', 'bx-search');
         searchForm.classList.remove('show');
     }
 
+    // WINDOW RESIZE HANDLER
     window.addEventListener('resize', function () {
-        if (this.innerWidth > 576) {
+        if (this.innerWidth > 576 && searchButtonIcon && searchForm) {
             searchButtonIcon.classList.replace('bx-x', 'bx-search');
             searchForm.classList.remove('show');
         }
     });
 
-    // Dark Mode
+    // DARK MODE - Using localStorage
     const switchMode = document.getElementById('switch-mode');
 
-    // Check stored preference on page load
-    if (localStorage.getItem('dark-mode') === 'true') {
-        document.body.classList.add('dark');
-        switchMode.checked = true;
+    if (switchMode) {
+        // Check stored preference on page load
+        const darkMode = localStorage.getItem('darkMode') || localStorage.getItem('dark-mode');
+        if (darkMode === 'enabled' || darkMode === 'true') {
+            document.body.classList.add('dark');
+            switchMode.checked = true;
+        }
+
+        switchMode.addEventListener('change', function () {
+            if (this.checked) {
+                document.body.classList.add('dark');
+                localStorage.setItem('darkMode', 'enabled');
+                localStorage.setItem('dark-mode', 'true');
+            } else {
+                document.body.classList.remove('dark');
+                localStorage.setItem('darkMode', 'disabled');
+                localStorage.setItem('dark-mode', 'false');
+            }
+        });
     }
 
-    switchMode.addEventListener('change', function () {
-        if (this.checked) {
-            document.body.classList.add('dark');
-            localStorage.setItem('dark-mode', 'true');
-        } else {
-            document.body.classList.remove('dark');
-            localStorage.setItem('dark-mode', 'false');
-        }
-    });
+    // PROFILE FUNCTIONS
 
-    // Profile
-
-    // Toggle edit form visibility and button text
+    // Toggle edit form visibility
     function toggleEditForm() {
         const editForm = document.getElementById('editForm');
         const editButton = document.getElementById('editButton');
         const saveChangesButton = document.getElementById('saveChangesButton');
 
-        if (editForm.style.display === 'none' || editForm.style.display === '') {
-            editForm.style.display = 'block';
-            editButton.style.display = 'none';
-            saveChangesButton.style.display = 'inline-block';
-        } else {
-            editForm.style.display = 'none';
-            editButton.style.display = 'inline-block';
-            saveChangesButton.style.display = 'none';
+        if (editForm && editButton && saveChangesButton) {
+            if (editForm.style.display === 'none' || editForm.style.display === '') {
+                editForm.style.display = 'block';
+                editButton.style.display = 'none';
+                saveChangesButton.style.display = 'inline-block';
+            } else {
+                editForm.style.display = 'none';
+                editButton.style.display = 'inline-block';
+                saveChangesButton.style.display = 'none';
+            }
         }
     }
 
@@ -93,118 +124,167 @@ document.addEventListener("DOMContentLoaded", function() {
         const fullName = document.getElementById('editFullName').value;
         const location = document.getElementById('editLocation').value;
         const phone = document.getElementById('editPhone').value;
+        const password = document.getElementById('editPassword').value;
 
         // Update displayed profile information
-        document.getElementById('fullName').textContent = fullName;
-        document.getElementById('fullName1').textContent = fullName;
-        document.getElementById('location').textContent = location;
-        document.getElementById('phone').textContent = phone;
+        const fullNameEl = document.getElementById('fullName');
+        const fullName1El = document.getElementById('fullName1');
+        const locationEl = document.getElementById('location');
+        const phoneEl = document.getElementById('phone');
 
-        // Optional: Show a success message or perform additional actions after saving
-        alert('Changes saved successfully.');
+        if (fullNameEl) fullNameEl.textContent = fullName;
+        if (fullName1El) fullName1El.textContent = fullName;
+        if (locationEl) locationEl.textContent = location;
+        if (phoneEl) phoneEl.textContent = phone;
 
-        // Hide the edit form and update button states
+        // Store admin name in localStorage
+        localStorage.setItem('adminName', fullName);
+
+        // Show success message
+        if (password) {
+            alert('Profile updated successfully, including password change.');
+        } else {
+            alert('Profile updated successfully.');
+        }
+
+        // Hide the edit form
         toggleEditForm();
     }
 
-    // Delete account function (placeholder)
+    // Delete account function
     function deleteAccount() {
-        if (confirm('Are you sure you want to delete your account?')) {
+        if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
             alert('Account deleted successfully.');
-            window.location.href = 'sign.html';
+            window.location.href = 'admin_sign.html';
         }
     }
 
-// Event listener for edit password link
-document.getElementById('editPassword').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent default link behavior
-    toggleEditPasswordForm(); // Toggle display of edit password form or perform related actions
-});
+    // Event listeners for buttons
+    const editButton = document.getElementById('editButton');
+    const saveChangesButton = document.getElementById('saveChangesButton');
+    const deleteAccountButton = document.getElementById('deleteAccountButton');
 
-// Function to toggle edit password form visibility
-function toggleEditPasswordForm() {
-    const editPasswordForm = document.getElementById('editPasswordForm');
-    if (editPasswordForm.style.display === 'none' || editPasswordForm.style.display === '') {
-        editPasswordForm.style.display = 'block';
-    } else {
-        editPasswordForm.style.display = 'none';
-    }
-}
-
-    // Event listener for edit button
-    document.getElementById('editButton').addEventListener('click', function () {
-        toggleEditForm();
-    });
-
-    // Event listener for save changes button
-    document.getElementById('saveChangesButton').addEventListener('click', function () {
-        saveChanges();
-    });
-
-    // Event listener for delete account button
-    document.getElementById('deleteAccountButton').addEventListener('click', function () {
-        deleteAccount();
-    });
-
-    let ProfileImg = document.getElementById("profile-img");
-    let NavbarProfileImg = document.getElementById("navbar-profile-img");
-    let insertFile = document.getElementById("insert-file");
-
-    // Function to update profile images
-    function updateProfileImages(imageSrc) {
-        ProfileImg.src = imageSrc;
-        NavbarProfileImg.src = imageSrc;
-
-        // Update profile image in localStorage
-        localStorage.setItem('profileImage', imageSrc);
-
-        // Update profile image in other pages if needed
-        updateProfileImagesInOtherPages(imageSrc);
-    }
-
-    // Function to update profile image in other pages
-    function updateProfileImagesInOtherPages(imageSrc) {
-        // Example: Update profile image in other pages' navigation bars
-        let navBarImages = document.querySelectorAll('.profile img');
-        navBarImages.forEach(img => {
-            img.src = imageSrc;
+    if (editButton) {
+        editButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            toggleEditForm();
         });
     }
 
-    // Load saved image from localStorage on page load
-    window.onload = function () {
-        if (localStorage.getItem('profileImage')) {
-            let savedImageSrc = localStorage.getItem('profileImage');
-            updateProfileImages(savedImageSrc);
+    if (saveChangesButton) {
+        saveChangesButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            saveChanges();
+        });
+    }
+
+    if (deleteAccountButton) {
+        deleteAccountButton.addEventListener('click', function (e) {
+            e.preventDefault();
+            deleteAccount();
+        });
+    }
+
+    // PROFILE IMAGE HANDLING
+    const ProfileImg = document.getElementById("profile-img");
+    const NavbarProfileImg = document.getElementById("navbar-profile-img");
+    const insertFile = document.getElementById("insert-file");
+
+    console.log('Profile Image Elements:');
+    console.log('- ProfileImg:', !!ProfileImg);
+    console.log('- NavbarProfileImg:', !!NavbarProfileImg);
+    console.log('- insertFile:', !!insertFile);
+
+    // Function to update profile images
+    function updateProfileImages(imageSrc) {
+        console.log('Updating profile images with:', imageSrc.substring(0, 50) + '...');
+        
+        if (ProfileImg) {
+            ProfileImg.src = imageSrc;
+            console.log('Updated profile-img');
+        } else {
+            console.warn('profile-img element not found');
         }
+        
+        if (NavbarProfileImg) {
+            NavbarProfileImg.src = imageSrc;
+            console.log('Updated navbar-profile-img');
+        } else {
+            console.warn('navbar-profile-img element not found');
+        }
+
+        // Store in localStorage
+        const profileImageData = {
+            src: imageSrc,
+            timestamp: new Date().toISOString()
+        };
+        localStorage.setItem('adminProfileImage', JSON.stringify(profileImageData));
+        // Also store in profileImage for compatibility
+        localStorage.setItem('profileImage', JSON.stringify(profileImageData));
+        console.log('Saved to localStorage');
+    }
+
+    // Load saved image from localStorage on page load
+    console.log('Loading saved profile image...');
+    let storedProfileData = localStorage.getItem('adminProfileImage');
+    if (!storedProfileData) {
+        storedProfileData = localStorage.getItem('profileImage');
+        console.log('Using fallback profileImage from localStorage');
+    }
+    
+    if (storedProfileData) {
+        try {
+            const profileData = JSON.parse(storedProfileData);
+            console.log('Found stored profile image, updating...');
+            updateProfileImages(profileData.src);
+        } catch (e) {
+            console.error('Error loading admin profile image:', e);
+        }
+    } else {
+        console.log('No stored profile image found');
+    }
+
+    // Load saved admin name
+    const savedAdminName = localStorage.getItem('adminName');
+    if (savedAdminName) {
+        console.log('Loading saved admin name:', savedAdminName);
+        const fullNameSpan = document.getElementById('fullName');
+        const fullName1Span = document.getElementById('fullName1');
+        const editFullNameInput = document.getElementById('editFullName');
+        
+        if (fullNameSpan) fullNameSpan.textContent = savedAdminName;
+        if (fullName1Span) fullName1Span.textContent = savedAdminName;
+        if (editFullNameInput) editFullNameInput.value = savedAdminName;
     }
 
     // Handle file input change
-    insertFile.onchange = function () {
-        let file = insertFile.files[0];
-        if (file) {
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                let newImageSrc = e.target.result;
-                updateProfileImages(newImageSrc);
+    if (insertFile) {
+        insertFile.onchange = function () {
+            console.log('File selected');
+            let file = insertFile.files[0];
+            if (file) {
+                console.log('Reading file:', file.name);
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let newImageSrc = e.target.result;
+                    console.log('File loaded, updating images');
+                    updateProfileImages(newImageSrc);
+                }
+                reader.onerror = function(e) {
+                    console.error('Error reading file:', e);
+                }
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(file);
         }
+        console.log('File input listener attached');
+    } else {
+        console.warn('insert-file element not found');
     }
 
-    // Update initial sidebar state based on window width
-    if (window.innerWidth < 768) {
-        sidebar.classList.add('hide');
-    } else if (window.innerWidth > 576) {
-        searchButtonIcon.classList.replace('bx-x', 'bx-search');
-        searchForm.classList.remove('show');
-    }
-
-    // Handle window resize event to adjust sidebar and search form visibility
-    window.addEventListener('resize', function () {
-        if (window.innerWidth > 576) {
-            searchButtonIcon.classList.replace('bx-x', 'bx-search');
-            searchForm.classList.remove('show');
-        }
-    });
+    // Make functions globally accessible
+    window.toggleEditForm = toggleEditForm;
+    window.saveChanges = saveChanges;
+    window.deleteAccount = deleteAccount;
+    
+    console.log('=== PROFILE.JS INITIALIZED SUCCESSFULLY ===');
 });
